@@ -1,7 +1,4 @@
 # LegoMindstrosmPraktikum
 
 
-legowiki.humanoids.kit.edu
-
-Photos:
-https://imgur.com/a/3cXE4
+https://github.com/lrnzthl/LegoMindstromPraktikum/wiki
