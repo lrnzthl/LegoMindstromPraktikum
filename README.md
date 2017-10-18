@@ -11,4 +11,3 @@ Nikolay Mladenov - nidenov@gmail,com
 
 Laurenz Thiel - l.thiel@hotmail,de
 
-hey... kannst du mir eine Email schreiben, es sagt mir, dass deine email nicht existiert..
