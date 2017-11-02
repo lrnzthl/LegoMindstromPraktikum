@@ -22,6 +22,8 @@ public abstract class Brains {
      * @return
      */
     public int start(){
+        System.out.println("Starting " + this.toString());
+
         running = true;
 
         while(running){

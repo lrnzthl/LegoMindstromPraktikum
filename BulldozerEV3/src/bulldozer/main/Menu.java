@@ -9,8 +9,9 @@ public class Menu {
 
     private ParcourState state;
     private ParcourState selectedState;
-
     private Hardware hardware;
+    private Brains brain;
+
 
     public Menu(Hardware hardware){
 
@@ -79,6 +80,9 @@ public class Menu {
 
                     break;
                 case ENTER:
+                    state = selectedState;
+
+                    startBrain();
 
                     break;
                 case ESCAPE:
@@ -91,6 +95,31 @@ public class Menu {
         }
     }
 
+    private void startBrain() {
+        switch (state){
+            case LINE:
+                brain = new Line(hardware);
+                break;
+            case LABYRINTH:
+                brain = new Labyrinth(hardware);
+                break;
+            case BARRIER:
+                //
+                break;
+            case BRIDGE:
+                //
+                break;
+            case FINDCOLOUR:
+                //
+                break;
+            default:
+                System.out.println("Cannot start MENU state");
+                break;
+        }
+
+        brain.start();
+
+    }
 
 
     private void showOptions(){

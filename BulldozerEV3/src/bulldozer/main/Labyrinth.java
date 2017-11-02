@@ -1,15 +1,14 @@
 package bulldozer.main;
 
-public class Labyrinth implements Brains {
+public class Labyrinth extends Brains {
 
 
-    public int start() {
-        return 0;
+    public Labyrinth(Hardware hardware){
+        super(hardware);
     }
 
-    public void stop() {
+    @Override
+    protected void doLogic() {
 
     }
-
-
 }

@@ -2,6 +2,21 @@ package bulldozer.main;
 
 import java.util.Scanner;
 
+
+
+
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.port.MotorPort;
+import lejos.hardware.port.SensorPort;
+import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.EV3TouchSensor;
+import lejos.hardware.Button	;
+
+
+
+
+
 public class Hardware {
     private boolean init;
     private boolean simulation;
@@ -52,6 +67,8 @@ public class Hardware {
                         return ButtonType.LEFT;
                     }else if ("r".equals(input)) {
                         return ButtonType.RIGHT;
+                    }else if ("e".equals(input)){
+                        return ButtonType.ENTER;
                     }
                 }
             }
@@ -59,10 +76,33 @@ public class Hardware {
         }
 
 
+        ButtonType buttonType = ButtonType.NONE;
 
+        switch (Button.getButtons()){
+            case 0:
+                buttonType = ButtonType.NONE;
+                break;
+            case Button.ID_UP:
+                buttonType = ButtonType.UP;
+                break;
+            case Button.ID_DOWN:
+                buttonType = ButtonType.DOWN;
+                break;
+            case Button.ID_LEFT:
+                buttonType = ButtonType.LEFT;
+                break;
+            case Button.ID_RIGHT:
+                buttonType = ButtonType.RIGHT;
+                break;
+            case Button.ID_ENTER:
+                buttonType = ButtonType.ENTER;
+                break;
+            case Button.ID_ESCAPE:
+                buttonType = ButtonType.ESCAPE;
 
+        }
 
-        return ButtonType.NONE;
+        return buttonType;
     }
 
 
