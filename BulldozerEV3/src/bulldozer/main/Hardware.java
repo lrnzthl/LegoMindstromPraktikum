@@ -7,6 +7,15 @@ public class Hardware {
     private boolean simulation;
 
 
+    /**
+     *
+     * @return true, if we found the beacon
+     */
+    public boolean foundBeacon() {
+        return false;
+    }
+
+
     public enum ButtonType {
         UP, DOWN, LEFT, RIGHT, ENTER, ESCAPE, NONE
     }

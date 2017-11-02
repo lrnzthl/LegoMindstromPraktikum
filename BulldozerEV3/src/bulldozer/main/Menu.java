@@ -79,6 +79,7 @@ public class Menu {
 
                     break;
                 case ENTER:
+
                     break;
                 case ESCAPE:
                     running = false;
