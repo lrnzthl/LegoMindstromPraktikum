@@ -1,0 +1,68 @@
+#!/bin/bash
+
+brick_host='192.168.0.104'
+
+brick_user='root'
+brick_home='/home/root'
+
+
+brick_debug_port='4000'
+
+project_jar='BulldozerEV3.jar'
+project_main='bulldozer.main.Main'
+
+
+if ! [ -e $project_jar ] ;
+then 
+	echo "No $project_jar in directory "$(pwd)
+	exit
+fi
+
+
+
+#java -cp "$project_jar" "$project_main"
+
+
+echo scp ./$project_jar "$brick_user@$brick_host:$brick_home"
+scp ./$project_jar "$brick_user@$brick_host:$brick_home"
+
+
+
+
+if [[ $1 == 1 ]] ; #debug modus
+	then
+	run_command="jrun -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=$brick_debug_port,suspend=y -cp $brick_home/$project_jar $project_main"
+
+else 		#normal
+	run_command="jrun -cp $brick_home/$project_jar $project_main"
+
+fi
+
+echo ssh "$brick_home@$brick_host" "$run_command"
+ssh "$brick_user@$brick_host" "$run_command"
+
+
+
+
+
+
+
+
+
+
+#ssh into brick
+#ssh root@192.168.0.104
+#password = ""
+
+
+#no matching key exchange =>
+#ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 user@host
+#https://www.openssh.com/legacy.html
+
+#Running the programm
+#https://sourceforge.net/p/lejos/wiki/Developing%20with%20leJOS%20%28old%29/
+#jrn -cp *.jar Main
+
+#jrun -cp $project_jar $project_main
+
+#jrun -jar <your jar file>
