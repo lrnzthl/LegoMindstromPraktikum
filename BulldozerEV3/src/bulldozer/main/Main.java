@@ -1,16 +1,14 @@
 package bulldozer.main;
 
-import lejos.hardware.Button;
-
 public class Main {
+    public static void main (String [] args){
 
-	public static void main(String[] args) {
-		
-		
-		System.out.println("Testing...");
-	
-		Button.waitForAnyPress();
+        Hardware hardware = new Hardware(true);
+        Menu menu = new Menu(hardware);
 
-	}
 
+        menu.start();
+
+
+    }
 }
