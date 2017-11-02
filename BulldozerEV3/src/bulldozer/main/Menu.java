@@ -14,23 +14,15 @@ public class Menu {
 
 
     public Menu(Hardware hardware){
-
         //beginning state is always menu
         state = ParcourState.MENU;
         selectedState = ParcourState.values()[1];
-
-
-
+        
         //checking if the hardware is initisalized properly
         if(hardware != null || hardware.isInit()){
             this.hardware = hardware;
         }
-
-
     }
-
-
-
 
     private void setState(ParcourState state){
         if (state != null){
@@ -43,53 +35,37 @@ public class Menu {
         return state;
     }
 
-
     public void start(){
         boolean running = true;
 
         while (running) {
-
-
-
             showOptions();
-
+            int newSelectedState;
             switch (hardware.getButtonType()) {
                 case LEFT:
-
-
-                    int newSelectedState = selectedState.getId() - 1;
-
+                	newSelectedState = selectedState.getId() - 1;
+                    
                     if (newSelectedState < 1) {
                         newSelectedState = ParcourState.values().length - 1;
                     }
                     selectedState = ParcourState.values()[newSelectedState];
-
-
                     break;
-
-
                 case RIGHT:
-
                     newSelectedState = selectedState.getId() + 1;
 
                     if (newSelectedState > ParcourState.values().length - 1) {
                         newSelectedState = 1;
                     }
                     selectedState = ParcourState.values()[newSelectedState];
-
-
                     break;
                 case ENTER:
                     state = selectedState;
-
                     startBrain();
-
                     break;
                 case ESCAPE:
                     running = false;
                     break;
                 default:
-
                     break;
             }
         }
@@ -117,20 +93,34 @@ public class Menu {
                 break;
         }
 
-        brain.start();
-
+        int returnState = brain.start();
+        switch (returnState){
+        case -1:
+        	state = ParcourState.MENU;
+        	break;
+        case 0:
+        	break;
+        case 1:
+        	if(state.getId() < state.values().length - 1){
+        		state = state.values()[state.getId() + 1];
+        		selectedState = state;
+        		startBrain();
+        	} else {
+        		state = ParcourState.MENU;
+        		System.out.println("Completed last task :)");
+        	}
+        	break;
+        default:
+        	break;	
+        }
     }
 
-
     private void showOptions(){
-
-
         for (ParcourState s : ParcourState.values()){
             if (s.equals(ParcourState.MENU)){
                 continue;
             }
-
-
+            
             if(s.equals(this.selectedState)){
                 System.out.print("[" + s.name() + "]");
             }else{
@@ -138,14 +128,7 @@ public class Menu {
             }
 
             System.out.print("  ");
-
         }
-
         System.out.println();
-
-
     }
-
-
-
 }
