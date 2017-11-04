@@ -6,11 +6,27 @@ public class Sensors extends Thread{
     private int sensorDelay ;
 
 
-    public Sensors(int sensorReadyDelay){
+    private SingleValueSensorWrapper touch;
+    private SingleValueSensorWrapper Scolor;
+    private SingleValueSensorWrapper Sdistance;
+
+
+
+
+
+    public Sensors(int sensorReadyDelay, SingleValueSensorWrapper touch, SingleValueSensorWrapper col, SingleValueSensorWrapper dist){
         isInited = false;
 
-
         this.sensorDelay = sensorReadyDelay;
+
+
+        if( touch == null || col == null || dist == null){
+            System.out.println("WARNING: Sensors are null");
+        }
+        this.touch = touch;
+        this.Scolor = col;
+        this.Sdistance = dist;
+
     }
 
     public boolean isInit() {
@@ -18,8 +34,15 @@ public class Sensors extends Thread{
     }
 
 
+    /**
+     * calibrates senosrs
+     * @return
+     */
     public boolean initialize(){
-        //init sensors
+        //init and calib sensors
+
+        //get some values from the sensors, they should be checked, that are valid
+
 
         isInited = true;
         System.out.println("Sensors are initialized: " + isInited);
@@ -41,5 +64,19 @@ public class Sensors extends Thread{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+
+
+    public SingleValueSensorWrapper touch() {
+        return touch;
+    }
+
+    public SingleValueSensorWrapper color() {
+        return Scolor;
+    }
+
+    public SingleValueSensorWrapper distance() {
+        return Sdistance;
     }
 }

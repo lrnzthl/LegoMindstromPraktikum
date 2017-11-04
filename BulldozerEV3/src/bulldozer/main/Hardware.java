@@ -6,7 +6,6 @@ import java.util.Scanner;
 
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
-import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
@@ -22,8 +21,9 @@ public class Hardware {
     private boolean simulation;
 
     private Sensors sensors;
+
     //in ms, delay between reading the senors
-    private final int sensorReadyDelay = 100;
+    private final int sensorReadDelay = 100;
 
     private EV3LargeRegulatedMotor mRight, mLeft;
 
@@ -33,7 +33,7 @@ public class Hardware {
 
     public Hardware(boolean simulation){
         this.simulation = simulation;
-        sensors = new Sensors(sensorReadyDelay);
+        sensors = new Sensors(sensorReadDelay, null, null, null);
         initialize();
     }
 
@@ -41,7 +41,21 @@ public class Hardware {
 
     public Hardware(){
         simulation = false;
-        sensors = new Sensors(sensorReadyDelay);
+
+
+
+        EV3TouchSensor tLeft = new EV3TouchSensor(SensorPort.S1);
+        EV3ColorSensor color = new EV3ColorSensor(SensorPort.S3);
+        EV3UltrasonicSensor ultra = new EV3UltrasonicSensor(SensorPort.S4);
+
+        SingleValueSensorWrapper touch = new SingleValueSensorWrapper(tLeft, "Touch");
+        SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "Red");
+        SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultra, "Distance");
+
+
+
+
+        sensors = new Sensors(sensorReadDelay, touch, col, dist);
         initialize();
     }
 
@@ -153,9 +167,13 @@ public class Hardware {
      * initalizes the different hardware components
      */
     private boolean initialize(){
+        System.out.println("Hardware is being initialized");
         //
         //
         //
+
+
+
         sensors.initialize();
 
 
