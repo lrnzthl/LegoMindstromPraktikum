@@ -6,26 +6,28 @@ public class Sensors extends Thread{
     private int sensorDelay ;
 
 
-    private SingleValueSensorWrapper touch;
+    private SingleValueSensorWrapper Stouch;
     private SingleValueSensorWrapper Scolor;
     private SingleValueSensorWrapper Sdistance;
 
 
+    private float touch, color, distance;
 
 
-
-    public Sensors(int sensorReadyDelay, SingleValueSensorWrapper touch, SingleValueSensorWrapper col, SingleValueSensorWrapper dist){
+    public Sensors(int sensorReadyDelay, SingleValueSensorWrapper Stouch, SingleValueSensorWrapper Scolor, SingleValueSensorWrapper Sdist){
         isInited = false;
 
         this.sensorDelay = sensorReadyDelay;
 
 
-        if( touch == null || col == null || dist == null){
-            System.out.println("WARNING: Sensors are null");
+        if( Stouch == null || Scolor == null || Sdist == null){
+            System.out.println("WARNING: Sensors are null!");
         }
-        this.touch = touch;
-        this.Scolor = col;
-        this.Sdistance = dist;
+
+
+        this.Stouch = Stouch;
+        this.Scolor = Scolor;
+        this.Sdistance = Sdist;
 
     }
 
@@ -35,7 +37,7 @@ public class Sensors extends Thread{
 
 
     /**
-     * calibrates senosrs
+     * calibrates and initalizes senosrs
      * @return
      */
     public boolean initialize(){
@@ -54,10 +56,11 @@ public class Sensors extends Thread{
     public void run() {
         try {
             while (true) {
-                System.out.println("Reading sensors...");
-                //
-                //
-                //
+
+                System.out.println("Reading sensors");
+                this.touch = this.Stouch.getSample();
+                this.color = this.Scolor.getSample();
+                this.distance = this.Sdistance.getSample();
 
                 Thread.sleep(sensorDelay);
             }
@@ -68,15 +71,15 @@ public class Sensors extends Thread{
 
 
 
-    public SingleValueSensorWrapper touch() {
+    public float touch() {
         return touch;
     }
 
-    public SingleValueSensorWrapper color() {
-        return Scolor;
+    public float color() {
+        return color;
     }
 
-    public SingleValueSensorWrapper distance() {
-        return Sdistance;
+    public float distance() {
+        return distance;
     }
 }

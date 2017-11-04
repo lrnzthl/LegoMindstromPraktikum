@@ -11,6 +11,10 @@ public class Line extends Brains {
     @Override
     protected void doLogic() {
         System.out.println("I .. Line Brains");
+
+        while( ! hardware.isTouchPressed()){
+            hardware.motorForwardBlock(360);
+        }
     }
 
 }

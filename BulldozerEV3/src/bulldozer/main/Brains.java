@@ -11,7 +11,7 @@ public abstract class Brains extends Thread{
     public Brains(Hardware hardware){
         running = false;
 
-        //checking if the hardware is initisalized properly
+        //checking if the hardware is initialized properly
         if(hardware != null || hardware.isInit() ){
             this.hardware = hardware;
         }
