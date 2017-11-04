@@ -3,7 +3,7 @@ package bulldozer.main;
 import java.util.Scanner;
 
 
-
+import lejos.hardware.Sound;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.SensorPort;
@@ -62,7 +62,7 @@ public class Hardware {
         EV3UltrasonicSensor ultra = new EV3UltrasonicSensor(SensorPort.S4);
 
         SingleValueSensorWrapper touch = new SingleValueSensorWrapper(tLeft, "Touch");
-        SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "Red");
+        SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "Color ID");
         SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultra, "Distance");
 
 
@@ -95,6 +95,14 @@ public class Hardware {
 
 
         sensors.start();
+    }
+
+
+    /**
+     * make a sound
+     */
+    public void beep() {
+        beep();
     }
 
 
@@ -230,7 +238,12 @@ public class Hardware {
      */
     public boolean isTouchPressed(){
 
-        return (sensors.touch() == 1);
+        if (sensors.touch() == 1){
+            System.out.println("Touch is pressed, yes");
+            return true;
+        }
+
+        return false;
 
     }
 
@@ -276,5 +289,21 @@ public class Hardware {
         motRight.endSynchronization();
     }
 
+
+    public void turnLeft(){
+        motRight.rotate(360); //angle?
+    }
+
+
+    public boolean isOnWhite(){
+
+        System.out.println("Color is " + sensors.color());
+
+        if (sensors.color() == 6){
+            return true;
+        }
+
+        return false;
+    }
 
 }

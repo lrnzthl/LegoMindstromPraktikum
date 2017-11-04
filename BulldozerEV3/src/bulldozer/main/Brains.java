@@ -1,6 +1,8 @@
 package bulldozer.main;
 
 public abstract class Brains extends Thread{
+
+
     protected boolean running;
     protected Hardware hardware;
 
@@ -64,7 +66,7 @@ public abstract class Brains extends Thread{
 
 
 
-    private void mySleep(int millis) {
+    protected void mySleep(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {
