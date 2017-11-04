@@ -213,6 +213,11 @@ public class Hardware {
 
         init = sensors.initialize() ? true : false;
 
+        if(init == true){
+            Button.LEDPattern(1);
+        }else{
+            Button.LEDPattern(5);
+        }
 
 
         return init;
