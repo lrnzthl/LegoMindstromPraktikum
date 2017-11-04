@@ -85,9 +85,9 @@ public class Menu {
             case BRIDGE:
                 //
                 break;
-            case FINDCOLOUR:
+       //     case FINDCOLOUR:
                 //
-                break;
+      //          break;
             default:
                 System.out.println("Cannot start MENU state");
                 break;
