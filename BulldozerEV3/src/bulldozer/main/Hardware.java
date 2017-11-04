@@ -21,6 +21,31 @@ public class Hardware {
     private boolean init;
     private boolean simulation;
 
+    private Sensors sensors;
+    //in ms, delay between reading the senors
+    private final int sensorReadyDelay = 100;
+
+    private EV3LargeRegulatedMotor mRight, mLeft;
+
+
+
+
+
+    public Hardware(boolean simulation){
+        this.simulation = simulation;
+        sensors = new Sensors(sensorReadyDelay);
+        initialize();
+    }
+
+
+
+    public Hardware(){
+        simulation = false;
+        sensors = new Sensors(sensorReadyDelay);
+        initialize();
+    }
+
+
 
     /**
      *
@@ -28,6 +53,16 @@ public class Hardware {
      */
     public boolean foundBeacon() {
         return false;
+    }
+
+    public void startSensors() {
+        if(! sensors.isInit()){
+            System.out.println("Cannot start, sensors must be initialized!");
+            return;
+        }
+
+
+        sensors.start();
     }
 
 
@@ -106,16 +141,7 @@ public class Hardware {
     }
 
 
-    public Hardware(boolean simulation){
-        this.simulation = simulation;
-    }
 
-
-
-    public Hardware(){
-        simulation = false;
-        initialize();
-    }
 
 
     public boolean isInit() {
@@ -130,6 +156,9 @@ public class Hardware {
         //
         //
         //
+        sensors.initialize();
+
+
         init = true;
         return init;
     }

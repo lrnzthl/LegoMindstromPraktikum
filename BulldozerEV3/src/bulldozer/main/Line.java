@@ -8,9 +8,9 @@ public class Line extends Brains {
         super(hardware);
     }
 
-
+    @Override
     protected void doLogic() {
-
+        System.out.println("I .. Line Brains");
     }
 
 }
