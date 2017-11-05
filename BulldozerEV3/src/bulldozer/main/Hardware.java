@@ -24,7 +24,7 @@ public class Hardware {
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
 
-    private int motorSpeedProcentage = 50 ;
+    private int motorSpeedProcentage = 20;
     //default value is 6000
     private int motorAccelaration = 6000;
 
@@ -259,10 +259,45 @@ public class Hardware {
         synchMotors();
 
         motRight.rotate(angle);
-        motLeft.rotate(angle);
+        //motLeft.rotate(angle); //in case this works automatic with the first motor
 
         deSynchMotors();
     }
+
+    /**
+     * move forward for
+     * @param ms
+     */
+    public void motorMoveForwardMs(int ms){
+        synchMotors();
+
+        motRight.forward();
+        mySleep(ms);
+        motRight.stop();
+
+        deSynchMotors();
+    }
+
+
+    /**
+     * both motors are started;
+     * motorStop must be called for the robot to be stopped
+     */
+    public void motorForward(){
+        motRight.forward();
+        motLeft.forward();
+    }
+
+
+    /**
+     * stopping both motors
+     */
+    public void motorStop(){
+        motLeft.stop(true);
+        motRight.stop(true);
+    }
+
+
 
     /**
      * sets the speed ot the motor to a procentage of the maximum speed
@@ -304,6 +339,16 @@ public class Hardware {
         }
 
         return false;
+    }
+
+
+    private void mySleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
 }
