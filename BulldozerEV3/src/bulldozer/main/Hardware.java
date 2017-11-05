@@ -325,6 +325,23 @@ public class Hardware {
     }
 
 
+    /**
+     * motor turns
+     * @param angle (can also be negative);
+     * negative means go left, positive means go right
+     */
+    public void motorTurn(int angle){
+
+        if(angle < 0){
+            motLeft.stop(true);
+            motRight.rotate( -angle );
+        }else{
+            motRight.stop(true);
+            motLeft.rotate(angle);
+        }
+
+    }
+
     public void turnLeft(){
         motRight.rotate(360); //angle?
     }

@@ -38,8 +38,8 @@ public abstract class Brains extends Thread{
 
         while(running){
 
-            //checks if the escape button is pressed
-            if (hardware.getButtonType().equals(Hardware.ButtonType.ESCAPE)){
+            //checks if the enter button is pressed
+            if (hardware.getButtonType().equals(Hardware.ButtonType.ENTER)){
                 running = false;
                 return -1;
             }
