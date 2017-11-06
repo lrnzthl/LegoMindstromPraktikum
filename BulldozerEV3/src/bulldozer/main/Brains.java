@@ -1,14 +1,11 @@
 package bulldozer.main;
 
-public abstract class Brains extends Thread{
-
+public abstract class Brains{
 
     protected boolean running;
     protected Hardware hardware;
 
     private final int checkFinishedDelay = 20;
-
-
 
     public Brains(Hardware hardware){
         running = false;
@@ -17,22 +14,18 @@ public abstract class Brains extends Thread{
         if(hardware != null || hardware.isInit() ){
             this.hardware = hardware;
         }
-
     }
-
-
 
     /**
      *
      * @return
      */
-    public int mainLoop(){
+    /*public int mainLoop(){
         System.out.println("Starting Brains " + this.toString());
 
         //starting the sensors
         hardware.startSensors();
         this.start(); //starting the brains
-
 
         running = true;
 
@@ -53,18 +46,9 @@ public abstract class Brains extends Thread{
         }
 
         return 0;
-    }
+    }*/
 
-
-    public void run() {
-        doLogic();
-    }
-
-    protected abstract void doLogic();
-
-
-
-
+    protected abstract int doLogic();
 
     protected void mySleep(int millis) {
         try {
