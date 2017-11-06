@@ -370,7 +370,8 @@ public class Hardware {
 
         System.out.println("Color is " + sensors.color());
 
-        if (sensors.color() == 6){
+        if ( sensors.color() > 0.2){
+            System.out.println("on white");
             return true;
         }
 
