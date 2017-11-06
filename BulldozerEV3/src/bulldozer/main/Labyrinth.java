@@ -16,7 +16,7 @@ public class Labyrinth extends Brains {
         while(round>0) {
             System.out.println("Here...");
 
-            while (hardware.isOnWhite() || !hardware.isTouchPressed() ) {
+            while (hardware.isOnWhite()) {
 
                 hardware.motorForwardBlock(90);
                 // hardware.motorMoveForwardMs(50);

@@ -27,7 +27,7 @@ public class Hardware {
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
 
-    private int motorSpeedProcentage = 50;
+    private int motorSpeedProcentage = 20;
     //default value is 6000
     private int motorAccelaration = 6000;
 
@@ -357,11 +357,13 @@ public class Hardware {
      */
     public void motorTurn(int angle){
 
+    	motLeft.stop();
+    	motRight.stop();
         if(angle < 0){
-            motLeft.stop(true);
-            motRight.rotate( -angle );
+            motLeft.rotate(angle, true);
+            motRight.rotate(-angle);
         }else{
-            motRight.stop(true);
+            motRight.rotate(-angle, true);
             motLeft.rotate(angle);
         }
 
