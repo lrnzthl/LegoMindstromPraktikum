@@ -32,7 +32,6 @@ public class Line extends Brains {
         }
         int status = 0;
         while(running){	
-            hardware.motorForwardBlock(90);
             if(!hardware.isOnWhite()) {
             	turnAndFindTheWhiteLine();
             }

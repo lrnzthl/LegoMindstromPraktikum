@@ -89,7 +89,7 @@ public class Hardware {
 
 
        initialize();
-       // init = true;
+
         if(!init){
             System.out.println("WARNING: Hardware not initialized properly");
         }
@@ -120,7 +120,7 @@ public class Hardware {
      * make a sound
      */
     public void beep() {
-        beep();
+        Sound.beep();
     }
 
 
@@ -290,6 +290,7 @@ public class Hardware {
     }
 
     /**
+     * Does not ork properly...
      * move forward for
      * @param ms
      */
@@ -369,9 +370,8 @@ public class Hardware {
 
     }
 
-    public void turnLeft(){
-        motRight.rotate(360); //angle?
-    }
+
+
 
 
     public boolean isOnWhite(){

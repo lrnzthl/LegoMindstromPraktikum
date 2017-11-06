@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Main-Class: bulldozer.main.Main
 Class-Path: /home/root/lejos/lib/ev3classes.jar /home/root/lejos/lib/opencv-2411.jar /home/root/lejos/lib/dbusjava.jar /home/root/lejos/lib jna/usr/share/java/jna.jar
+
