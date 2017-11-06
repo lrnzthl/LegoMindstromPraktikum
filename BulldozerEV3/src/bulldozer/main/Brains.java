@@ -1,15 +1,20 @@
 package bulldozer.main;
 
-public abstract class Brains {
+public abstract class Brains extends Thread{
+
+
     protected boolean running;
     protected Hardware hardware;
+
+    private final int checkFinishedDelay = 20;
+
 
 
     public Brains(Hardware hardware){
         running = false;
 
-        //checking if the hardware is initisalized properly
-        if (hardware != null || hardware.isInit()) {
+        //checking if the hardware is initialized properly
+        if(hardware != null || hardware.isInit() ){
             this.hardware = hardware;
         }
 
@@ -21,19 +26,20 @@ public abstract class Brains {
      *
      * @return
      */
-    public int start(){
-        System.out.println("Starting " + this.toString());
+    public int mainLoop(){
+        System.out.println("Starting Brains " + this.toString());
+
+        //starting the sensors
+        hardware.startSensors();
+        this.start(); //starting the brains
+
 
         running = true;
 
         while(running){
-            doLogic();
 
-
-
-
-            //checks if the escape button is pressed
-            if (hardware.getButtonType().equals(Hardware.ButtonType.ESCAPE)){
+            //checks if the enter button is pressed
+            if (hardware.getButtonType().equals(Hardware.ButtonType.ENTER)){
                 running = false;
                 return -1;
             }
@@ -43,16 +49,24 @@ public abstract class Brains {
                 return 1;
             }
 
-            mySleep(20);
+            mySleep(checkFinishedDelay);
         }
 
         return 0;
     }
 
+
+    public void run() {
+        doLogic();
+    }
+
     protected abstract void doLogic();
 
 
-    private void mySleep(int millis) {
+
+
+
+    protected void mySleep(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

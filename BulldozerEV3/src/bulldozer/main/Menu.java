@@ -3,13 +3,12 @@ package bulldozer.main;
 
 
 
-import java.io.IOException;
-
 public class Menu {
 
     private ParcourState state;
     private ParcourState selectedState;
     private Hardware hardware;
+
     private Brains brain;
 
 
@@ -17,11 +16,13 @@ public class Menu {
         //beginning state is always menu
         state = ParcourState.MENU;
         selectedState = ParcourState.values()[1];
-        
+
         //checking if the hardware is initisalized properly
-        if(hardware != null || hardware.isInit()){
+        if(hardware != null || hardware.isInit() ){
             this.hardware = hardware;
         }
+
+
     }
 
     private void setState(ParcourState state){
@@ -89,15 +90,15 @@ public class Menu {
             case BRIDGE:
                 //
                 break;
-       //     case FINDCOLOUR:
+         //   case FINDCOLOUR:
                 //
-      //          break;
+          //      break;
             default:
                 System.out.println("Cannot start MENU state");
                 break;
         }
 
-        int returnState = brain.start();
+        int returnState = brain.mainLoop();
         switch (returnState){
         case -1:
         	state = ParcourState.MENU;
