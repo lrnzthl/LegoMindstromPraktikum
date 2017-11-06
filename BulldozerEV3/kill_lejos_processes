@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#password for loggin in is "" (empty string)
+
 brick_host='192.168.0.104'
 brick_user='root'
 brick_home='/home/root'

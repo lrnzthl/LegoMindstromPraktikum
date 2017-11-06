@@ -1,7 +1,0 @@
-ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes128-cbc root@192.168.0.104
-ps | grep -v "grep" | grep Main | awk '{print $1}' | xargs kill
-ps | grep -v "grep" | grep Bulldozer | awk '{print $1}' | xargs kill  
-
-
-
-#ssh -o 'KexAlgorithms=+diffie-hellman-group1-sha1' -o 'Ciphers=+aes128-cbc' 'root@192.168.0.104'

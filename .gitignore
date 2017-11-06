@@ -1,3 +1,6 @@
+BulldozerEV3/*.jar
+BulldozerEV3/out
+
 metadata
 bin/
 tmp/
