@@ -56,8 +56,6 @@ public class Sensors extends Thread{
     public void run() {
         try {
             while (true) {
-
-                System.out.println("Reading sensors");
                 this.touch = this.Stouch.getSample();
                 this.color = this.Scolor.getSample();
                // this.distance = this.Sdistance.getSample();

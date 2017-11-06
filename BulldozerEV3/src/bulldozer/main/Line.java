@@ -4,12 +4,14 @@ import bulldozer.main.Hardware.ButtonType;
 
 public class Line extends Brains {
     private int currentAngle;
+	private int turnOffset;
     private Direction lastDirection;
 
     public Line(Hardware hardware) {
         super(hardware);
 
         currentAngle = 0;
+        turnOffset = 30;
         lastDirection = Direction.LEFT;
     }
 
@@ -25,12 +27,12 @@ public class Line extends Brains {
         //we should be on the white line
         while( ! hardware.isOnWhite()){
             System.out.println("We are not on the white line!");
-            hardware.beep();
+            //hardware.beep();
             mySleep(100);
         }
         int status = 0;
         while(running){	
-            hardware.motorMoveForwardMs(20);
+            hardware.motorForwardBlock(90);
             if(!hardware.isOnWhite()) {
             	turnAndFindTheWhiteLine();
             }
@@ -57,11 +59,11 @@ public class Line extends Brains {
 
         if(lastDirection == Direction.LEFT){
             lastDirection = Direction.RIGHT;
-            hardware.motorTurn(90);
+            hardware.motorTurn(520);
 
         }else{
             lastDirection = Direction.LEFT;
-            hardware.motorTurn(-90);
+            hardware.motorTurn(-520);
         }
         currentAngle = 0;
     }
@@ -69,7 +71,7 @@ public class Line extends Brains {
     private void turnAndFindTheWhiteLine(){
         boolean alreadyTurned = false;
         do {
-            currentAngle = currentAngle + 5;
+            currentAngle = currentAngle + turnOffset ;
             if (currentAngle > 90) {
                 //change direction
 
@@ -81,9 +83,9 @@ public class Line extends Brains {
                 }
             }
             if (lastDirection == Direction.LEFT) {
-                hardware.motorTurn(-5);
+                hardware.motorTurn(turnOffset * -1);
             } else {
-                hardware.motorTurn(5);
+                hardware.motorTurn(turnOffset );
             }
         }while (!hardware.isOnWhite());
     }
