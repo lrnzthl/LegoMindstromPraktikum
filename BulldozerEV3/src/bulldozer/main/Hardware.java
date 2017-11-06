@@ -20,6 +20,7 @@ import lejos.hardware.Button	;
 public class Hardware {
     private boolean init;
     private boolean simulation;
+    private boolean buttonHold;
 
 
     /**
@@ -77,34 +78,34 @@ public class Hardware {
 
 
         ButtonType buttonType = ButtonType.NONE;
-
+        int clickedButton = Button.getButtons();
         
-        
-        switch (Button.getButtons()){
-            case 0:
-                buttonType = ButtonType.NONE;
-                break;
-            case Button.ID_UP:
-                buttonType = ButtonType.UP;
-                break;
-            case Button.ID_DOWN:
-                buttonType = ButtonType.DOWN;
-                break;
-            case Button.ID_LEFT:
-                buttonType = ButtonType.LEFT;
-                break;
-            case Button.ID_RIGHT:
-                buttonType = ButtonType.RIGHT;
-                break;
-            case Button.ID_ENTER:
-                buttonType = ButtonType.ENTER;
-                break;
-            case Button.ID_ESCAPE:
-                buttonType = ButtonType.ESCAPE;
-
+        if(clickedButton != 0) {
+        	if(!buttonHold) {
+		        switch (clickedButton){
+		            case Button.ID_UP:
+		                buttonType = ButtonType.UP;
+		                break;
+		            case Button.ID_DOWN:
+		                buttonType = ButtonType.DOWN;
+		                break;
+		            case Button.ID_LEFT:
+		                buttonType = ButtonType.LEFT;
+		                break;
+		            case Button.ID_RIGHT:
+		                buttonType = ButtonType.RIGHT;
+		                break;
+		            case Button.ID_ENTER:
+		                buttonType = ButtonType.ENTER;
+		                break;
+		            case Button.ID_ESCAPE:
+		                buttonType = ButtonType.ESCAPE;
+		        }
+		        buttonHold = true;
+        	}
+        } else {
+        	buttonHold = false;
         }
-
-     
         return buttonType;
     }
     
@@ -119,6 +120,7 @@ public class Hardware {
 
     public Hardware(){
         simulation = false;
+        buttonHold = false;
         initialize();
     }
 
