@@ -24,7 +24,7 @@ fi
 
 
 echo scp ./$project_jar "$brick_user@$brick_host:$brick_home"
-scp ./$project_jar "$brick_user@$brick_host:$brick_home"
+scp -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes128-cbc ./$project_jar "$brick_user@$brick_host:$brick_home"
 
 
 
@@ -38,8 +38,10 @@ else 		#normal
 
 fi
 
-echo ssh "$brick_home@$brick_host" "$run_command"
-ssh "$brick_user@$brick_host" "$run_command"
+echo ssh "$brick_user@$brick_host" "$run_command"
+ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes128-cbc "$brick_user@$brick_host" "$run_command"
+
+java -cp $project_jar $project_main
 
 
 
