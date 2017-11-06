@@ -1,0 +1,14 @@
+#!/bin/bash
+
+brick_host='192.168.0.104'
+brick_user='root'
+brick_home='/home/root'
+
+ssh_argumente="-oKexAlgorithms=+diffie-hellman-group1-sha1 -oCiphers=+aes128-cbc"
+
+term_main="ps | grep -v "grep" | grep Main | awk '{print $1}' | xargs kill" #vom Eclipse erzeugten Prozess 
+term_bulldozer="ps | grep -v "grep" | grep Bulldozer | awk '{print $1}' | xargs kill" #Prozess vom manuellen Starten des Programms ueber ssh 
+
+
+echo ssh $ssh_argumente "$brick_user@$brick_host" "$term_main ; $term_bulldozer"
+ssh $ssh_argumente "$brick_user@$brick_host" "$term_main ; $term_bulldozer"

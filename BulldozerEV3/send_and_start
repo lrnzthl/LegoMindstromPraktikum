@@ -1,7 +1,6 @@
 #!/bin/bash
 
 brick_host='192.168.0.104'
-
 brick_user='root'
 brick_home='/home/root'
 
@@ -10,6 +9,8 @@ brick_debug_port='4000'
 
 project_jar='BulldozerEV3.jar'
 project_main='bulldozer.main.Main'
+
+ssh_argumente="-oKexAlgorithms=+diffie-hellman-group1-sha1 -oCiphers=+aes128-cbc"
 
 
 if ! [ -e $project_jar ] ;
@@ -23,8 +24,9 @@ fi
 #java -cp "$project_jar" "$project_main"
 
 
-echo scp ./$project_jar "$brick_user@$brick_host:$brick_home"
-scp -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes128-cbc ./$project_jar "$brick_user@$brick_host:$brick_home"
+echo scp $ssh_argumente ./$project_jar "$brick_user@$brick_host:$brick_home"
+#scp -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes128-cbc ./$project_jar "$brick_user@$brick_host:$brick_home"
+scp $ssh_argumente ./$project_jar "$brick_user@$brick_host:$brick_home"
 
 
 
@@ -38,10 +40,11 @@ else 		#normal
 
 fi
 
-echo ssh "$brick_user@$brick_host" "$run_command"
-ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes128-cbc "$brick_user@$brick_host" "$run_command"
+echo ssh $ssh_argumente "$brick_user@$brick_host" "$run_command"
+#ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes128-cbc "$brick_user@$brick_host" "$run_command"
+ssh $ssh_argumente "$brick_user@$brick_host" "$run_command"
 
-java -cp $project_jar $project_main
+
 
 
 
