@@ -98,7 +98,7 @@ public class Menu {
                 break;
         }
 
-        int returnState = brain.mainLoop();
+        int returnState = brain.doLogic();
         switch (returnState){
         case -1:
         	state = ParcourState.MENU;
