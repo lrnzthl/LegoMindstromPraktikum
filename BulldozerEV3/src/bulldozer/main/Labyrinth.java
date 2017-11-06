@@ -11,13 +11,14 @@ public class Labyrinth extends Brains {
     protected void doLogic() {
         System.out.println("I .. Line Brains");
 
-        while( ! hardware.isTouchPressed() || ! hardware.getButtonType().equals(Hardware.ButtonType.ESCAPE)){
+        while( ! hardware.isTouchPressed() ||  hardware.isOnWhite() ){
 
             hardware.isOnWhite();
 
 
 
-            hardware.motorForwardBlock(360);
+            //hardware.motorForwardBlock(360);
+            hardware.motorMoveForwardMs(50);
         }
 
 

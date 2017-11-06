@@ -39,7 +39,7 @@ public class Hardware {
     public Hardware(boolean simulation){
         System.out.println("WARNING: Running in simulation mode!");
         this.simulation = simulation;
-        sensors = new Sensors(sensorReadDelay, null, null, null);
+        sensors = new Sensors(sensorReadDelay, null, null);
 
         initialize();
 
@@ -56,15 +56,19 @@ public class Hardware {
         System.out.println("Beginning of constructor");
 
         motRight = new EV3LargeRegulatedMotor(MotorPort.A);
+        System.out.println("Motor right is ok");
+
+
         motLeft = new EV3LargeRegulatedMotor(MotorPort.B);
+        System.out.println("Motor left is ok");
 
         System.out.println("Motors in constructor ready");
 
 
         EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
-        System.out.println("Touch EV3 on");
+        System.out.println("Touch EV3 ok");
         EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
-        System.out.println("Color EV3 on");
+        System.out.println("Color EV3 ok");
        
        // EV3UltrasonicSensor ultra = new EV3UltrasonicSensor(SensorPort.S2);
      //   System.out.println("Ultra Ev3 on");
@@ -79,7 +83,7 @@ public class Hardware {
 
 
         //sensors = new Sensors(sensorReadDelay, touch, col, dist);
-        sensors = new Sensors(sensorReadDelay, touch, col, null);
+        sensors = new Sensors(sensorReadDelay, touch, col);
 
 
        initialize();
@@ -278,7 +282,7 @@ public class Hardware {
         synchMotors();
 
         motRight.rotate(angle);
-      //motLeft.rotate(angle); //in case this works automatic with the first motor
+      motLeft.rotate(angle); //in case this works automatic with the first motor
 
         deSynchMotors();
     }
