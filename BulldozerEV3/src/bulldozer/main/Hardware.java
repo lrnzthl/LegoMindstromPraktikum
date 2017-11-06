@@ -78,6 +78,8 @@ public class Hardware {
 
         ButtonType buttonType = ButtonType.NONE;
 
+        
+        
         switch (Button.getButtons()){
             case 0:
                 buttonType = ButtonType.NONE;
@@ -102,7 +104,12 @@ public class Hardware {
 
         }
 
+     
         return buttonType;
+    }
+    
+    public Button getButtonReleased() {
+    	
     }
 
 

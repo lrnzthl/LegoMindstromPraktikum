@@ -1,7 +1,7 @@
 package bulldozer.main;
 
 
-import sun.security.krb5.internal.PAData;
+
 
 import java.io.IOException;
 
@@ -37,26 +37,34 @@ public class Menu {
 
     public void start(){
         boolean running = true;
-
+        showOptions();
         while (running) {
-            showOptions();
+            
             int newSelectedState;
             switch (hardware.getButtonType()) {
+            	case NONE:
+            		break;
                 case LEFT:
+                	showOptions();
+                	
                 	newSelectedState = selectedState.getId() - 1;
                     
                     if (newSelectedState < 1) {
                         newSelectedState = ParcourState.values().length - 1;
                     }
                     selectedState = ParcourState.values()[newSelectedState];
+                    
                     break;
                 case RIGHT:
+                	showOptions();
+                	
                     newSelectedState = selectedState.getId() + 1;
 
                     if (newSelectedState > ParcourState.values().length - 1) {
                         newSelectedState = 1;
                     }
                     selectedState = ParcourState.values()[newSelectedState];
+                    
                     break;
                 case ENTER:
                     state = selectedState;
@@ -116,6 +124,8 @@ public class Menu {
     }
 
     private void showOptions(){
+    	System.out.flush();
+    	
         for (ParcourState s : ParcourState.values()){
             if (s.equals(ParcourState.MENU)){
                 continue;
