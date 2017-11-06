@@ -8,10 +8,12 @@ public class Labyrinth extends Brains {
     }
 
     @Override
-    protected void doLogic() {
+    protected int doLogic() {
         System.out.println("I .. Line Brains");
+        int round  = 30000;
 
-        while(true) {
+
+        while(round>0) {
             System.out.println("Here...");
 
             while (hardware.isOnWhite() || !hardware.isTouchPressed() ) {
@@ -21,7 +23,11 @@ public class Labyrinth extends Brains {
             }
 
             System.out.println("I am out!");
+            round--;
         }
+
+        return 0;
+
 
     }
 
