@@ -8,26 +8,26 @@ public class Sensors extends Thread{
 
     private SingleValueSensorWrapper Stouch;
     private SingleValueSensorWrapper Scolor;
-    private SingleValueSensorWrapper Sdistance;
+   // private SingleValueSensorWrapper Sdistance;
 
 
-    private float touch, color, distance;
+    private float touch, color;//, distance;
 
 
-    public Sensors(int sensorReadyDelay, SingleValueSensorWrapper Stouch, SingleValueSensorWrapper Scolor, SingleValueSensorWrapper Sdist){
+    public Sensors(int sensorReadyDelay, SingleValueSensorWrapper Stouch, SingleValueSensorWrapper Scolor){
         isInited = false;
 
         this.sensorDelay = sensorReadyDelay;
 
 
-        if( Stouch == null || Scolor == null || Sdist == null){
-            System.out.println("WARNING: Sensors are null!");
+        if( Stouch == null || Scolor == null){
+            System.out.println("WARNING: ONE of the sensors are null!");
         }
 
 
         this.Stouch = Stouch;
         this.Scolor = Scolor;
-        this.Sdistance = Sdist;
+        //this.Sdistance = Sdist;
 
     }
 
@@ -60,7 +60,7 @@ public class Sensors extends Thread{
                 System.out.println("Reading sensors");
                 this.touch = this.Stouch.getSample();
                 this.color = this.Scolor.getSample();
-                this.distance = this.Sdistance.getSample();
+               // this.distance = this.Sdistance.getSample();
 
                 Thread.sleep(sensorDelay);
             }
@@ -79,7 +79,7 @@ public class Sensors extends Thread{
         return color;
     }
 
-    public float distance() {
-        return distance;
-    }
+    //public float distance() {
+    //    return distance;
+    //}
 }

@@ -277,8 +277,8 @@ public class Hardware {
 
         synchMotors();
 
-        motRight.rotate(angle, true);
-       motLeft.rotate(angle, true); //in case this works automatic with the first motor
+        motRight.rotate(angle);
+      //motLeft.rotate(angle); //in case this works automatic with the first motor
 
         deSynchMotors();
     }
