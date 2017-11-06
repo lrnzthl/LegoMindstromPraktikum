@@ -13,9 +13,9 @@ public class Labyrinth extends Brains {
 
         while( ! hardware.isTouchPressed() || ! hardware.getButtonType().equals(Hardware.ButtonType.ESCAPE)){
 
-            if(hardware.isOnWhite()){
-                hardware.beep();
-            }
+            hardware.isOnWhite();
+
+
 
             hardware.motorForwardBlock(360);
         }
