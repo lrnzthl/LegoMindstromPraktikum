@@ -53,26 +53,37 @@ public class Hardware {
     public Hardware(){
         simulation = false;
 
+        System.out.println("Beginning of constructor");
 
         motRight = new EV3LargeRegulatedMotor(MotorPort.A);
         motLeft = new EV3LargeRegulatedMotor(MotorPort.B);
 
-
-        EV3TouchSensor tLeft = new EV3TouchSensor(SensorPort.S1);
-        EV3ColorSensor color = new EV3ColorSensor(SensorPort.S3);
-        EV3UltrasonicSensor ultra = new EV3UltrasonicSensor(SensorPort.S4);
-
-        SingleValueSensorWrapper touch = new SingleValueSensorWrapper(tLeft, "Touch");
-        SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "Color ID");
-        SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultra, "Distance");
+        System.out.println("Motors in constructor ready");
 
 
+        EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
+        System.out.println("Touch EV3 on");
+        EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
+        System.out.println("Color EV3 on");
+       
+       // EV3UltrasonicSensor ultra = new EV3UltrasonicSensor(SensorPort.S2);
+     //   System.out.println("Ultra Ev3 on");
 
 
-        sensors = new Sensors(sensorReadDelay, touch, col, dist);
+       SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
+       SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "Red");
+    //  SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultra, "Distance");
+        System.out.println("wrappers ready");
 
 
-        initialize();
+
+
+        //sensors = new Sensors(sensorReadDelay, touch, col, dist);
+        sensors = new Sensors(sensorReadDelay, touch, col, null);
+
+
+       initialize();
+       // init = true;
         if(!init){
             System.out.println("WARNING: Hardware not initialized properly");
         }
@@ -113,6 +124,7 @@ public class Hardware {
 
 
     /**
+     * DEBUGGING
      *  which button is pressed
       * @return  UP, DOWN, LEFT, RIGHT, ENTER, ESCAPE or NONE
      */
@@ -160,6 +172,7 @@ public class Hardware {
 		        switch (clickedButton){
 		            case Button.ID_UP:
 		                buttonType = ButtonType.UP;
+		                buttonType = ButtonType.ENTER;
 		                break;
 		            case Button.ID_DOWN:
 		                buttonType = ButtonType.DOWN;
@@ -264,8 +277,8 @@ public class Hardware {
 
         synchMotors();
 
-        motRight.rotate(angle);
-        //motLeft.rotate(angle); //in case this works automatic with the first motor
+        motRight.rotate(angle, true);
+       motLeft.rotate(angle, true); //in case this works automatic with the first motor
 
         deSynchMotors();
     }
@@ -323,7 +336,7 @@ public class Hardware {
     private void synchMotors(){
         //adding left motor to a an array and synchronizing with the right
         motRight.synchronizeWith(new RegulatedMotor[] {motLeft});
-        motRight.startSynchronization();;
+        motRight.startSynchronization();
     }
 
     private void deSynchMotors(){

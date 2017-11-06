@@ -11,7 +11,7 @@ public class Labyrinth extends Brains {
     protected void doLogic() {
         System.out.println("I .. Line Brains");
 
-        while( ! hardware.isTouchPressed()){
+        while( ! hardware.isTouchPressed() || ! hardware.getButtonType().equals(Hardware.ButtonType.ESCAPE)){
 
             if(hardware.isOnWhite()){
                 hardware.beep();
@@ -20,13 +20,7 @@ public class Labyrinth extends Brains {
             hardware.motorForwardBlock(360);
         }
 
-        mySleep(500);
 
-        System.out.println("Going again!");
-
-        while( ! hardware.isTouchPressed()){
-            hardware.motorForwardBlock(360);
-        }
     }
 
 

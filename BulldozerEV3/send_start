@@ -47,7 +47,7 @@ java -cp $project_jar $project_main
 
 
 
-
+#ssh -o 'KexAlgorithms=+diffie-hellman-group1-sha1' -o 'Ciphers=+aes128-cbc' 'root@192.168.0.104'
 
 
 
