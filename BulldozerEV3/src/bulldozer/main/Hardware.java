@@ -21,11 +21,13 @@ public class Hardware {
 
     private Sensors sensors;
 
+
+
     //in ms, delay between reading the senors
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
 
-    private int motorSpeedProcentage = 20;
+    private int motorSpeedProcentage = 50;
     //default value is 6000
     private int motorAccelaration = 6000;
 
@@ -282,7 +284,7 @@ public class Hardware {
         synchMotors();
 
         motRight.rotate(angle);
-      motLeft.rotate(angle); //in case this works automatic with the first motor
+        motLeft.rotate(angle); //in case this works automatic with the first motor
 
         deSynchMotors();
     }

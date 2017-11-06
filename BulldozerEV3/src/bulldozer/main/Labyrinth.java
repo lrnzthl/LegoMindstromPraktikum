@@ -11,16 +11,17 @@ public class Labyrinth extends Brains {
     protected void doLogic() {
         System.out.println("I .. Line Brains");
 
-        while( ! hardware.isTouchPressed() ||  hardware.isOnWhite() ){
+        while(true) {
+            System.out.println("Here...");
 
-            hardware.isOnWhite();
+            while (hardware.isOnWhite() || !hardware.isTouchPressed() ) {
 
+                hardware.motorForwardBlock(90);
+                // hardware.motorMoveForwardMs(50);
+            }
 
-
-            //hardware.motorForwardBlock(360);
-            hardware.motorMoveForwardMs(50);
+            System.out.println("I am out!");
         }
-
 
     }
 
