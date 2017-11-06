@@ -44,27 +44,23 @@ public class Menu {
             switch (hardware.getButtonType()) {
             	case NONE:
             		break;
-                case LEFT:
-                	showOptions();
-                	
+                case LEFT:	
                 	newSelectedState = selectedState.getId() - 1;
                     
                     if (newSelectedState < 1) {
                         newSelectedState = ParcourState.values().length - 1;
                     }
                     selectedState = ParcourState.values()[newSelectedState];
-                    
+                    showOptions();
                     break;
                 case RIGHT:
-                	showOptions();
-                	
                     newSelectedState = selectedState.getId() + 1;
 
                     if (newSelectedState > ParcourState.values().length - 1) {
                         newSelectedState = 1;
                     }
                     selectedState = ParcourState.values()[newSelectedState];
-                    
+                	showOptions();
                     break;
                 case ENTER:
                     state = selectedState;
@@ -124,8 +120,6 @@ public class Menu {
     }
 
     private void showOptions(){
-    	System.out.flush();
-    	
         for (ParcourState s : ParcourState.values()){
             if (s.equals(ParcourState.MENU)){
                 continue;
