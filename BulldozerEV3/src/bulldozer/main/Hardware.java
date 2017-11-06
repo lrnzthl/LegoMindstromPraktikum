@@ -108,9 +108,7 @@ public class Hardware {
         return buttonType;
     }
     
-    public Button getButtonReleased() {
-    	
-    }
+  
 
 
     public Hardware(boolean simulation){
