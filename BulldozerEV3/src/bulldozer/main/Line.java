@@ -13,6 +13,8 @@ public class Line extends Brains {
 
     private final int delay = 30; //ms
     private int turningAngle = 10;
+    private int alreadyTurned = 0;
+
 
     public Line(Hardware hardware) {
         super(hardware);
@@ -114,13 +116,40 @@ public class Line extends Brains {
             int alreadyTurnedAngle = 0;
             hardware.motorForwardBlock(step);
 
-
+            while(! hardware.isOnMidpoint()){
+                rotateToMiddle();
+            }
 
         }
 
 
 
         return 0;
+    }
+
+    private void rotateToMiddle() {
+
+        int correction = (int) ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
+        int toTurn = correction * turningAngle;
+
+
+        if( alreadyTurned + toTurn > 90){
+            System.out.println("Nope, probably end of the line!?!?");
+            //call function to handle that
+            return;
+        }
+
+
+        alreadyTurned += toTurn;
+
+        if(hardware.isOnWhite()){
+            //we must turn right
+            hardware.motorTurn(toTurn);
+        }else{
+            hardware.motorTurn(-toTurn);
+        }
+
+
     }
 
 
