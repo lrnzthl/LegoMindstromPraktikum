@@ -88,4 +88,20 @@ public class Line extends Brains {
             }
         }while (!hardware.isOnWhite());
     }
+
+
+    /**
+     * performs forward zig-zag movements, trying to find right side of the white line
+     * @return true if the midpoint is found
+     */
+    private boolean zigZagMovements(){
+
+        if(hardware.isOnMidpoint()){
+            return true;
+        }
+
+
+        return false;
+
+    }
 }
