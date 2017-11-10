@@ -7,6 +7,13 @@ public class Line extends Brains {
 	private int turnOffset;
     private Direction lastDirection;
 
+    //rotaion for motors to go forward
+    private final int step = 90;
+    private final float Kp = (float) 1;
+
+    private final int delay = 30; //ms
+    private int turningAngle = 10;
+
     public Line(Hardware hardware) {
         super(hardware);
 
@@ -87,6 +94,33 @@ public class Line extends Brains {
                 hardware.motorTurn(turnOffset );
             }
         }while (!hardware.isOnWhite());
+    }
+
+
+
+    public int goLogicK(){
+        if(hardware.getColorBlack() ==0 || hardware.getColorWhite() ==0){
+            System.out.println("Colors not calibrated");
+            return -1;
+        }
+
+        while (! hardware.isOnMidpoint()){
+            System.out.println("Put me on between white and black!");
+            mySleep(delay);
+        }
+
+        //we are on the middle
+        while(running){
+            int alreadyTurnedAngle = 0;
+            hardware.motorForwardBlock(step);
+
+
+
+        }
+
+
+
+        return 0;
     }
 
 

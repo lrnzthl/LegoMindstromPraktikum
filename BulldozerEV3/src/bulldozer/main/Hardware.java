@@ -39,6 +39,9 @@ public class Hardware {
     //everying lower than midPointLow is black
     private float midPointHigh, midPointLow;
 
+    private float colorWhite;
+    private float colorBlack;
+
 
     public Hardware(boolean simulation){
         System.out.println("WARNING: Running in simulation mode!");
@@ -55,7 +58,15 @@ public class Hardware {
 
 
     public Hardware(){
-        simulation = false;
+        //copy the values after first calibration
+        midPointLow = 0;
+        midPointHigh = 0;
+
+        colorBlack = 0;
+        colorWhite = 0;
+
+
+
 
         System.out.println("Beginning of constructor");
 
@@ -90,11 +101,15 @@ public class Hardware {
         sensors = new Sensors(sensorReadDelay, touch, col);
 
 
-       initialize();
+        initialize();
 
         if(!init){
             System.out.println("WARNING: Hardware not initialized properly");
         }
+
+
+        colorSensorCalibrate();
+
     }
 
 
@@ -123,6 +138,10 @@ public class Hardware {
      */
     public void beep() {
         Sound.beep();
+    }
+
+    public float readColor() {
+        return sensors.color();
     }
 
 
@@ -256,6 +275,10 @@ public class Hardware {
 
 
         return init;
+    }
+
+    public void ledWhite(){
+        Button.LEDPattern(1);
     }
 
 
@@ -395,9 +418,9 @@ public class Hardware {
             mySleep(sensorReadDelay);
         }
 
-        float white = sensors.color();
-        System.out.println("Read value is " + white);
-        midPointHigh = white - offsetWhite;
+        colorWhite = sensors.color();
+        System.out.println("Read value is " + colorWhite);
+        midPointHigh = colorWhite - offsetWhite;
 
         System.out.println("Everything more than " + midPointHigh + " is white");
 
@@ -409,12 +432,12 @@ public class Hardware {
             mySleep(sensorReadDelay);
         }
 
-        float black = sensors.color();
-        System.out.println("Read value is " + black);
-        midPointLow = black + offsetBlack;
+        colorBlack = sensors.color();
+        System.out.println("Read value is " + colorBlack);
+        midPointLow = colorBlack + offsetBlack;
 
         System.out.println("Everything more than " + midPointHigh + " is white");
-
+        System.out.println("Everything less tha " + midPointLow + " is black");
 
 
     }
@@ -444,7 +467,7 @@ public class Hardware {
      * DO NOT USE to check if sensor is on white -> isOnWhite() function
      */
     public float getMidPoint(){
-        return (midPointHigh + midPointLow)/2;
+        return (colorWhite + colorBlack)/2 + colorBlack;
     }
 
     /**
@@ -459,6 +482,15 @@ public class Hardware {
         return false;
     }
 
+
+
+    public float getColorWhite(){
+        return colorWhite;
+    }
+
+    public float getColorBlack(){
+        return colorBlack;
+    }
 
     private void mySleep(int millis) {
         try {
