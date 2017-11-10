@@ -15,6 +15,9 @@ public class Line extends Brains {
     private int turningAngle = 10;
     private int alreadyTurned = 0;
 
+    //if we are going on the right of the line = 1
+    //if we are going on the left side = -1
+    private int right = 1;
 
     public Line(Hardware hardware) {
         super(hardware);
@@ -119,6 +122,7 @@ public class Line extends Brains {
             System.out.println("Going forward for " + step);
             hardware.motorForwardBlock(step);
 
+            alreadyTurned = 0; //resetting the variable with how much we've turned
             while(! hardware.isOnMidpoint()){
                 rotateToMiddle();
             }
@@ -133,12 +137,16 @@ public class Line extends Brains {
     private void rotateToMiddle() {
         System.out.println("Not in middle, trying to rotate");
 
-        int correction = (int) ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
-        int toTurn = correction * turningAngle;
+        float correction = (int) ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
+        int toTurn = Math.round(correction * turningAngle);
 
+        System.out.println("toTurn="+toTurn);
 
         if( alreadyTurned + toTurn > 90){
             System.out.println("Nope >90, probably end of the line!?!?");
+            //go back alreadyTurned degrees to the right
+            hardware.motorTurn(alreadyTurned * right);
+
             //call function to handle that
             return;
         }
@@ -148,9 +156,9 @@ public class Line extends Brains {
 
         if(hardware.isOnWhite()){
             //we must turn right
-            hardware.motorTurn(toTurn);
+            hardware.motorTurn(toTurn * right);
         }else{
-            hardware.motorTurn(-toTurn);
+            hardware.motorTurn(-toTurn * right );
         }
 
 

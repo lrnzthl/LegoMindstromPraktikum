@@ -314,16 +314,7 @@ public class Hardware {
         deSynchMotors();
     }
 
-    /**
-     * upgrade of motorForwardBlock; not tested yet
-     * @param angle
-     */
-    public void motorForward(int angle){
-        motorsWaitStopMoving();
 
-        motRight.rotate(angle, true);
-        motLeft.rotate(angle, true);
-    }
 
     /**
      * Does not work properly...
@@ -331,6 +322,8 @@ public class Hardware {
      * @param ms
      */
     public void motorMoveForwardMs(int ms){
+        motorsWaitStopMoving();
+
         synchMotors();
 
         motRight.forward();
@@ -396,7 +389,6 @@ public class Hardware {
 
     	//motLeft.stop();
     	//motRight.stop();
-
 
         motorsWaitStopMoving();
 
