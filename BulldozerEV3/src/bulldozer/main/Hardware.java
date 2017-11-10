@@ -319,14 +319,7 @@ public class Hardware {
      * @param angle
      */
     public void motorForward(int angle){
-        //wait until motors have stopped turning
-        while(motLeft.isMoving()){
-            mySleep(sensorReadDelay);
-        }
-
-        while (motRight.isMoving()){
-            mySleep(sensorReadDelay);
-        }
+        motorsWaitStopMoving();
 
         motRight.rotate(angle, true);
         motLeft.rotate(angle, true);
@@ -405,14 +398,7 @@ public class Hardware {
     	//motRight.stop();
 
 
-        //wait until motors have stopped turning
-        while(motLeft.isMoving()){
-            mySleep(sensorReadDelay);
-        }
-
-        while (motRight.isMoving()){
-            mySleep(sensorReadDelay);
-        }
+        motorsWaitStopMoving();
 
 
         if(angle < 0){
@@ -423,7 +409,15 @@ public class Hardware {
             motLeft.rotate(angle);
         }
 
-        //wait until motors have stopped turning
+
+
+    }
+
+    /**
+     * functions blocks until the motors have stopped turning
+     */
+    private void motorsWaitStopMoving(){
+
         while(motLeft.isMoving()){
             mySleep(sensorReadDelay);
         }
@@ -431,7 +425,6 @@ public class Hardware {
         while (motRight.isMoving()){
             mySleep(sensorReadDelay);
         }
-
     }
 
 
