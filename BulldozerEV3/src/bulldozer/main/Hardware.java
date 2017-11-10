@@ -35,7 +35,9 @@ public class Hardware {
     private EV3LargeRegulatedMotor motLeft, motRight;
 
 
-
+    //everything over midPointHigh is white
+    //everying lower than midPointLow is black
+    private float midPointHigh, midPointLow;
 
 
     public Hardware(boolean simulation){
@@ -368,18 +370,89 @@ public class Hardware {
             motLeft.rotate(angle);
         }
 
+        //wait until motors have stopped turning
+        while(motLeft.isMoving()){
+            mySleep(sensorReadDelay);
+        }
+
+        while (motRight.isMoving()){
+            mySleep(sensorReadDelay);
+        }
+
     }
 
 
 
+    public void colorSensorCalibrate(){
+        float offsetWhite = (float) 0.2;
+        float offsetBlack = (float) 0.2;
+
+        System.out.println("Starting to calibrate color sensor");
+
+        System.out.println("Please go entirely on white and press Down button!");
+
+        while(getButtonType().equals(ButtonType.DOWN)){
+            mySleep(sensorReadDelay);
+        }
+
+        float white = sensors.color();
+        System.out.println("Read value is " + white);
+        midPointHigh = white - offsetWhite;
+
+        System.out.println("Everything more than " + midPointHigh + " is white");
 
 
+
+        System.out.println("Please go entirely on black and press Down button!");
+
+        while(getButtonType().equals(ButtonType.DOWN)){
+            mySleep(sensorReadDelay);
+        }
+
+        float black = sensors.color();
+        System.out.println("Read value is " + black);
+        midPointLow = black + offsetBlack;
+
+        System.out.println("Everything more than " + midPointHigh + " is white");
+
+
+
+    }
+
+
+    /**
+     *
+     * @return true, if the color sensor is on white; works with check with the midpoint
+     */
     public boolean isOnWhite(){
 
-        System.out.println("Color is " + sensors.color());
+        if(sensors.color() > midPointHigh ){
+            System.out.println("sensor on white");
+            return true;
+        }else if( sensors.color() < midPointLow){
+            return false;
+        }else{
+            System.out.println("Hitting midPoint");
+            return false;
+        }
 
-        if ( sensors.color() > 0.2){
-            System.out.println("on white");
+    }
+
+    /**
+     *
+     * @return the midPoint;
+     * DO NOT USE to check if sensor is on white -> isOnWhite() function
+     */
+    public float getMidPoint(){
+        return (midPointHigh + midPointLow)/2;
+    }
+
+    /**
+     *
+     * @return true if the sensor is on the midpoint between black and white
+     */
+    public boolean isOnMidpoint(){
+        if(sensors.color() < midPointHigh && sensors.color() > midPointLow){
             return true;
         }
 
