@@ -108,12 +108,15 @@ public class Line extends Brains {
 
         while (! hardware.isOnMidpoint()){
             System.out.println("Put me on between white and black!");
+            hardware.beep();
             mySleep(delay);
         }
 
         //we are on the middle
         while(running){
-            int alreadyTurnedAngle = 0;
+            hardware.ledWhite();
+
+            System.out.println("Going forward for " + step);
             hardware.motorForwardBlock(step);
 
             while(! hardware.isOnMidpoint()){
@@ -128,13 +131,14 @@ public class Line extends Brains {
     }
 
     private void rotateToMiddle() {
+        System.out.println("Not in middle, trying to rotate");
 
         int correction = (int) ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
         int toTurn = correction * turningAngle;
 
 
         if( alreadyTurned + toTurn > 90){
-            System.out.println("Nope, probably end of the line!?!?");
+            System.out.println("Nope >90, probably end of the line!?!?");
             //call function to handle that
             return;
         }

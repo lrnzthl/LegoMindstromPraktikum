@@ -315,7 +315,25 @@ public class Hardware {
     }
 
     /**
-     * Does not ork properly...
+     * upgrade of motorForwardBlock; not tested yet
+     * @param angle
+     */
+    public void motorForward(int angle){
+        //wait until motors have stopped turning
+        while(motLeft.isMoving()){
+            mySleep(sensorReadDelay);
+        }
+
+        while (motRight.isMoving()){
+            mySleep(sensorReadDelay);
+        }
+
+        motRight.rotate(angle, true);
+        motLeft.rotate(angle, true);
+    }
+
+    /**
+     * Does not work properly...
      * move forward for
      * @param ms
      */
@@ -383,8 +401,20 @@ public class Hardware {
      */
     public void motorTurn(int angle){
 
-    	motLeft.stop();
-    	motRight.stop();
+    	//motLeft.stop();
+    	//motRight.stop();
+
+
+        //wait until motors have stopped turning
+        while(motLeft.isMoving()){
+            mySleep(sensorReadDelay);
+        }
+
+        while (motRight.isMoving()){
+            mySleep(sensorReadDelay);
+        }
+
+
         if(angle < 0){
             motLeft.rotate(angle, true);
             motRight.rotate(-angle);
