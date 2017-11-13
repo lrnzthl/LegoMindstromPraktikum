@@ -498,6 +498,15 @@ public class Hardware {
     }
 
 
+    public boolean isEscapeUp(){
+        return Button.ESCAPE.isUp();
+    }
+
+
+    public boolean isUpUp(){
+        return Button.UP.isUp();
+    }
+
 
     public float getColorWhite(){
         return colorWhite;

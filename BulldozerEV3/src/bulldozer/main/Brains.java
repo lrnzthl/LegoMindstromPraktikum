@@ -1,10 +1,13 @@
 package bulldozer.main;
 
-public abstract class Brains{
+public abstract class Brains extends Thread{
 
     protected boolean running;
     protected Hardware hardware;
 
+    private final int delay = 20; //ms
+
+    protected int returnValue = -1;
 
     public Brains(Hardware hardware){
         running = false;
@@ -15,21 +18,42 @@ public abstract class Brains{
         }
 
 
-       /*
-        hardware.robotTurn(540);
 
-        mySleep(5000);
-
-
-        hardware.robotTurn(-540);
-
-
-        hardware.robotTurn(550);*/
     }
 
 
+    public int mainLoop(){
+        hardware.startSensors();
 
-    protected abstract int doLogic();
+        this.start();
+        running = true;
+        //
+
+        while(true){
+
+            if(hardware.isEscapeUp() || hardware.isUpUp()){
+                returnValue = -1;
+                running = false;
+                break;
+            }
+
+            if(hardware.foundBeacon()){
+                returnValue = 1;
+                running = false;
+                break;
+            }
+
+
+            mySleep(delay);
+        }
+
+
+
+        return returnValue;
+    }
+
+
+    public abstract void run();
 
     protected void mySleep(int millis) {
         try {
