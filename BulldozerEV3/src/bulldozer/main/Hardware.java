@@ -39,7 +39,7 @@ public class Hardware {
     //everying lower than midPointLow is black
 
 
-    private float midPointHigh = (float) 0.6;
+    private float midPointHigh = (float) 0.7;
     private float midPointLow = (float) 0.17;
 
     private float colorWhite = (float) 0.76;

@@ -12,7 +12,7 @@ public class Line extends Brains {
     private float turningAngle = 10.f;
     private int alreadyTurned = 0;
 
-
+    
 
     public Line(Hardware hardware) {
         super(hardware);
@@ -37,9 +37,12 @@ public class Line extends Brains {
             mySleep(delay);
         }
 
+
+
+
         //we are on the middle
         while(running){
-            hardware.ledWhite();
+
 
             hardware.motorForwardBlock(step);
 
