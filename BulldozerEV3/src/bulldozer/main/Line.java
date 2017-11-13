@@ -1,6 +1,7 @@
 package bulldozer.main;
 
 import bulldozer.main.Hardware.ButtonType;
+import com.sun.org.apache.xpath.internal.SourceTree;
 
 public class Line extends Brains {
 
@@ -11,6 +12,8 @@ public class Line extends Brains {
     private final int delay = 30; //ms
     private float turningAngle = 10.f;
     private int alreadyTurned = 0;
+
+    private int zigZagAngle = 40;
 
     private long lastReset = 0;
 
@@ -67,7 +70,7 @@ public class Line extends Brains {
         float correction =  ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
         int toTurn = Math.round(correction * turningAngle) ;
 
-        System.out.println("toTurn="+toTurn);
+        System.out.print(" with angle toTurn= "+toTurn + "\n");
 
         //%TODO:
         if( alreadyTurned + toTurn > 80){
@@ -76,14 +79,13 @@ public class Line extends Brains {
             //go back alreadyTurned degrees to the right
             hardware.robotTurn(alreadyTurned);
 
-            //%TODO: call function to handle that
+            zigZagMovements();
             return;
         }
 
 
         alreadyTurned += toTurn;
 
-        //%TODO:
         hardware.robotTurn( -toTurn );
 
 
@@ -101,14 +103,67 @@ public class Line extends Brains {
      * performs forward zig-zag movements, trying to find right side of the white line
      * @return true if the midpoint is found
      */
-    private boolean zigZagMovements(){
+    private void zigZagMovements(){
+        //assert we are exactly in the middle!
 
-        if(hardware.isOnMidpoint()){
-            return true;
+        while(! hardware.isOnMidpoint()) {
+            System.out.println("Searching white line ...");
+
+
+            hardware.motorForwardBlock(step);
+
+            //is it directly forward?
+            if (hardware.isOnMidpoint()) {
+                System.out.println("We found it!");
+                return;
+            }
+
+            //turing right
+            System.out.println("Turning right");
+            hardware.robotTurn(zigZagAngle);
+
+
+            System.out.println("Careful going back...");
+            //careful going back
+            if (carefulTurn(-zigZagAngle)) {
+                return;
+            }
+
+
+            System.out.println("Going left");
+            //going left
+            hardware.robotTurn(-zigZagAngle);
+
+            System.out.println("Carefully going back...");
+            //careful going back
+            if (carefulTurn(zigZagAngle)) {
+                return;
+            }
+
+
+            System.out.println("We found it!");
         }
 
+    }
+
+
+    /**
+     * rotates for
+     * @param angle and when it rotates, we are checking if we are on the middle
+     * @return true if we are on the middle
+     */
+    private boolean carefulTurn(int angle){
+        System.out.println("Careful turning");
+        int times = 4; //how many times should it stop
+
+        for(int i=0; i<times; i++){
+            if(hardware.isOnMidpoint()){
+                return true;
+            }
+
+            hardware.robotTurn(angle/times);
+        }
 
         return false;
-
     }
 }
