@@ -6,13 +6,14 @@ public class Line extends Brains {
     private int currentAngle;
 	private int turnOffset;
     private Direction lastDirection;
+    private State currentState;
 
     //rotaion for motors to go forward
     private final int step = 90;
-    private final float Kp = (float) 1;
+    private final float Kp = 1.f;
 
     private final int delay = 30; //ms
-    private int turningAngle = 10;
+    private float turningAngle = 10.f;
     private int alreadyTurned = 0;
 
     //if we are going on the right of the line = 1
@@ -31,23 +32,58 @@ public class Line extends Brains {
         RIGHT, LEFT
     }
 
-
-    protected int doLogic_old(){
+    private enum State{
+        CALIBRATE, FOLLOWLINE, CORNER, GAP
+    }
+    
+    protected int doLogic_new(){
+    	int status = 0;
     	running = true;
         System.out.println("Going on the line");
         
-        //we should be on the white line
-        while( ! hardware.isOnWhite()){
-            System.out.println("We are not on the white line!");
-            //hardware.beep();
-            mySleep(100);
-        }
-        int status = 0;
-        while(running){	
-            if(!hardware.isOnWhite()) {
-            	turnAndFindTheWhiteLine();
-            }
-            status = checkStillRunning();
+        while(running){
+        	switch (currentState) {
+        		case CALIBRATE:
+        			hardware.colorSensorCalibrate();
+        	        if(hardware.getColorBlack() ==0 || hardware.getColorWhite() ==0){
+        	            System.out.println("Colors not calibrated");
+        	            status = -1;
+        	            running = false;
+        	        } else {
+        	        	currentState = State.FOLLOWLINE;
+        	        }
+        		case FOLLOWLINE:
+                    hardware.ledWhite();
+
+                    System.out.println("Going forward for " + step);
+                    hardware.motorForwardBlock(step);
+
+                    float correction = ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
+                    int toTurn = (int) (correction * turningAngle);
+
+                    if( alreadyTurned + toTurn > 90){
+                        System.out.println("Nope >90, probably end of the line!?!?");
+                        //go back alreadyTurned degrees to the right
+                        
+                        currentState = State.CORNER;
+                    }
+                    
+                    alreadyTurned += toTurn;
+                    
+                    if(hardware.isOnWhite()){
+                        //we must turn right
+                        hardware.robotTurn(toTurn * right);
+                    }else{
+                        hardware.robotTurn(-toTurn * right );
+                    }
+        		case CORNER:
+        			hardware.robotTurn(alreadyTurned * right);
+        			alreadyTurned = 0;
+        			currentState = State.GAP;
+        		case GAP:
+        		default:
+        	}
+        	status = checkStillRunning();
         }
         return status;
     }
