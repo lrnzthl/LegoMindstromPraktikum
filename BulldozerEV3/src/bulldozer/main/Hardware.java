@@ -386,6 +386,8 @@ public class Hardware {
      * negative means go left, positive means go right
      */
     public void motorTurn(int angle){
+        //90 grad is 540
+
 
     	//motLeft.stop();
     	//motRight.stop();

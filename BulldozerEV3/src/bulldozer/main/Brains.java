@@ -13,6 +13,18 @@ public abstract class Brains{
         if(hardware != null || hardware.isInit() ){
             this.hardware = hardware;
         }
+
+
+       /*
+        hardware.motorTurn(540);
+
+        mySleep(5000);
+
+
+        hardware.motorTurn(-540);
+
+
+        hardware.motorTurn(550);*/
     }
 
 

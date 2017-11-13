@@ -16,7 +16,7 @@ public class Labyrinth extends Brains {
 
 
         //while(! hardware.getButtonType().equals(Button.DOWN)){
-            hardware.motorTurn(410);
+            hardware.motorTurn(485);
         //}
 
         return 0;
