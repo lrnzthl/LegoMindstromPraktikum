@@ -124,6 +124,8 @@ public class Line extends Brains {
 
         //following turns
         while(! hardware.isOnMidpoint()){
+            System.out.println("Searching white line...");
+
             hardware.robotTurnNonBlock(angle);
             while(hardware.motorsAreMoving()) {
 
