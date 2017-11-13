@@ -157,7 +157,10 @@ public class Hardware {
         return sensors.color();
     }
 
-
+    public void setSpeed(int speed) {
+        motRight.setSpeed(speed);
+        motLeft.setSpeed(speed);
+    }
 
 
     public enum ButtonType {

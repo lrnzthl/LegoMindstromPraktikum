@@ -12,7 +12,7 @@ public class Line extends Brains {
     private float turningAngle = 10.f;
     private int alreadyTurned = 0;
 
-    
+    private long lastReset = 0;
 
     public Line(Hardware hardware) {
         super(hardware);
@@ -43,6 +43,10 @@ public class Line extends Brains {
         //we are on the middle
         while(running){
 
+            long now = System.currentTimeMillis();
+            long diff = now - lastReset;
+
+            hardware.setSpeed(getSpeed(diff));
 
             hardware.motorForwardBlock(step);
 
@@ -50,6 +54,7 @@ public class Line extends Brains {
             alreadyTurned = 0; //resetting the variable with how much we've turned
             while(! hardware.isOnMidpoint()){
                 rotateToMiddle();
+                lastReset = System.currentTimeMillis();
             }
 
         }
@@ -82,6 +87,14 @@ public class Line extends Brains {
         hardware.robotTurn( -toTurn );
 
 
+    }
+
+
+    private int getSpeed(long diff){
+        double value = (1.0/(1.0+Math.exp(-((((double) diff)/1000.0) - 8.0)))) ;
+        double newSpeed = value * 60.0;
+        int endValue = (int)value;
+        return endValue;
     }
 
 
