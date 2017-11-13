@@ -1,5 +1,7 @@
 package bulldozer.main;
 
+import lejos.hardware.Button;
+
 public class Labyrinth extends Brains {
 
 
@@ -13,18 +15,9 @@ public class Labyrinth extends Brains {
         int round  = 30000;
 
 
-        while(round>0) {
-            System.out.println("Here...");
-
-            while (hardware.isOnWhite()) {
-
-                hardware.motorForwardBlock(90);
-                // hardware.motorMoveForwardMs(50);
-            }
-
-            System.out.println("I am out!");
-            round--;
-        }
+        //while(! hardware.getButtonType().equals(Button.DOWN)){
+            hardware.motorTurn(410);
+        //}
 
         return 0;
 
