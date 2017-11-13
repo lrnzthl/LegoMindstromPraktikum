@@ -13,7 +13,7 @@ public class Line extends Brains {
     private float turningAngle = 10.f;
     private int alreadyTurned = 0;
 
-    private int zigZagAngle = 40;
+    private int zigZagAngle = 50;
 
     private long lastReset = 0;
 
@@ -105,44 +105,43 @@ public class Line extends Brains {
      */
     private void zigZagMovements(){
         //assert we are exactly in the middle!
+        int initialAngle = zigZagAngle;
 
-        while(! hardware.isOnMidpoint()) {
-            System.out.println("Searching white line ...");
+        int angle = 2*zigZagAngle;
 
 
-            hardware.motorForwardBlock(step);
+        //inital turn
+        hardware.robotTurnNonBlock(initialAngle);
 
-            //is it directly forward?
-            if (hardware.isOnMidpoint()) {
-                System.out.println("We found it!");
-                return;
+        while(! hardware.motorsAreMoving()) {
+
+            if(hardware.isOnMidpoint()){
+                System.out.println("Found mid point!");
+                hardware.motorStop();
             }
 
-            //turing right
-            System.out.println("Turning right");
-            hardware.robotTurn(zigZagAngle);
-
-
-            System.out.println("Careful going back...");
-            //careful going back
-            if (carefulTurn(-zigZagAngle)) {
-                return;
-            }
-
-
-            System.out.println("Going left");
-            //going left
-            hardware.robotTurn(-zigZagAngle);
-
-            System.out.println("Carefully going back...");
-            //careful going back
-            if (carefulTurn(zigZagAngle)) {
-                return;
-            }
-
-
-            System.out.println("We found it!");
+            mySleep(delay);
         }
+
+
+
+        //following turns
+        while(! hardware.isOnMidpoint()){
+
+
+            hardware.robotTurnNonBlock(angle);
+
+            if(hardware.isOnMidpoint()){
+                System.out.println("Found mid point!");
+                hardware.motorStop();
+                return;
+            }
+
+            angle = angle*(-1);
+
+
+        }
+
 
     }
 
@@ -162,6 +161,17 @@ public class Line extends Brains {
             }
 
             hardware.robotTurn(angle/times);
+        }
+
+
+        hardware.robotTurnNonBlock(zigZagAngle);
+
+        while (! hardware.isOnMidpoint()){
+            mySleep(20);
+        }
+
+        if(hardware.isOnMidpoint()){
+            hardware.motorStop();
         }
 
         return false;
