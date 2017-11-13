@@ -27,7 +27,7 @@ public class Hardware {
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
 
-    private int motorSpeedProcentage = 40;
+    private int motorMaxSpeedProcentage = 40;
     //default value is 6000
     private int motorAccelaration = 6000;
 
@@ -243,7 +243,7 @@ public class Hardware {
             return false;
         }
 
-        int motorAbsoluteSpeed = (int) (motLeft.getMaxSpeed() * motorSpeedProcentage / 100 );
+        int motorAbsoluteSpeed = (int) (motLeft.getMaxSpeed() * motorMaxSpeedProcentage / 100 );
         motRight.setSpeed(motorAbsoluteSpeed);
         motLeft.setSpeed(motorAbsoluteSpeed);
 
@@ -344,14 +344,17 @@ public class Hardware {
 
     /**
      * sets the speed ot the motor to a procentage of the maximum speed
-     * @param procentage
+     * @param procentage; must be between 0 and 1
      */
-    public void motorSetSpeedProcentage(int procentage){
+    public void motorSetSpeedProcentage(double procentage){
 
-        int motorAbsoluteSpeed = (int) (motLeft.getMaxSpeed() * procentage / 100 );
+        System.out.println("Setting speed to " + procentage + " procent");
+
+        int motorAbsoluteSpeed = (int) Math.round( procentage * (motRight.getMaxSpeed() * motorMaxSpeedProcentage /100)  );
         motRight.setSpeed(motorAbsoluteSpeed);
         motLeft.setSpeed(motorAbsoluteSpeed);
     }
+
 
 
     /**
@@ -384,6 +387,8 @@ public class Hardware {
 
         motorsWaitStopMoving();
 
+        //%TODO: problem with synching motors?
+        synchMotors();
 
         if(angle < 0){
             motLeft.rotate(absoluteAngle, true);
@@ -393,7 +398,7 @@ public class Hardware {
             motLeft.rotate(absoluteAngle);
         }
 
-
+        deSynchMotors();
 
     }
 

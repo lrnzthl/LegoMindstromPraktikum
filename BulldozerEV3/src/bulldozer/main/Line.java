@@ -46,7 +46,7 @@ public class Line extends Brains {
             long now = System.currentTimeMillis();
             long diff = now - lastReset;
 
-            hardware.setSpeed(getSpeed(diff));
+            hardware.motorSetSpeedProcentage(getSpeed(diff));
 
             hardware.motorForwardBlock(step);
 
@@ -90,11 +90,10 @@ public class Line extends Brains {
     }
 
 
-    private int getSpeed(long diff){
-        double value = (1.0/(1.0+Math.exp(-((((double) diff)/1000.0) - 8.0)))) ;
-        double newSpeed = value * 60.0;
-        int endValue = (int)value;
-        return endValue;
+    private double getSpeed(long diff){
+        double minimumOffset = 0; //should be smaller than 8
+        double value = 1.0/(1.0+Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
+        return value;
     }
 
 
