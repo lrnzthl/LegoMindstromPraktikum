@@ -104,7 +104,6 @@ public class Line extends Brains {
 
     @Override
     public int doLogic(){
-        hardware.colorSensorCalibrate();
 
 
         if(hardware.getColorBlack() ==0 || hardware.getColorWhite() ==0){

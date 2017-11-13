@@ -37,10 +37,11 @@ public class Hardware {
 
     //everything over midPointHigh is white
     //everying lower than midPointLow is black
-    private float midPointHigh, midPointLow;
+    private float midPointHigh = (float) 0.7;
+    private float midPointLow = (float) 0.17;
 
-    private float colorWhite;
-    private float colorBlack;
+    private float colorWhite = (float) 0.76;
+    private float colorBlack = (float) 0.12;
 
 
     public Hardware(boolean simulation){
@@ -59,13 +60,6 @@ public class Hardware {
 
     public Hardware(){
         //copy the values after first calibration
-        midPointLow = 0;
-        midPointHigh = 0;
-
-        colorBlack = 0;
-        colorWhite = 0;
-
-
 
 
         System.out.println("Beginning of constructor");
@@ -108,7 +102,13 @@ public class Hardware {
         }
 
 
-        colorSensorCalibrate();
+        System.out.println("midPointHigh:"+midPointHigh);
+        System.out.println("midPointLow:"+midPointLow);
+
+
+        System.out.println("colorWhite:"+colorWhite);
+        System.out.println("colorBlack:"+colorBlack);
+
 
     }
 
@@ -431,7 +431,7 @@ public class Hardware {
 
         System.out.println("Starting to calibrate color sensor");
 
-        System.out.println("Please go entirely on white and press Down button!");
+        System.out.println("Please go entirely on white and press button!");
 
         Button.waitForAnyPress();
 
@@ -443,7 +443,7 @@ public class Hardware {
 
 
 
-        System.out.println("Please go entirely on black and press Down button!");
+        System.out.println("Please go entirely on black and press button!");
 
         Button.waitForAnyPress();
 
