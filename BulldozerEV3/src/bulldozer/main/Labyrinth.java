@@ -1,7 +1,5 @@
 package bulldozer.main;
 
-import lejos.hardware.Button;
-
 public class Labyrinth extends Brains {
 
 
@@ -16,7 +14,7 @@ public class Labyrinth extends Brains {
 
 
         //while(! hardware.getButtonType().equals(Button.DOWN)){
-            hardware.motorTurn(485);
+            hardware.robotTurn(485);
         //}
 
         return 0;

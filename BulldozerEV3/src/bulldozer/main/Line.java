@@ -70,11 +70,11 @@ public class Line extends Brains {
 
         if(lastDirection == Direction.LEFT){
             lastDirection = Direction.RIGHT;
-            hardware.motorTurn(520);
+            hardware.robotTurn(520);
 
         }else{
             lastDirection = Direction.LEFT;
-            hardware.motorTurn(-520);
+            hardware.robotTurn(-520);
         }
         currentAngle = 0;
     }
@@ -94,9 +94,9 @@ public class Line extends Brains {
                 }
             }
             if (lastDirection == Direction.LEFT) {
-                hardware.motorTurn(turnOffset * -1);
+                hardware.robotTurn(turnOffset * -1);
             } else {
-                hardware.motorTurn(turnOffset );
+                hardware.robotTurn(turnOffset );
             }
         }while (!hardware.isOnWhite());
     }
@@ -148,7 +148,7 @@ public class Line extends Brains {
         if( alreadyTurned + toTurn > 90){
             System.out.println("Nope >90, probably end of the line!?!?");
             //go back alreadyTurned degrees to the right
-            hardware.motorTurn(alreadyTurned * right);
+            hardware.robotTurn(alreadyTurned * right);
 
             //call function to handle that
             return;
@@ -159,9 +159,9 @@ public class Line extends Brains {
 
         if(hardware.isOnWhite()){
             //we must turn right
-            hardware.motorTurn(toTurn * right);
+            hardware.robotTurn(toTurn * right);
         }else{
-            hardware.motorTurn(-toTurn * right );
+            hardware.robotTurn(-toTurn * right );
         }
 
 

@@ -16,15 +16,15 @@ public abstract class Brains{
 
 
        /*
-        hardware.motorTurn(540);
+        hardware.robotTurn(540);
 
         mySleep(5000);
 
 
-        hardware.motorTurn(-540);
+        hardware.robotTurn(-540);
 
 
-        hardware.motorTurn(550);*/
+        hardware.robotTurn(550);*/
     }
 
 

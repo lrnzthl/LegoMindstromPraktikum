@@ -385,9 +385,11 @@ public class Hardware {
      * @param angle (can also be negative);
      * negative means go left, positive means go right
      */
-    public void motorTurn(int angle){
+    public void robotTurn(int angle){
         //90 grad is 540
 
+        //360 * (2 * pi) / ( (1/4) *2*pi*r1)
+        int absoluteAngle = angle * 6;
 
     	//motLeft.stop();
     	//motRight.stop();
@@ -396,11 +398,11 @@ public class Hardware {
 
 
         if(angle < 0){
-            motLeft.rotate(angle, true);
-            motRight.rotate(-angle);
+            motLeft.rotate(absoluteAngle, true);
+            motRight.rotate(-absoluteAngle);
         }else{
-            motRight.rotate(-angle, true);
-            motLeft.rotate(angle);
+            motRight.rotate(-absoluteAngle, true);
+            motLeft.rotate(absoluteAngle);
         }
 
 
@@ -431,9 +433,7 @@ public class Hardware {
 
         System.out.println("Please go entirely on white and press Down button!");
 
-        while(getButtonType().equals(ButtonType.DOWN)){
-            mySleep(sensorReadDelay);
-        }
+        Button.waitForAnyPress();
 
         colorWhite = sensors.color();
         System.out.println("Read value is " + colorWhite);
@@ -445,9 +445,7 @@ public class Hardware {
 
         System.out.println("Please go entirely on black and press Down button!");
 
-        while(getButtonType().equals(ButtonType.DOWN)){
-            mySleep(sensorReadDelay);
-        }
+        Button.waitForAnyPress();
 
         colorBlack = sensors.color();
         System.out.println("Read value is " + colorBlack);
