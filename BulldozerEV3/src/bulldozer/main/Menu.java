@@ -77,8 +77,10 @@ public class Menu {
     }
 
     private void startBrain() {
+        System.out.println("Starting brain");
         switch (state){
             case LINE:
+                System.out.println("Line is chosen");
                 brain = new Line(hardware);
                 break;
             case LABYRINTH:

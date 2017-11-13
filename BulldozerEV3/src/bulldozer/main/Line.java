@@ -8,8 +8,8 @@ public class Line extends Brains {
     private Direction lastDirection;
 
     //rotaion for motors to go forward
-    private final int step = 90;
-    private final float Kp = (float) 1;
+    private final int step = 45;
+    private final float Kp = (float) 1.5;
 
     private final int delay = 30; //ms
     private int turningAngle = 10;
@@ -104,7 +104,7 @@ public class Line extends Brains {
 
     @Override
     public int doLogic(){
-
+        System.out.println("Doing logic");
 
         if(hardware.getColorBlack() ==0 || hardware.getColorWhite() ==0){
             System.out.println("Colors not calibrated");
@@ -117,8 +117,13 @@ public class Line extends Brains {
             mySleep(delay);
         }
 
+        System.out.println("Before while");
+        running = true;
+
         //we are on the middle
         while(running){
+            System.out.println("running..");
+
             hardware.ledWhite();
 
             System.out.println("Going forward for " + step);
@@ -139,8 +144,12 @@ public class Line extends Brains {
     private void rotateToMiddle() {
         System.out.println("Not in middle, trying to rotate");
 
-        float correction = (int) ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
-        int toTurn = Math.round(correction * turningAngle);
+        System.out.println("hard.getmidPoint " + hardware.getMidPoint());
+        System.out.println("hard.getColor " + hardware.readColor());
+
+        float correction =  ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
+
+        int toTurn = Math.round(-1.f * correction * turningAngle);
 
         System.out.println("toTurn="+toTurn);
 
@@ -158,9 +167,11 @@ public class Line extends Brains {
 
         if(hardware.isOnWhite()){
             //we must turn right
-            hardware.robotTurn(toTurn * right);
+            System.out.println("Going right!");
+            hardware.robotTurn(toTurn );
         }else{
-            hardware.robotTurn(-toTurn * right );
+            System.out.println("Going left!");
+            hardware.robotTurn(toTurn );
         }
 
 

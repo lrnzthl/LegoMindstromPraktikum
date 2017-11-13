@@ -27,7 +27,7 @@ public class Hardware {
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
 
-    private int motorSpeedProcentage = 20;
+    private int motorSpeedProcentage = 30;
     //default value is 6000
     private int motorAccelaration = 6000;
 
@@ -37,7 +37,9 @@ public class Hardware {
 
     //everything over midPointHigh is white
     //everying lower than midPointLow is black
-    private float midPointHigh = (float) 0.7;
+    //private float midPointHigh = (float) 0.7;
+    //private float midPointLow = (float) 0.17;
+    private float midPointHigh = (float) 0.6;
     private float midPointLow = (float) 0.17;
 
     private float colorWhite = (float) 0.76;
@@ -388,6 +390,8 @@ public class Hardware {
     public void robotTurn(int angle){
         //90 grad is 540
 
+        System.out.println("Turning " + angle + " degrees");
+
         //360 * (2 * pi) / ( (1/4) *2*pi*r1)
         int absoluteAngle = angle * 6;
 
@@ -462,7 +466,7 @@ public class Hardware {
      *
      * @return true, if the color sensor is on white; works with check with the midpoint
      */
-    public boolean isOnWhite(){
+    public boolean  isOnWhite(){
 
         if(sensors.color() > midPointHigh ){
             System.out.println("sensor on white");
