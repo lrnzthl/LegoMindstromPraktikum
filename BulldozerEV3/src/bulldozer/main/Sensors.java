@@ -54,6 +54,7 @@ public class Sensors extends Thread{
 
 
     public void run() {
+
         try {
             while (true) {
                 this.touch = this.Stouch.getSample();

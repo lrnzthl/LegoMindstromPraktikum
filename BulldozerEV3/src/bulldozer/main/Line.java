@@ -5,8 +5,8 @@ import bulldozer.main.Hardware.ButtonType;
 public class Line extends Brains {
 
     //rotaion for motors to go forward
-    private final int step = 90;
-    private final float Kp = 1.f;
+    private final int step = 45;
+    private final float Kp = 1.5f;
 
     private final int delay = 30; //ms
     private float turningAngle = 10.f;
@@ -57,7 +57,7 @@ public class Line extends Brains {
         System.out.println("Not in middle, trying to rotate");
 
         float correction =  ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
-        int toTurn = (int) (correction * turningAngle) ;
+        int toTurn = Math.round(correction * turningAngle) ;
 
         System.out.println("toTurn="+toTurn);
 

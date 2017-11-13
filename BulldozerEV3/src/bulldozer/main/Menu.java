@@ -74,6 +74,8 @@ public class Menu {
                     break;
             }
         }
+
+        System.exit(1);
     }
 
     private void startBrain() {
@@ -98,10 +100,19 @@ public class Menu {
                 break;
         }
 
-        int returnState = brain.doLogic();
+        int returnState = 0;
+        try {
+            returnState = brain.mainLoop();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
         switch (returnState){
         case -1:
-        	state = ParcourState.MENU;
+        	//state = ParcourState.MENU;
+        	//%TODO: add back to menu
+            System.exit(0);
         	break;
         case 0:
         	break;

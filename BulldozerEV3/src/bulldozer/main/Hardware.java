@@ -27,7 +27,7 @@ public class Hardware {
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
 
-    private int motorSpeedProcentage = 20;
+    private int motorSpeedProcentage = 40;
     //default value is 6000
     private int motorAccelaration = 6000;
 
@@ -37,11 +37,21 @@ public class Hardware {
 
     //everything over midPointHigh is white
     //everying lower than midPointLow is black
-    private float midPointHigh = (float) 0.7;
+
+
+    private float midPointHigh = (float) 0.6;
     private float midPointLow = (float) 0.17;
 
     private float colorWhite = (float) 0.76;
     private float colorBlack = (float) 0.12;
+
+
+
+    //    private float midPointHigh = (float) 0.7;
+    //   private float midPointLow = (float) 0.17;
+
+    //  private float colorWhite = (float) 0.76;
+    // private float colorBlack = (float) 0.12;
 
 
     public Hardware(boolean simulation){
@@ -62,7 +72,7 @@ public class Hardware {
         //copy the values after first calibration
 
 
-        System.out.println("Beginning of constructor");
+        System.out.println("Hardware is being initialized...");
 
         motRight = new EV3LargeRegulatedMotor(MotorPort.A);
         System.out.println("Motor right is ok");
@@ -71,7 +81,6 @@ public class Hardware {
         motLeft = new EV3LargeRegulatedMotor(MotorPort.B);
         System.out.println("Motor left is ok");
 
-        System.out.println("Motors in constructor ready");
 
 
         EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
@@ -123,6 +132,9 @@ public class Hardware {
     }
 
     public void startSensors() {
+        System.out.println("Starting sensors..");
+
+
         if(! sensors.isInit()){
             System.out.println("Cannot start, sensors must be initialized!");
             return;
@@ -130,6 +142,7 @@ public class Hardware {
 
 
         sensors.start();
+        System.out.println("Sensors are started");
     }
 
 
@@ -145,6 +158,8 @@ public class Hardware {
     }
 
 
+
+
     public enum ButtonType {
         UP, DOWN, LEFT, RIGHT, ENTER, ESCAPE, NONE
     }
@@ -158,37 +173,7 @@ public class Hardware {
     public ButtonType getButtonType(){
         //TODO: get which button is up
 
-        if(simulation){
-            Scanner keyboard = new Scanner(System.in);
-            boolean exit = false;
-            while (!exit) {
-                System.out.println("Enter command (quit to exit):");
 
-                if(!keyboard.hasNextLine()){
-                    return ButtonType.NONE;
-                }
-
-                String input = keyboard.nextLine();
-
-
-                if(input != null) {
-                    System.out.println("Your input is : " + input);
-                    if ("quit".equals(input)) {
-                        System.out.println("Exit programm");
-                        exit = true;
-                    } else if ("x".equals(input)) {
-                        return ButtonType.ESCAPE;
-                    }else if ("l".equals(input)) {
-                        return ButtonType.LEFT;
-                    }else if ("r".equals(input)) {
-                        return ButtonType.RIGHT;
-                    }else if ("e".equals(input)){
-                        return ButtonType.ENTER;
-                    }
-                }
-            }
-            keyboard.close();
-        }
 
 
         ButtonType buttonType = ButtonType.NONE;
@@ -304,7 +289,7 @@ public class Hardware {
      *
      */
     public void motorForwardBlock(int angle){
-        System.out.println("Synced blocked movement " + angle);
+
 
         synchMotors();
 
@@ -506,6 +491,8 @@ public class Hardware {
     public boolean isUpUp(){
         return Button.UP.isUp();
     }
+
+    public boolean isLeftUp() { return Button.LEFT.isUp();    }
 
 
     public float getColorWhite(){

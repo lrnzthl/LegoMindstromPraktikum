@@ -22,22 +22,30 @@ public abstract class Brains extends Thread{
     }
 
 
-    public int mainLoop(){
-        hardware.startSensors();
+    public int mainLoop() throws InterruptedException{
+
+
+        running = true;
+
+
+
 
         this.start();
-        running = true;
-        //
+
+
+
 
         while(true){
 
-            if(hardware.isEscapeUp() || hardware.isUpUp()){
+            if(! hardware.isEscapeUp() || ! hardware.isLeftUp()){
+                System.out.println("Program is from button terminated");
                 returnValue = -1;
                 running = false;
                 break;
             }
 
             if(hardware.foundBeacon()){
+                System.out.println("Beacon is found");
                 returnValue = 1;
                 running = false;
                 break;

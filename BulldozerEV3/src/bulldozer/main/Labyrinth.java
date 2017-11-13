@@ -8,7 +8,7 @@ public class Labyrinth extends Brains {
     }
 
     @Override
-    protected int doLogic() {
+    public void run () {
         System.out.println("I .. Line Brains");
         int round  = 30000;
 
@@ -17,7 +17,6 @@ public class Labyrinth extends Brains {
             hardware.robotTurn(485);
         //}
 
-        return 0;
 
 
     }
