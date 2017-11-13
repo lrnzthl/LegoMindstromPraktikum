@@ -30,6 +30,8 @@ public class Hardware {
     private int motorMaxSpeedProcentage = 40;
     //default value is 6000
     private int motorAccelaration = 6000;
+    
+    private static boolean useRGBMode = false;
 
 
     private EV3LargeRegulatedMotor motLeft, motRight;
@@ -93,7 +95,12 @@ public class Hardware {
 
 
        SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
-       SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "Red");
+       SingleValueSensorWrapper col;
+       if(useRGBMode) {
+    	   col = new SingleValueSensorWrapper(color, "RGB");
+       } else {
+    	   col = new SingleValueSensorWrapper(color, "Red");
+       }
     //  SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultra, "Distance");
         System.out.println("wrappers ready");
 
@@ -101,7 +108,12 @@ public class Hardware {
 
 
         //sensors = new Sensors(sensorReadDelay, touch, col, dist);
-        sensors = new Sensors(sensorReadDelay, touch, col);
+        if(useRGBMode){
+        	sensors = new Sensors(sensorReadDelay, touch, col);	
+        } else {
+        	sensors = new Sensors(sensorReadDelay, touch, col, useRGBMode);
+        }
+        
 
 
         initialize();
