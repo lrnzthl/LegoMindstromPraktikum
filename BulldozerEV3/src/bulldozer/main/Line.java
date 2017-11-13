@@ -31,8 +31,8 @@ public class Line extends Brains {
         RIGHT, LEFT
     }
 
-    @Override
-    protected int doLogic(){
+
+    protected int doLogic_old(){
     	running = true;
         System.out.println("Going on the line");
         
@@ -102,8 +102,8 @@ public class Line extends Brains {
     }
 
 
-
-    public int goLogicK(){
+    @Override
+    public int doLogic(){
         if(hardware.getColorBlack() ==0 || hardware.getColorWhite() ==0){
             System.out.println("Colors not calibrated");
             return -1;
