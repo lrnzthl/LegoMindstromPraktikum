@@ -8,6 +8,7 @@ public class Line extends Brains {
     //rotaion for motors to go forward
     private final int step = 45;
     private final float Kp = 1.5f;
+    private float[] beaconColor = {0.f,0.f,0.f};
 
     private final int delay = 30; //ms
     private float turningAngle = 10.f;

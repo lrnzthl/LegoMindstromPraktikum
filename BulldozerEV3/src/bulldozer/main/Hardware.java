@@ -12,6 +12,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.Button	;
 import lejos.robotics.RegulatedMotor;
+import sun.management.Sensor;
 
 
 public class Hardware {
@@ -139,13 +140,32 @@ public class Hardware {
      * RGB Mode has to be activated. Otherwise return will always be false.
      * @return true, if we found the beacon
      */
-    public boolean foundBeacon() {
+    public boolean foundBeacon(float[] color, float tolerance) {
     	if(useRGBMode) {
     		return false;
     	}
     	
+    	boolean returnValue = false;
+    	int checkComponents = 0;
     	
-        return false;
+    	float lowerMultiply = 1.f - tolerance;
+    	float upperMultiply = 1.f + tolerance;
+    	
+    	float[] sensorColors = this.readRGBColor();
+    	float[] lowerColor = {color[0]*lowerMultiply, color[1]*lowerMultiply, color[2]*lowerMultiply};
+    	float[] upperColor = {color[0]*upperMultiply, color[1]*upperMultiply, color[2]*upperMultiply};
+        
+    	for(int i = 0; i < 3; i++){
+        	if(sensorColors[i] > lowerColor[i] && sensorColors[i] < upperColor[i]){
+        		checkComponents++;
+        	}
+        }
+        
+    	if(checkComponents == 3){
+        	returnValue = true;
+        }
+        
+    	return returnValue;
     }
 
     public void startSensors() {
@@ -172,6 +192,14 @@ public class Hardware {
 
     public float readColor() {
         return sensors.color();
+    }
+    
+    public float[] readRGBColor() {
+    	if(!useRGBMode){
+    		return new float[]{-1.f, -1.f, -1.f};
+    	}
+    	
+    	return sensors.colorRGB();
     }
 
     public void setSpeed(int speed) {
