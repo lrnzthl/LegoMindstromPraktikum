@@ -293,7 +293,7 @@ public class Hardware {
      */
     public boolean isTouchPressed(){
 
-        if (sensors.touch() == 1){
+        if (Float.compare(sensors.touch(), (float)0) > 0){
             System.out.println("Touch is pressed, yes");
             return true;
         }
@@ -409,14 +409,34 @@ public class Hardware {
 
         if(angle < 0){
             motLeft.rotate(absoluteAngle, true);
-            motRight.rotate(-absoluteAngle);
+            motRight.rotate(-absoluteAngle, true);
         }else{
             motRight.rotate(-absoluteAngle, true);
-            motLeft.rotate(absoluteAngle);
+            motLeft.rotate(absoluteAngle, true);
         }
 
         deSynchMotors();
 
+    }
+
+
+    public void robotTurnNonBlock(int angle){
+        //%TODO:
+        int absoluteAngle = angle * 12;
+
+        motorsWaitStopMoving();
+
+        //%TODO: problem with synching motors?
+        synchMotors();
+
+
+        if(angle < 0){
+            motRight.rotate(absoluteAngle,true);
+        }else{
+            motLeft.rotate(absoluteAngle, true);
+        }
+
+        deSynchMotors();
     }
 
     /**
@@ -431,6 +451,14 @@ public class Hardware {
         while (motRight.isMoving()){
             mySleep(sensorReadDelay);
         }
+    }
+
+    public boolean motorsAreMoving(){
+        if(! motRight.isMoving() && ! motLeft.isMoving() ){
+            return false;
+        }
+
+        return true;
     }
 
 
