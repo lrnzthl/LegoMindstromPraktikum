@@ -136,10 +136,15 @@ public class Hardware {
 
 
     /**
-     *
+     * RGB Mode has to be activated. Otherwise return will always be false.
      * @return true, if we found the beacon
      */
     public boolean foundBeacon() {
+    	if(useRGBMode) {
+    		return false;
+    	}
+    	
+    	
         return false;
     }
 
