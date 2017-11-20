@@ -32,9 +32,8 @@ public class Hardware {
     //default value is 6000
     private int motorAccelaration = 6000;
 
-    private double turnSpeedProcentage = 0.4; //0.25 is fine
-    //0.5 is too much swings back and forth
-    //o.25 is okay, just stops
+    private double turnSpeedProcentage = 0.4;
+    //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
 
     private float midPointHigh = (float) 0.28;
     private float midPointLow = (float) 0.11;
@@ -62,8 +61,6 @@ public class Hardware {
         servo = new EV3LargeRegulatedMotor(MotorPort.B);
         System.out.println("Servo is ok");
 
-
-        //Gyro is on port 1
 
         EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
         System.out.println("Touch ok");
@@ -172,14 +169,10 @@ public class Hardware {
     }
     
     public float[] readRGBColor() {
-
     	return sensors.colorRGB();
     }
 
-    public void setSpeed(int speed) {
-        motRight.setSpeed(speed);
-        motLeft.setSpeed(speed);
-    }
+
 
     public float getDistance() {
         return sensors.getDistance();
@@ -197,11 +190,6 @@ public class Hardware {
       * @return  UP, DOWN, LEFT, RIGHT, ENTER, ESCAPE or NONE
      */
     public ButtonType getButtonType(){
-        //TODO: get which button is up
-
-
-
-
         ButtonType buttonType = ButtonType.NONE;
         int clickedButton = Button.getButtons();
         
@@ -251,11 +239,8 @@ public class Hardware {
      * @return true if everything is ok
      */
     private boolean initialize(){
-        boolean problem = false;
         System.out.println("Hardware is being initialized");
-        //
-        //
-        //
+
         if(motLeft == null){
             System.out.println("WARNING: Left motor is null!");
             return false;
