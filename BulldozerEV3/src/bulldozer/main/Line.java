@@ -94,8 +94,8 @@ public class Line extends Brains {
 
 
     private double getSpeed(long diff){
-        double accel = 5;
-        double minimumOffset = 8; //should be smaller than 8
+        double accel = 10;
+        double minimumOffset = 7; //should be smaller than 8
 
         diff = Math.round(accel * diff);
         double value = 1.0/(1.0+Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;

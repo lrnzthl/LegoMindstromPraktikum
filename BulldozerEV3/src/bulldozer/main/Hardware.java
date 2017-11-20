@@ -32,7 +32,7 @@ public class Hardware {
     //default value is 6000
     private int motorAccelaration = 6000;
 
-    private int turnSpeed = 20;
+    private int turnSpeed = 15;
     
     private static boolean useRGBMode = true;
 
@@ -44,8 +44,8 @@ public class Hardware {
     //everying lower than midPointLow is black
 
 
-    private float midPointHigh = (float) 0.22;
-    private float midPointLow = (float) 0.14;
+    private float midPointHigh = (float) 0.26;
+    private float midPointLow = (float) 0.13;
 
     private float colorWhite = (float) 0.33;
     private float colorBlack = (float) 0.05;
