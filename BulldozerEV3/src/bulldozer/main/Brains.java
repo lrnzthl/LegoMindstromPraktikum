@@ -44,7 +44,7 @@ public abstract class Brains extends Thread{
                 break;
             }
 
-            if(hardware.foundBeacon()){
+            if(hardware.foundBeacon(new float[]{-1.f, -1.f, -1.f}, -1)){
                 System.out.println("Beacon is found");
                 returnValue = 1;
                 running = false;

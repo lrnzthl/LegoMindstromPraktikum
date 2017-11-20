@@ -12,11 +12,14 @@ public class Labyrinth extends Brains {
         System.out.println("I .. Line Brains");
         int round  = 30000;
 
+        while(running){
+            float[] rgb = hardware.readRGBColor();
+            if(rgb == null){
+                System.out.println("rgb is null");
+            }
 
-        //while(! hardware.getButtonType().equals(Button.DOWN)){
-            hardware.robotTurn(485);
-        //}
-
+            System.out.println("color"+ rgb[0] + " color2: " + rgb[1]);
+        }
 
 
     }

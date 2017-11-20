@@ -32,7 +32,7 @@ public class Hardware {
     //default value is 6000
     private int motorAccelaration = 6000;
     
-    private static boolean useRGBMode = false;
+    private static boolean useRGBMode = true;
 
 
     private EV3LargeRegulatedMotor motLeft, motRight;
@@ -109,7 +109,7 @@ public class Hardware {
 
 
         //sensors = new Sensors(sensorReadDelay, touch, col, dist);
-        if(useRGBMode){
+        if(!useRGBMode){
         	sensors = new Sensors(sensorReadDelay, touch, col);	
         } else {
         	sensors = new Sensors(sensorReadDelay, touch, col, useRGBMode);
