@@ -7,7 +7,7 @@ public class Line extends Brains {
 
     //rotaion for motors to go forward
     private final int step = 45;
-    private final float Kp = 1.5f;
+    private final float Kp = 2.5f;
     private float[] beaconColor = {0.f,0.f,0.f};
 
     private final int delay = 30; //ms
@@ -94,8 +94,12 @@ public class Line extends Brains {
 
 
     private double getSpeed(long diff){
-        double minimumOffset = 0; //should be smaller than 8
+        double accel = 5;
+        double minimumOffset = 8; //should be smaller than 8
+
+        diff = Math.round(accel * diff);
         double value = 1.0/(1.0+Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
+        //return 40;
         return value;
     }
 

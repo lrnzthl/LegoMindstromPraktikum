@@ -102,7 +102,8 @@ public class Sensors extends Thread{
         } else {
         	intensity = color[0];
         }
-    	return intensity;
+        System.out.println("intenisty: "+intensity);
+        return intensity;
     }
     /**
      * 

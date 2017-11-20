@@ -31,6 +31,8 @@ public class Hardware {
     private int motorMaxSpeedProcentage = 40;
     //default value is 6000
     private int motorAccelaration = 6000;
+
+    private int turnSpeed = 20;
     
     private static boolean useRGBMode = true;
 
@@ -42,19 +44,14 @@ public class Hardware {
     //everying lower than midPointLow is black
 
 
-    private float midPointHigh = (float) 0.7;
-    private float midPointLow = (float) 0.17;
+    private float midPointHigh = (float) 0.22;
+    private float midPointLow = (float) 0.14;
 
-    private float colorWhite = (float) 0.76;
-    private float colorBlack = (float) 0.12;
+    private float colorWhite = (float) 0.33;
+    private float colorBlack = (float) 0.05;
 
 
 
-    //    private float midPointHigh = (float) 0.7;
-    //   private float midPointLow = (float) 0.17;
-
-    //  private float colorWhite = (float) 0.76;
-    // private float colorBlack = (float) 0.12;
 
 
     public Hardware(boolean simulation){
@@ -431,6 +428,7 @@ public class Hardware {
     	//motRight.stop();
 
         motorsWaitStopMoving();
+        motorSetSpeedProcentage(turnSpeed);
 
         //%TODO: problem with synching motors?
         synchMotors();

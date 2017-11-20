@@ -18,7 +18,9 @@ public class Labyrinth extends Brains {
                 System.out.println("rgb is null");
             }
 
-            System.out.println("color"+ rgb[0] + " color2: " + rgb[1]);
+            System.out.println("color"+ rgb[0] + " color2: " + rgb[1] + "color3: " + rgb[2]);
+
+            System.out.println("white: " + hardware.isOnWhite());
         }
 
 
