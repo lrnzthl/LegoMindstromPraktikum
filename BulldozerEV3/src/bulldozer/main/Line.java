@@ -8,18 +8,19 @@ public class Line extends Brains {
     //rotaion for motors to go forward
     private final int step = 45;
     private final float Kp = 2.5f;
-    private float[] beaconColor = {0.f,0.f,0.f};
+    private float[] beaconColor = {0.306f,0.071f,0.215f}; //red
 
     private final int delay = 30; //ms
     private float turningAngle = 10.f;
-    private int alreadyTurned = 0;
+    private float alreadyTurned = 0.f;
 
-    private int zigZagAngle = 50;
+    private int zigZagAngle = 10;
 
     private long lastReset = 0;
 
     public Line(Hardware hardware) {
         super(hardware);
+        beaconColor = new float[]{0.306f,0.071f,0.215f}; //red
     }
 
 
@@ -28,6 +29,7 @@ public class Line extends Brains {
     @Override
     public void run(){
 
+        hardware.servoGoUp();
 
         if(hardware.getColorBlack() ==0 || hardware.getColorWhite() == 0){
             System.out.println("Colors not calibrated");
@@ -47,6 +49,15 @@ public class Line extends Brains {
         //we are on the middle
         while(running){
 
+
+
+            while(hardware.isTouchPressed()){
+                hardware.beep();
+                System.out.println("Touch is pressed, cannot go forward");
+                mySleep(delay);
+            }
+
+
             long now = System.currentTimeMillis();
             long diff = now - lastReset;
 
@@ -55,37 +66,40 @@ public class Line extends Brains {
             hardware.motorForwardBlock(step);
 
 
-            alreadyTurned = 0; //resetting the variable with how much we've turned
+
+            //alreadyTurned = hardware.getAngle();
             while(! hardware.isOnMidpoint()){
+                System.out.println("we have already turned " + alreadyTurned + " angles");
+                System.out.println("Not in middle, trying to rotate, color:" + hardware.readColor());
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
             }
+            alreadyTurned = hardware.getAngle(); //resetting the variable with how much we've turned
+            System.out.println("Resetting already turned and alreadyTruned: " + alreadyTurned);
 
         }
 
     }
 
     private void rotateToMiddle() {
-        System.out.println("Not in middle, trying to rotate");
 
         float correction =  ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
         int toTurn = Math.round(correction * turningAngle) ;
 
-        System.out.print(" with angle toTurn= "+toTurn + "\n");
+        System.out.print(" correction:" + correction+", with angle toTurn:"+toTurn + ".....");
+        System.out.print("current angle:"+(alreadyTurned - hardware.getAngle())+"...");
 
         //%TODO:
-        if( alreadyTurned + toTurn > 80){
+        if( Math.abs(alreadyTurned - hardware.getAngle()) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
 
             //go back alreadyTurned degrees to the right
-            hardware.robotTurn(alreadyTurned);
+            hardware.robotTurn(Math.round(alreadyTurned));
 
             zigZagMovements();
             return;
         }
 
-
-        alreadyTurned += toTurn;
 
         hardware.robotTurn( -toTurn );
 
@@ -95,7 +109,7 @@ public class Line extends Brains {
 
     private double getSpeed(long diff){
         double accel = 10;
-        double minimumOffset = 7; //should be smaller than 8
+        double minimumOffset = 3; //should be smaller than 8
 
         diff = Math.round(accel * diff);
         double value = 1.0/(1.0+Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
@@ -142,7 +156,7 @@ public class Line extends Brains {
                 mySleep(delay);
             }
 
-            angle = angle*(-1);
+            //angle = angle*(-1);
         }
 
     }

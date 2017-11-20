@@ -4,6 +4,8 @@ public abstract class Brains extends Thread{
 
     protected boolean running;
     protected Hardware hardware;
+    protected float[] beaconColor = {-1.f, -1.f, -1.f};
+
 
     private final int delay = 20; //ms
 
@@ -16,9 +18,6 @@ public abstract class Brains extends Thread{
         if(hardware != null || hardware.isInit() ){
             this.hardware = hardware;
         }
-
-
-
     }
 
 
@@ -44,7 +43,7 @@ public abstract class Brains extends Thread{
                 break;
             }
 
-            if(hardware.foundBeacon(new float[]{-1.f, -1.f, -1.f}, -1)){
+            if(hardware.foundBeacon(beaconColor, -1)){
                 System.out.println("Beacon is found");
                 returnValue = 1;
                 running = false;

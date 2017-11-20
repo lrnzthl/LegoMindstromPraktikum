@@ -2,6 +2,7 @@ package bulldozer.main;
 
 public class Labyrinth extends Brains {
 
+    private final int delay = 30; //ms
 
     public Labyrinth(Hardware hardware){
         super(hardware);
@@ -9,18 +10,30 @@ public class Labyrinth extends Brains {
 
     @Override
     public void run () {
-        System.out.println("I .. Line Brains");
-        int round  = 30000;
+
+        hardware.servoGoDown();
+        hardware.servoGoUp();
 
         while(running){
+
+
+            while(hardware.isTouchPressed()){
+                hardware.beep();
+                System.out.println("Touch is pressed, cannot go forward");
+                mySleep(delay);
+            }
+
+
+
             float[] rgb = hardware.readRGBColor();
             if(rgb == null){
                 System.out.println("rgb is null");
             }
 
-            System.out.println("color"+ rgb[0] + " color2: " + rgb[1] + "color3: " + rgb[2]);
+            //System.out.println("color:  "+ rgb[0] + "..." + rgb[1] + "..." + rgb[2]);
 
-            System.out.println("white: " + hardware.isOnWhite());
+            //System.out.println("Ultra:"+hardware.getDistance());
+            System.out.println("Angle:"+hardware.getAngle());
         }
 
 

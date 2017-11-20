@@ -8,6 +8,7 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
+import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.Button	;
@@ -17,9 +18,8 @@ import sun.management.Sensor;
 
 public class Hardware {
     private boolean init;
-    private boolean simulation;
     private boolean buttonHold;
-
+    private EV3LargeRegulatedMotor motLeft, motRight, servo;
     private Sensors sensors;
 
 
@@ -28,43 +28,21 @@ public class Hardware {
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
 
-    private int motorMaxSpeedProcentage = 40;
+    private int motorMaxSpeedProcentage = 60;
     //default value is 6000
     private int motorAccelaration = 6000;
 
-    private int turnSpeed = 15;
-    
-    private static boolean useRGBMode = true;
+    private double turnSpeedProcentage = 0.4; //0.25 is fine
+    //0.5 is too much swings back and forth
+    //o.25 is okay, just stops
 
-
-    private EV3LargeRegulatedMotor motLeft, motRight;
-
-
-    //everything over midPointHigh is white
-    //everying lower than midPointLow is black
-
-
-    private float midPointHigh = (float) 0.26;
-    private float midPointLow = (float) 0.13;
+    private float midPointHigh = (float) 0.28;
+    private float midPointLow = (float) 0.11;
 
     private float colorWhite = (float) 0.33;
     private float colorBlack = (float) 0.05;
 
 
-
-
-
-    public Hardware(boolean simulation){
-        System.out.println("WARNING: Running in simulation mode!");
-        this.simulation = simulation;
-        sensors = new Sensors(sensorReadDelay, null, null);
-
-        initialize();
-
-        if(!init){
-            System.out.println("WARNING: Hardware not initialized properly");
-        }
-    }
 
 
 
@@ -74,44 +52,42 @@ public class Hardware {
 
         System.out.println("Hardware is being initialized...");
 
-        motRight = new EV3LargeRegulatedMotor(MotorPort.A);
+        motRight = new EV3LargeRegulatedMotor(MotorPort.D);
         System.out.println("Motor right is ok");
 
 
-        motLeft = new EV3LargeRegulatedMotor(MotorPort.B);
+        motLeft = new EV3LargeRegulatedMotor(MotorPort.A);
         System.out.println("Motor left is ok");
 
+        servo = new EV3LargeRegulatedMotor(MotorPort.B);
+        System.out.println("Servo is ok");
 
+
+        //Gyro is on port 1
 
         EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
-        System.out.println("Touch EV3 ok");
+        System.out.println("Touch ok");
         EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
-        System.out.println("Color EV3 ok");
+        System.out.println("Color ok");
        
-       // EV3UltrasonicSensor ultra = new EV3UltrasonicSensor(SensorPort.S2);
-     //   System.out.println("Ultra Ev3 on");
+       EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
+       System.out.println("Ultra on");
+
+       EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
+       System.out.println("Gyro Ev3 on");
 
 
        SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
-       SingleValueSensorWrapper col;
-       if(useRGBMode) {
-    	   col = new SingleValueSensorWrapper(color, "RGB");
-       } else {
-    	   col = new SingleValueSensorWrapper(color, "Red");
-       }
-    //  SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultra, "Distance");
-        System.out.println("wrappers ready");
+       SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "RGB");
+       SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultraSensor, "Distance");
+       SingleValueSensorWrapper gyro = new SingleValueSensorWrapper(gyroSensor, "Angle");
+
+       System.out.println("wrappers ready");
 
 
 
+       sensors = new Sensors(sensorReadDelay, touch, col, dist, gyro);
 
-        //sensors = new Sensors(sensorReadDelay, touch, col, dist);
-        if(!useRGBMode){
-        	sensors = new Sensors(sensorReadDelay, touch, col);	
-        } else {
-        	sensors = new Sensors(sensorReadDelay, touch, col, useRGBMode);
-        }
-        
 
 
         initialize();
@@ -134,11 +110,15 @@ public class Hardware {
 
 
     /**
+     * NOT WORKING
+     *
      * RGB Mode has to be activated. Otherwise return will always be false.
      * @return true, if we found the beacon
      */
     public boolean foundBeacon(float[] color, float tolerance) {
-    	if(useRGBMode) {
+
+
+        if(color.equals(new float[]{-1.f, -1.f, -1.f})) {
     		return false;
     	}
     	
@@ -192,16 +172,17 @@ public class Hardware {
     }
     
     public float[] readRGBColor() {
-    	if(!useRGBMode){
-    		return new float[]{-1.f, -1.f, -1.f};
-    	}
-    	
+
     	return sensors.colorRGB();
     }
 
     public void setSpeed(int speed) {
         motRight.setSpeed(speed);
         motLeft.setSpeed(speed);
+    }
+
+    public float getDistance() {
+        return sensors.getDistance();
     }
 
 
@@ -261,7 +242,7 @@ public class Hardware {
 
 
     public boolean isInit() {
-        return simulation ?  true : init;
+        return init;
     }
 
 
@@ -346,22 +327,6 @@ public class Hardware {
 
 
 
-    /**
-     * Does not work properly...
-     * move forward for
-     * @param ms
-     */
-    public void motorMoveForwardMs(int ms){
-        motorsWaitStopMoving();
-
-        synchMotors();
-
-        motRight.forward();
-        mySleep(ms);
-        motRight.stop();
-
-        deSynchMotors();
-    }
 
 
     /**
@@ -424,13 +389,12 @@ public class Hardware {
         //360 * (2 * pi) / ( (1/4) *2*pi*r1)
         int absoluteAngle = angle * 6;
 
-    	//motLeft.stop();
-    	//motRight.stop();
 
-        motorsWaitStopMoving();
-        motorSetSpeedProcentage(turnSpeed);
 
-        //%TODO: problem with synching motors?
+
+        //motorsWaitStopMoving();
+        motorSetSpeedProcentage(turnSpeedProcentage);
+
         synchMotors();
 
         if(angle < 0){
@@ -440,6 +404,8 @@ public class Hardware {
             motRight.rotate(-absoluteAngle, true);
             motLeft.rotate(absoluteAngle, true);
         }
+
+        System.out.println("Rotation is send");
 
         deSynchMotors();
 
@@ -470,14 +436,13 @@ public class Hardware {
      */
     private void motorsWaitStopMoving(){
 
-        while(motLeft.isMoving()){
-            mySleep(sensorReadDelay);
+        while(motLeft.isMoving() && motRight.isMoving()){
+           mySleep(5);
         }
 
-        while (motRight.isMoving()){
-            mySleep(sensorReadDelay);
-        }
     }
+
+
 
     public boolean motorsAreMoving(){
         if(! motRight.isMoving() && ! motLeft.isMoving() ){
@@ -529,12 +494,12 @@ public class Hardware {
     public boolean isOnWhite(){
 
         if(sensors.color() > midPointHigh ){
-            System.out.println("sensor on white");
+            //System.out.println("sensor on white");
             return true;
         }else if( sensors.color() < midPointLow){
             return false;
         }else{
-            System.out.println("Hitting midPoint");
+            //System.out.println("Hitting midPoint");
             return false;
         }
 
@@ -555,10 +520,28 @@ public class Hardware {
      */
     public boolean isOnMidpoint(){
         if(sensors.color() < midPointHigh && sensors.color() > midPointLow){
+            System.out.println("I am on the middle");
             return true;
         }
 
         return false;
+    }
+
+
+    public float getAngle(){
+        return sensors.getAgnle();
+
+    }
+
+
+
+    public void servoGoUp(){
+        servo.rotate(-100);
+    }
+
+
+    public void servoGoDown(){
+        servo.rotate(100);
     }
 
 
