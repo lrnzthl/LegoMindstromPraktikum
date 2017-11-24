@@ -93,7 +93,7 @@ public class Sensors extends Thread{
 
     public float getDistance(){return Sdistance.getSample();}
 
-    public float getAgnle(){return Sgyro.getSample();}
+    public float getAngle(){return Sgyro.getSample();}
     
     //public float distance() {
     //    return distance;

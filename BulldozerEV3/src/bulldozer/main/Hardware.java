@@ -168,6 +168,26 @@ public class Hardware {
         return Math.round(sensors.getDistance()*100);
     }
 
+    /**
+     * both motors rotate
+     * @param angle degrees forward without blcking
+     */
+    public void motorForwardNonBlock(int angle) {
+        motLeft.stop();
+        motRight.stop();
+
+        synchMotors();
+        motLeft.rotate(angle, true);
+        motRight.rotate(angle, true);
+
+        deSynchMotors();
+
+    }
+
+    public int getMotorAngle() {
+        return motRight.getTachoCount();
+    }
+
     public enum ButtonType {
         UP, DOWN, LEFT, RIGHT, ENTER, ESCAPE, NONE
     }
@@ -364,6 +384,44 @@ public class Hardware {
         deSynchMotors();
     }
 
+
+
+
+    public void robotTurnGyro(int angle){
+        //90 grad is 540
+
+        //360 * (2 * pi) / ( (1/4) *2*pi*r1)
+        int absoluteAngle = angle * 6;
+        motorSetSpeedProcentage(turnSpeedProcentage);
+
+        int finalAngleToReach = Math.round(getAngle()) + absoluteAngle;
+
+        //motorsWaitStopMoving();
+
+
+        synchMotors();
+
+        if(angle < 0){
+            motLeft.rotate(absoluteAngle*2, true);
+            motRight.rotate(-absoluteAngle*2, true);
+        }else{
+            motRight.rotate(-absoluteAngle*2, true);
+            motLeft.rotate(absoluteAngle*2, true);
+        }
+        System.out.println("Rotation is send");
+
+        while( Math.round(getAngle()) < finalAngleToReach){
+            mySleep(5);
+        }
+
+        motorStop();
+
+
+
+        deSynchMotors();
+    }
+
+
     public void robotTurnNonBlock(int angle){
         //%TODO:
         int absoluteAngle = angle * 12;
@@ -385,7 +443,7 @@ public class Hardware {
     /**
      * functions blocks until the motors have stopped turning
      */
-    private void motorsWaitStopMoving(){
+    public void motorsWaitStopMoving(){
 
         while(motLeft.isMoving() && motRight.isMoving()){
            mySleep(5);
@@ -440,8 +498,12 @@ public class Hardware {
         return false;
     }
 
+    /**
+     *
+     * @return current angle, read from the gyro sensor
+     */
     public float getAngle(){
-        return sensors.getAgnle();
+        return sensors.getAngle();
     }
 
     public void servoGoUp(){

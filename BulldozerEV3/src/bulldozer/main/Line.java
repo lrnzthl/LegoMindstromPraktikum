@@ -194,4 +194,75 @@ public class Line extends Brains {
             }
         }
     }
+
+
+
+    private void goAroundObstacle1() {
+
+        assert(hardware.isTouchPressed());
+
+
+        hardware.motorForwardBlock(-180);
+
+        //rotate right
+        System.out.println("turning right...");
+        hardware.robotTurn(90);
+
+        tryToMove(offsetXobstacle);
+
+        System.out.println("Obstacle should be behind us: 1");
+
+        //obstacle is behind us
+        //rotate left
+        hardware.robotTurn(-90);
+
+        tryToMove(offsetYobstacle);
+
+        System.out.println("Obstacle should be behind us: 2");
+
+        //turn left, we should be close to the white line
+        hardware.robotTurn(-90);
+
+        while( !hardware.isOnMidpointBW()){
+            hardware.motorForwardBlock(step);
+
+            if(hardware.isTouchPressed()){
+                hardware.motorForwardBlock(-180);
+                hardware.robotTurn((int) -turningAngle);
+            }
+        }
+
+
+    }
+
+    /**
+     * robot tries to rotate both motors
+     * @param angle; If the touch sensor is pressed, the robot goes back a bit and tries finish what he has left
+     */
+    private void tryToMove(int angle){
+        int currentMotorAngle = hardware.getMotorAngle();
+        hardware.motorForwardNonBlock(angle);
+
+
+        while(hardware.motorsAreMoving()){
+
+            if(hardware.isTouchPressed()){
+                hardware.motorStop();
+                int toTurnLeft = offsetXobstacle - currentMotorAngle;
+
+                //turn around and try to finish it
+                hardware.motorForwardBlock(-180);
+                hardware.robotTurn((int) -turningAngle);
+                tryToMove(toTurnLeft);
+            }
+
+            mySleep(delay);
+        }
+    }
+
+
+
+
+
+
 }
