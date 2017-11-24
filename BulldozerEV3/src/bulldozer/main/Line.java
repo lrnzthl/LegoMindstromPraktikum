@@ -17,7 +17,8 @@ public class Line extends Brains {
 
     private long lastReset = 0; //last time we have resetted the time
 
-    private int offsetOfObstacle = 8; //in cm
+    private int offsetYobstacle= 500; //lenght of obstacle
+    private int offsetXobstacle = 500; //lenght of obstacle
 
 
 
@@ -174,16 +175,38 @@ public class Line extends Brains {
         hardware.motorForwardBlock(-180);
 
         //rotate right
-        System.out.println("turnign right...");
+        System.out.println("turning right...");
         hardware.robotTurn(90);
 
-        getPassObstacle();
+        hardware.motorForwardBlock(offsetXobstacle);
+
+        //oops
+        while(!hardware.isTouchPressed()){
+            //go back and try again
+            System.out.println("trying to correct...");
+            hardware.motorForwardBlock(-180);
+            hardware.robotTurn((int) turningAngle);
+            hardware.motorForwardBlock(180);
+        }
+
+        System.out.println("Obstacle should be behind us: 1");
 
         //obstacle is behind us
         //rotate left
         hardware.robotTurn(-90);
 
-        getPassObstacle();
+        hardware.motorForwardBlock(offsetYobstacle);
+
+        //oops
+        while(!hardware.isTouchPressed()){
+            //go back and try again
+            System.out.println("trying to correct...");
+            hardware.motorForwardBlock(-180);
+            hardware.robotTurn((int) turningAngle);
+            hardware.motorForwardBlock(180);
+        }
+
+        System.out.println("Obstacle should be behind us: 2");
 
         //turn left, we should be close to the white line
         hardware.robotTurn(-90);
@@ -200,23 +223,6 @@ public class Line extends Brains {
 
     }
 
-    private void getPassObstacle() {
-        //is the obstacle behind us
-        while(hardware.getDistance() < 2*offsetOfObstacle){
-            //try to go foward a little bit
-            hardware.motorForwardBlock(step);
-
-            //oops
-            if(hardware.isTouchPressed()){
-                //go back and try again
-                System.out.println("trying to correct...");
-                hardware.motorForwardBlock(-180);
-                hardware.robotTurn((int) -turningAngle);
-            }
-        }
-
-        System.out.println("obstacle should be behind us..?");
-    }
 
 
 
