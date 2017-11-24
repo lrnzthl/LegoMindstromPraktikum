@@ -18,6 +18,10 @@ public class Line extends Brains {
 
     private long lastReset = 0;
 
+    private int offsetOfObstacle = 8; //in cm
+
+
+
     public Line(Hardware hardware) {
         super(hardware);
         beaconColor = new float[]{0.306f,0.071f,0.215f}; //red
@@ -37,7 +41,7 @@ public class Line extends Brains {
             return;
         }
 
-        while (! hardware.isOnMidpoint()){
+        while (! hardware.isOnMidpointBW()){
             System.out.println("Put me on between white and black!");
             hardware.beep();
             mySleep(delay);
@@ -53,6 +57,7 @@ public class Line extends Brains {
 
             while(hardware.isTouchPressed()){
                 System.out.println("Touch is pressed, cannot go forward");
+                goAroundObstacle();
                 mySleep(delay);
             }
 
@@ -67,7 +72,7 @@ public class Line extends Brains {
 
 
             //alreadyTurned = hardware.getAngle();
-            while(! hardware.isOnMidpoint()){
+            while(! hardware.isOnMidpointBW()){
                 hardware.led(8);
                 System.out.println("we have already turned " + alreadyTurned + " angles");
                 System.out.println("Not in middle, trying to rotate, color:" + hardware.readColor());
@@ -81,9 +86,27 @@ public class Line extends Brains {
 
     }
 
+    private void goAroundObstacle() {
+
+        if(!hardware.isTouchPressed()){
+            System.out.println("touch not pressed !?!?");
+        }
+
+
+        hardware.motorForwardBlock(-360);
+
+        //rotate right
+        hardware.robotTurn(90);
+
+        while(hardware.getDistance() < offsetOfObstacle && !hardware.isTouchPressed()){
+
+        }
+
+    }
+
     private void rotateToMiddle() {
 
-        float correction =  ( Kp * ( hardware.getMidPoint() - hardware.readColor() ) );
+        float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
         int toTurn = Math.round(correction * turningAngle) ;
 
         System.out.print(" correction:" + correction+", with angle toTurn:"+toTurn + ".....");
@@ -132,7 +155,7 @@ public class Line extends Brains {
         hardware.robotTurnNonBlock(initialAngle);
         while(hardware.motorsAreMoving()) {
 
-            if(hardware.isOnMidpoint()){
+            if(hardware.isOnMidpointBW()){
                 System.out.println("Found mid point!");
                 hardware.motorStop();
             }
@@ -142,13 +165,13 @@ public class Line extends Brains {
 
 
         //following turns
-        while(! hardware.isOnMidpoint()){
+        while(! hardware.isOnMidpointBW()){
             System.out.println("Searching white line...");
 
             hardware.robotTurnNonBlock(angle);
             while(hardware.motorsAreMoving()) {
 
-                if(hardware.isOnMidpoint()){
+                if(hardware.isOnMidpointBW()){
                     System.out.println("Found mid point!");
                     hardware.motorStop();
                 }
@@ -172,7 +195,7 @@ public class Line extends Brains {
         int times = 4; //how many times should it stop
 
         for(int i=0; i<times; i++){
-            if(hardware.isOnMidpoint()){
+            if(hardware.isOnMidpointBW()){
                 return true;
             }
 
@@ -182,11 +205,11 @@ public class Line extends Brains {
 
         hardware.robotTurnNonBlock(zigZagAngle);
 
-        while (! hardware.isOnMidpoint()){
+        while (! hardware.isOnMidpointBW()){
             mySleep(20);
         }
 
-        if(hardware.isOnMidpoint()){
+        if(hardware.isOnMidpointBW()){
             hardware.motorStop();
         }
 

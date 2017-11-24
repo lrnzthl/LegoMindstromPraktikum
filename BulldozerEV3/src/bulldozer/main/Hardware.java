@@ -35,12 +35,21 @@ public class Hardware {
     private double turnSpeedProcentage = 0.4;
     //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
 
-    private float midPointHigh = (float) 0.28;
-    private float midPointLow = (float) 0.11;
+    //eveyrhing over high is white
+    private float midPointBWHigh = (float) 0.28;
+    private float midPointBWLow = (float) 0.11;
+
+
+    private float midPointRBHigh = (float) 0.28;
+    private float midPointRBLow = (float) 0.11;
+
+    private float midPointWRHigh = (float) 0.28;
+    private float midPointWRLow = (float) 0.11;
+
 
     private float colorWhite = (float) 0.33;
     private float colorBlack = (float) 0.05;
-
+    private float colorRed = (float) 0.15;
 
 
 
@@ -94,12 +103,7 @@ public class Hardware {
         }
 
 
-        System.out.println("midPointHigh:"+midPointHigh);
-        System.out.println("midPointLow:"+midPointLow);
 
-
-        System.out.println("colorWhite:"+colorWhite);
-        System.out.println("colorBlack:"+colorBlack);
 
 
     }
@@ -173,9 +177,12 @@ public class Hardware {
     }
 
 
-
-    public float getDistance() {
-        return sensors.getDistance();
+    /**
+     * get distance from the ultrasonic sensor
+     * @return the distance in CM
+     */
+    public int getDistance() {
+        return Math.round(sensors.getDistance()*100);
     }
 
 
@@ -450,37 +457,7 @@ public class Hardware {
 
 
 
-    public void colorSensorCalibrate(){
-        float offsetWhite = (float) 0.2;
-        float offsetBlack = (float) 0.2;
 
-        System.out.println("Starting to calibrate color sensor");
-
-        System.out.println("Please go entirely on white and press button!");
-
-        Button.waitForAnyPress();
-
-        colorWhite = sensors.color();
-        System.out.println("Read value is " + colorWhite);
-        midPointHigh = colorWhite - offsetWhite;
-
-        System.out.println("Everything more than " + midPointHigh + " is white");
-
-
-
-        System.out.println("Please go entirely on black and press button!");
-
-        Button.waitForAnyPress();
-
-        colorBlack = sensors.color();
-        System.out.println("Read value is " + colorBlack);
-        midPointLow = colorBlack + offsetBlack;
-
-        System.out.println("Everything more than " + midPointHigh + " is white");
-        System.out.println("Everything less tha " + midPointLow + " is black");
-
-
-    }
 
 
     /**
@@ -489,10 +466,10 @@ public class Hardware {
      */
     public boolean isOnWhite(){
 
-        if(sensors.color() > midPointHigh ){
+        if(sensors.color() > midPointBWHigh ){
             //System.out.println("sensor on white");
             return true;
-        }else if( sensors.color() < midPointLow){
+        }else if( sensors.color() < midPointBWLow){
             return false;
         }else{
             //System.out.println("Hitting midPoint");
@@ -506,7 +483,7 @@ public class Hardware {
      * @return the midPoint;
      * DO NOT USE to check if sensor is on white -> isOnWhite() function
      */
-    public float getMidPoint(){
+    public float getMidPointBW(){
         return (colorWhite + colorBlack)/2 + colorBlack;
     }
 
@@ -514,8 +491,8 @@ public class Hardware {
      *
      * @return true if the sensor is on the midpoint between black and white
      */
-    public boolean isOnMidpoint(){
-        if(sensors.color() < midPointHigh && sensors.color() > midPointLow){
+    public boolean isOnMidpointBW(){
+        if(sensors.color() < midPointBWHigh && sensors.color() > midPointBWLow){
             System.out.println("I am on the middle");
             return true;
         }
