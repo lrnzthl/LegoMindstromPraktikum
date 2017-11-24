@@ -87,16 +87,8 @@ public class Sensors extends Thread{
      * @return Returns Array with Index 0 = Red; 1 = Green; 2 = Blue.
      * Values are in the range [0,1].
      */
-    public float[] colorRGB() {
-    	
-    		float[] c = new float[3];
-    		
-    		c[0] = color.getRed();
-    		c[1] = color.getGreen();
-    		c[2] = color.getBlue();
-    		
-    		
-        return c;
+    public OurColor colorRGB() {    		
+        return color;
     }
 
     public float getDistance(){return Sdistance.getSample();}

@@ -45,4 +45,39 @@ public class OurColor {
 	public float getIntensity() {
 		return (r+g+b)/3.f;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	    if (obj == null) {
+	        return false;
+	    }
+	    if (!OurColor.class.isAssignableFrom(obj.getClass())) {
+	        return false;
+	    }
+	    final OurColor other = (OurColor) obj;
+	    if (this.r != other.getRed() || this.g != other.getGreen() || this.b != other.getBlue()) {
+	        return false;
+	    }
+	    return true;
+	}
+	
+	public boolean isGreaterThan(OurColor toCompare) {
+		boolean returnValue = false;
+		if(this.r > toCompare.getRed() && 
+		   this.g > toCompare.getGreen() && 
+		   this.b > toCompare.getBlue()){
+			returnValue = true;
+		}
+	    return returnValue;
+	}
+
+	public boolean isLessThan(OurColor toCompare) {
+		boolean returnValue = false;
+		if(this.r < toCompare.getRed() && 
+		   this.g < toCompare.getGreen() && 
+		   this.b < toCompare.getBlue()){
+			returnValue = true;
+		}
+	    return returnValue;
+	}
 }

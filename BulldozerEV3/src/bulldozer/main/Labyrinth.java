@@ -10,7 +10,7 @@ public class Labyrinth extends Brains {
 
     public Labyrinth(Hardware hardware){
         super(hardware);
-        beaconColor = new float[]{0.0f, 0.3f, 0.0f};
+        beaconColor = new OurColor(0.0f, 0.3f, 0.0f);
     }
 
     @Override
@@ -78,8 +78,4 @@ public class Labyrinth extends Brains {
         //robot is no more on the white line
         hardware.motorStop();
     }
-
-
-
-
 }

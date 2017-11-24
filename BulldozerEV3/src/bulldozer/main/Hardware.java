@@ -22,8 +22,6 @@ public class Hardware {
     private EV3LargeRegulatedMotor motLeft, motRight, servo;
     private Sensors sensors;
 
-
-
     //in ms, delay between reading the senors
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
@@ -39,20 +37,15 @@ public class Hardware {
     private float midPointBWHigh = (float) 0.28;
     private float midPointBWLow = (float) 0.11;
 
-
     private float midPointRBHigh = (float) 0.28;
     private float midPointRBLow = (float) 0.11;
 
     private float midPointWRHigh = (float) 0.28;
     private float midPointWRLow = (float) 0.11;
 
-
     private float colorWhite = (float) 0.33;
     private float colorBlack = (float) 0.05;
     private float colorRed = (float) 0.15;
-
-
-
 
     public Hardware(){
         //copy the values after first calibration
@@ -114,10 +107,8 @@ public class Hardware {
      *
      * @return true, if we found the beacon
      */
-    public boolean foundBeacon(float[] color, float tolerance) {
-
-
-        if(color.equals(new float[]{-1.f, -1.f, -1.f})) {
+    public boolean foundBeacon(OurColor color, float tolerance) {
+        if(color.equals(new OurColor(-1.f, -1.f, -1.f))) {
     		return false;
     	}
     	
@@ -127,21 +118,15 @@ public class Hardware {
     	float lowerMultiply = 1.f - tolerance;
     	float upperMultiply = 1.f + tolerance;
     	
-    	float[] sensorColors = this.readRGBColor();
-    	float[] lowerColor = {color[0]*lowerMultiply, color[1]*lowerMultiply, color[2]*lowerMultiply};
-    	float[] upperColor = {color[0]*upperMultiply, color[1]*upperMultiply, color[2]*upperMultiply};
-        
-    	for(int i = 0; i < 3; i++){
-        	if(sensorColors[i] > lowerColor[i] && sensorColors[i] < upperColor[i]){
-        		checkComponents++;
-        	}
-        }
-        
-    	if(checkComponents == 3){
-        	returnValue = true;
-        }
-        
-    	return returnValue;
+    	OurColor sensorColors = this.readRGBColor();
+    	OurColor lowerColor = new OurColor(color.getRed()*lowerMultiply, 
+    									   color.getGreen()*lowerMultiply, 
+    									   color.getBlue()*lowerMultiply);
+    	OurColor upperColor = new OurColor(color.getRed()*upperMultiply, 
+    									   color.getGreen()*upperMultiply, 
+    									   color.getBlue()*upperMultiply);
+   
+    	return sensorColors.isGreaterThan(lowerColor) && sensorColors.isLessThan(upperColor);
     }
 
 
@@ -160,7 +145,6 @@ public class Hardware {
         System.out.println("Sensors are started");
     }
 
-
     /**
      * make a sound
      */
@@ -172,10 +156,9 @@ public class Hardware {
         return sensors.color();
     }
     
-    public float[] readRGBColor() {
+    public OurColor readRGBColor() {
     	return sensors.colorRGB();
     }
-
 
     /**
      * get distance from the ultrasonic sensor
@@ -185,11 +168,9 @@ public class Hardware {
         return Math.round(sensors.getDistance()*100);
     }
 
-
     public enum ButtonType {
         UP, DOWN, LEFT, RIGHT, ENTER, ESCAPE, NONE
     }
-
 
     /**
      * DEBUGGING
@@ -229,17 +210,10 @@ public class Hardware {
         }
         return buttonType;
     }
-    
-  
-
-
-
-
 
     public boolean isInit() {
         return init;
     }
-
 
     /**
      * initalizes the motors and the sensors
@@ -265,9 +239,6 @@ public class Hardware {
         motRight.setAcceleration(motorAccelaration);
         motLeft.setAcceleration(motorAccelaration);
 
-
-
-
         init = sensors.initialize() ? true : false;
 
         if(init == true){
@@ -275,11 +246,9 @@ public class Hardware {
         }else{
             Button.LEDPattern(5);
         }
-
-
+        
         return init;
     }
-
 
     /**
      * /*
@@ -294,7 +263,6 @@ public class Hardware {
         Button.LEDPattern(color);
     }
 
-
     /**
      *
      * @return true, if the touch sensor is pressed
@@ -308,9 +276,7 @@ public class Hardware {
         }
 
         return false;
-
     }
-
 
     /**
      * both motors move an angle forward;
@@ -318,8 +284,6 @@ public class Hardware {
      *
      */
     public void motorForwardBlock(int angle){
-
-
         synchMotors();
 
         motRight.rotate(angle);
@@ -327,10 +291,6 @@ public class Hardware {
 
         deSynchMotors();
     }
-
-
-
-
 
     /**
      * both motors are started;
@@ -341,7 +301,6 @@ public class Hardware {
         motLeft.forward();
     }
 
-
     /**
      * stopping both motors
      */
@@ -349,8 +308,6 @@ public class Hardware {
         motLeft.stop(true);
         motRight.stop(true);
     }
-
-
 
     /**
      * sets the speed ot the motor to a procentage of the maximum speed
@@ -365,8 +322,6 @@ public class Hardware {
         motLeft.setSpeed(motorAbsoluteSpeed);
     }
 
-
-
     /**
      * syncing motors, so that they move the same amount of degrees
      */
@@ -380,7 +335,6 @@ public class Hardware {
         motRight.endSynchronization();
     }
 
-
     /**
      * motor turns
      * @param angle (can also be negative);
@@ -391,9 +345,6 @@ public class Hardware {
 
         //360 * (2 * pi) / ( (1/4) *2*pi*r1)
         int absoluteAngle = angle * 6;
-
-
-
 
         //motorsWaitStopMoving();
         motorSetSpeedProcentage(turnSpeedProcentage);
@@ -411,9 +362,7 @@ public class Hardware {
         System.out.println("Rotation is send");
 
         deSynchMotors();
-
     }
-
 
     public void robotTurnNonBlock(int angle){
         //%TODO:
@@ -423,7 +372,6 @@ public class Hardware {
 
         //%TODO: problem with synching motors?
         synchMotors();
-
 
         if(angle < 0){
             motRight.rotate(absoluteAngle,true);
@@ -445,8 +393,6 @@ public class Hardware {
 
     }
 
-
-
     public boolean motorsAreMoving(){
         if(! motRight.isMoving() && ! motLeft.isMoving() ){
             return false;
@@ -454,11 +400,6 @@ public class Hardware {
 
         return true;
     }
-
-
-
-
-
 
     /**
      *
@@ -475,7 +416,6 @@ public class Hardware {
             //System.out.println("Hitting midPoint");
             return false;
         }
-
     }
 
     /**
@@ -500,35 +440,27 @@ public class Hardware {
         return false;
     }
 
-
     public float getAngle(){
         return sensors.getAgnle();
-
     }
-
-
 
     public void servoGoUp(){
         servo.rotate(-100);
     }
 
-
     public void servoGoDown(){
         servo.rotate(100);
     }
-
 
     public boolean isEscapeUp(){
         return Button.ESCAPE.isUp();
     }
 
-
     public boolean isUpUp(){
         return Button.UP.isUp();
     }
 
-    public boolean isLeftUp() { return Button.LEFT.isUp();    }
-
+    public boolean isLeftUp() { return Button.LEFT.isUp(); }
 
     public float getColorWhite(){
         return colorWhite;
@@ -546,5 +478,4 @@ public class Hardware {
             e.printStackTrace();
         }
     }
-
 }

@@ -20,14 +20,10 @@ public class Line extends Brains {
     private int offsetYobstacle= 500; //lenght of obstacle
     private int offsetXobstacle = 500; //lenght of obstacle
 
-
-
     public Line(Hardware hardware) {
         super(hardware);
-        beaconColor = new float[]{0.306f,0.071f,0.215f}; //red
+        beaconColor = new OurColor(0.306f,0.071f,0.215f); //red
     }
-
-
 
     @Override
     public void run(){
@@ -46,19 +42,14 @@ public class Line extends Brains {
             mySleep(delay);
         }
 
-
-
-
         //we are on the middle
         while(running){
             hardware.led(3);
-
 
             while(hardware.isTouchPressed()){
                 System.out.println("Touch is pressed, cannot go forward");
                 goAroundObstacle();
             }
-
 
             long now = System.currentTimeMillis();
             long diff = now - lastReset;
@@ -66,8 +57,6 @@ public class Line extends Brains {
             hardware.motorSetSpeedProcentage(getSpeed(diff));
 
             hardware.motorForwardBlock(step);
-
-
 
             //alreadyTurned = hardware.getAngle();
             while(! hardware.isOnMidpointBW()){
@@ -79,11 +68,8 @@ public class Line extends Brains {
             }
             alreadyTurned = hardware.getAngle(); //resetting the variable with how much we've turned
             System.out.println("Resetting already turned and alreadyTruned: " + alreadyTurned);
-
         }
-
     }
-
 
     private void rotateToMiddle() {
 
@@ -92,7 +78,6 @@ public class Line extends Brains {
 
         System.out.print(" correction:" + correction+", with angle toTurn:"+toTurn + ".....");
         System.out.print("current angle:"+(alreadyTurned - hardware.getAngle())+"...");
-
 
         if( Math.abs(alreadyTurned - hardware.getAngle()) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
@@ -103,14 +88,9 @@ public class Line extends Brains {
             zigZagMovements();
             return;
         }
-
-
         hardware.robotTurn( -toTurn );
-
-
     }
-
-
+    
     private double getSpeed(long diff){
         double accel = 10;
         double minimumOffset = 3; //should be smaller than 8
@@ -120,7 +100,6 @@ public class Line extends Brains {
         //return 40;
         return value;
     }
-
 
     /**
      * performs forward zig-zag movements, trying to find right side of the white line
@@ -144,7 +123,6 @@ public class Line extends Brains {
             mySleep(delay);
         }
 
-
         //following turns
         while(! hardware.isOnMidpointBW()){
             System.out.println("Searching white line...");
@@ -165,12 +143,8 @@ public class Line extends Brains {
 
     }
 
-
-
     private void goAroundObstacle() {
-
         assert(hardware.isTouchPressed());
-
 
         hardware.motorForwardBlock(-180);
 
@@ -219,11 +193,5 @@ public class Line extends Brains {
                 hardware.robotTurn((int) -turningAngle);
             }
         }
-
-
     }
-
-
-
-
 }
