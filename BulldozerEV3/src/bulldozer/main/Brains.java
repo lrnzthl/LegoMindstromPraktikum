@@ -25,16 +25,9 @@ public abstract class Brains extends Thread{
 
     public int mainLoop() throws InterruptedException{
 
-
         running = true;
-
-
-
-
+        //starting thread
         this.start();
-
-
-
 
         while(true){
 
