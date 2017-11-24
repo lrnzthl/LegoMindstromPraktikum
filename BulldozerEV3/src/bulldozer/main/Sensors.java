@@ -11,7 +11,7 @@ public class Sensors extends Thread{
 
 
     private float touch;//, distance;
-    private float[] color;
+    private OurColor color;
 
 
 
@@ -60,7 +60,7 @@ public class Sensors extends Thread{
         try {
             while (true) {
                 this.touch = this.Stouch.getSample();
-                this.color = this.Scolor.getSample(true);  //return rgb mode sample
+                this.color = new OurColor (this.Scolor.getSample(true));  //return rgb mode sample
 
                // this.distance = this.Sdistance.getSample();
 
@@ -78,12 +78,9 @@ public class Sensors extends Thread{
     }
 
     public float color() {
-    	float intensity;
-
-        intensity = (color[0] + color[1] + color[2]) / 3.f;
-
+    	
         //System.out.println("intenisty: "+intensity);
-        return intensity;
+        return color.getIntensity();
     }
     /**
      * 
@@ -91,7 +88,15 @@ public class Sensors extends Thread{
      * Values are in the range [0,1].
      */
     public float[] colorRGB() {
-        return color;
+    	
+    		float[] c = new float[3];
+    		
+    		c[0] = color.getRed();
+    		c[1] = color.getGreen();
+    		c[2] = color.getBlue();
+    		
+    		
+        return c;
     }
 
     public float getDistance(){return Sdistance.getSample();}
