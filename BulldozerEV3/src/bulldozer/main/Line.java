@@ -58,7 +58,6 @@ public class Line extends Brains {
             while(hardware.isTouchPressed()){
                 System.out.println("Touch is pressed, cannot go forward");
                 goAroundObstacle();
-                mySleep(delay);
             }
 
 
@@ -86,23 +85,6 @@ public class Line extends Brains {
 
     }
 
-    private void goAroundObstacle() {
-
-        if(!hardware.isTouchPressed()){
-            System.out.println("touch not pressed !?!?");
-        }
-
-
-        hardware.motorForwardBlock(-360);
-
-        //rotate right
-        hardware.robotTurn(90);
-
-        while(hardware.getDistance() < offsetOfObstacle && !hardware.isTouchPressed()){
-
-        }
-
-    }
 
     private void rotateToMiddle() {
 
@@ -112,7 +94,7 @@ public class Line extends Brains {
         System.out.print(" correction:" + correction+", with angle toTurn:"+toTurn + ".....");
         System.out.print("current angle:"+(alreadyTurned - hardware.getAngle())+"...");
 
-        //%TODO:
+
         if( Math.abs(alreadyTurned - hardware.getAngle()) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
 
@@ -185,34 +167,59 @@ public class Line extends Brains {
     }
 
 
-    /**
-     * rotates for
-     * @param angle and when it rotates, we are checking if we are on the middle
-     * @return true if we are on the middle
-     */
-    private boolean carefulTurn(int angle){
-        System.out.println("Careful turning");
-        int times = 4; //how many times should it stop
 
-        for(int i=0; i<times; i++){
-            if(hardware.isOnMidpointBW()){
-                return true;
+    private void goAroundObstacle() {
+
+        assert(hardware.isTouchPressed());
+
+
+        hardware.motorForwardBlock(-180);
+
+        //rotate right
+        System.out.println("turnign right...");
+        hardware.robotTurn(90);
+
+        getPassObstacle();
+
+        //obstacle is behind us
+        //rotate left
+        hardware.robotTurn(-90);
+
+        getPassObstacle();
+
+        //turn left, we should be close to the white line
+        hardware.robotTurn(-90);
+
+        while( !hardware.isOnMidpointBW()){
+            hardware.motorForwardBlock(step);
+
+            if(hardware.isTouchPressed()){
+                hardware.motorForwardBlock(-180);
+                hardware.robotTurn((int) -turningAngle);
             }
-
-            hardware.robotTurn(angle/times);
         }
 
 
-        hardware.robotTurnNonBlock(zigZagAngle);
-
-        while (! hardware.isOnMidpointBW()){
-            mySleep(20);
-        }
-
-        if(hardware.isOnMidpointBW()){
-            hardware.motorStop();
-        }
-
-        return false;
     }
+
+    private void getPassObstacle() {
+        //is the obstacle behind us
+        while(hardware.getDistance() < 2*offsetOfObstacle){
+            //try to go foward a little bit
+            hardware.motorForwardBlock(step);
+
+            //oops
+            if(hardware.isTouchPressed()){
+                //go back and try again
+                System.out.println("trying to correct...");
+                hardware.motorForwardBlock(-180);
+                hardware.robotTurn((int) -turningAngle);
+            }
+        }
+
+        System.out.println("obstacle should be behind us..?");
+    }
+
+
+
 }
