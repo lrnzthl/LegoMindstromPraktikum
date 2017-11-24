@@ -28,7 +28,7 @@ public class Line extends Brains {
 
     @Override
     public void run(){
-
+        hardware.led(9);
         hardware.servoGoUp();
 
         if(hardware.getColorBlack() ==0 || hardware.getColorWhite() == 0){
@@ -48,7 +48,7 @@ public class Line extends Brains {
 
         //we are on the middle
         while(running){
-
+            hardware.led(3);
 
 
             while(hardware.isTouchPressed()){
@@ -69,6 +69,7 @@ public class Line extends Brains {
 
             //alreadyTurned = hardware.getAngle();
             while(! hardware.isOnMidpoint()){
+                hardware.led(8);
                 System.out.println("we have already turned " + alreadyTurned + " angles");
                 System.out.println("Not in middle, trying to rotate, color:" + hardware.readColor());
                 rotateToMiddle();

@@ -1,5 +1,7 @@
 package bulldozer.main;
 
+import lejos.hardware.Sound;
+
 public abstract class Brains extends Thread{
 
     protected boolean running;
@@ -45,6 +47,7 @@ public abstract class Brains extends Thread{
 
             if(hardware.foundBeacon(beaconColor, -1)){
                 System.out.println("Beacon is found");
+                Sound.beepSequenceUp();
                 returnValue = 1;
                 running = false;
                 break;

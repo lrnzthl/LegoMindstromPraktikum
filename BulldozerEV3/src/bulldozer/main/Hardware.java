@@ -107,9 +107,7 @@ public class Hardware {
 
 
     /**
-     * NOT WORKING
      *
-     * RGB Mode has to be activated. Otherwise return will always be false.
      * @return true, if we found the beacon
      */
     public boolean foundBeacon(float[] color, float tolerance) {
@@ -142,15 +140,17 @@ public class Hardware {
     	return returnValue;
     }
 
+
+    /**
+     * initializes the sensors
+     */
     public void startSensors() {
         System.out.println("Starting sensors..");
-
 
         if(! sensors.isInit()){
             System.out.println("Cannot start, sensors must be initialized!");
             return;
         }
-
 
         sensors.start();
         System.out.println("Sensors are started");
@@ -273,8 +273,18 @@ public class Hardware {
         return init;
     }
 
-    public void ledWhite(){
-        Button.LEDPattern(1);
+
+    /**
+     * /*
+     0: turn off button lights
+     1/2/3: static light green/red/yellow
+     4/5/6: normal blinking light green/red/yellow
+     7/8/9: fast blinking light green/red/yellow
+     >9: same as 9.
+     * @param color
+     */
+    public void led(int color){
+        Button.LEDPattern(color);
     }
 
 
