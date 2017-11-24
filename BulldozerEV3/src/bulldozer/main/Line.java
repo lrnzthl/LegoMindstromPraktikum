@@ -52,7 +52,6 @@ public class Line extends Brains {
 
 
             while(hardware.isTouchPressed()){
-                hardware.beep();
                 System.out.println("Touch is pressed, cannot go forward");
                 mySleep(delay);
             }

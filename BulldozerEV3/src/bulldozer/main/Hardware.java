@@ -296,6 +296,7 @@ public class Hardware {
 
         if (Float.compare(sensors.touch(), (float)0) > 0){
             System.out.println("Touch is pressed, yes");
+            beep();
             return true;
         }
 
