@@ -8,15 +8,14 @@ public class Line extends Brains {
     //rotaion for motors to go forward
     private final int step = 45;
     private final float Kp = 2.5f;
-    private float[] beaconColor = {0.306f,0.071f,0.215f}; //red
 
-    private final int delay = 30; //ms
+    private final int delay = 30; //different delays in ms
     private float turningAngle = 10.f;
-    private float alreadyTurned = 0.f;
+    private float alreadyTurned = 0.f; //already turned angle
 
     private int zigZagAngle = 10;
 
-    private long lastReset = 0;
+    private long lastReset = 0; //last time we have resetted the time
 
     private int offsetOfObstacle = 8; //in cm
 
@@ -26,7 +25,6 @@ public class Line extends Brains {
         super(hardware);
         beaconColor = new float[]{0.306f,0.071f,0.215f}; //red
     }
-
 
 
 
