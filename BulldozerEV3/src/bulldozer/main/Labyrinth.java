@@ -5,12 +5,12 @@ public class Labyrinth extends Brains {
     private final int step = 45;
     private final int delay = 30; //ms
     private final float Kp = 2.5f;
-    private float[] beaconColor = {0.0f,0.3f,0.0f}; //red
     private float turningAngle = 10.f;
     private long lastReset;
 
     public Labyrinth(Hardware hardware){
         super(hardware);
+        beaconColor = new float[]{0.0f, 0.3f, 0.0f};
     }
 
     @Override
