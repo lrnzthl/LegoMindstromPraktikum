@@ -92,7 +92,7 @@ public class OurColor {
 
         final OurColor other = (OurColor) obj;
 
-g
+
         float lowerMultiply = 1.f - tolerance;
         float upperMultiply = 1.f + tolerance;
 
