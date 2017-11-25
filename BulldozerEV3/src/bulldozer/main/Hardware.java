@@ -111,8 +111,11 @@ public class Hardware {
         if(color.equals(new OurColor(-1.f, -1.f, -1.f))) {
     		return false;
     	}
-    	
-    	boolean returnValue = false;
+
+    	return color.equalsTolerance(this.readColor());
+
+    	/*
+        boolean returnValue = false;
     	int checkComponents = 0;
     	
     	float lowerMultiply = 1.f - tolerance;
@@ -127,6 +130,7 @@ public class Hardware {
     									   color.getBlue()*upperMultiply);
    
     	return sensorColors.isGreaterThan(lowerColor) && sensorColors.isLessThan(upperColor);
+    	*/
     }
 
 
