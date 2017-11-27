@@ -11,7 +11,7 @@ public class Bridge extends Brains {
 
     public Bridge(Hardware hardware) {
         super(hardware);
-        beaconColor = new OurColor(0.306f,0.071f,0.215f); //red
+        beaconColor = new CColor(0.306f,0.071f,0.215f); //red
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setMotorAccelaration(motorAccelaration);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);

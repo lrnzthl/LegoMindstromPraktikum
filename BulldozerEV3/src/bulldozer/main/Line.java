@@ -1,8 +1,5 @@
 package bulldozer.main;
 
-import bulldozer.main.Hardware.ButtonType;
-import com.sun.org.apache.xpath.internal.SourceTree;
-
 public class Line extends Brains {
 
     //rotaion for motors to go forward
@@ -31,7 +28,7 @@ public class Line extends Brains {
 
     public Line(Hardware hardware) {
         super(hardware);
-        beaconColor = new OurColor(0.306f,0.071f,0.215f); //red
+        beaconColor = new CColor(0.306f,0.071f,0.215f); //red
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setMotorAccelaration(motorAccelaration);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);

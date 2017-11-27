@@ -46,6 +46,11 @@ public class Hardware {
     private float colorBlack = (float) 0.05;
     private float colorRed = (float) 0.15;
 
+    private CColor red = new CColor(0.339f, 0.087f, 0.032f);
+    private CColor blue = new CColor(0.050f, 0.17f, 0.13f);
+    private CColor white = new CColor(0.296f, 0.474f, 0.232f);
+    private CColor black = new CColor(0.054f, 0.091f, 0.028f);
+
     public Hardware(){
         //copy the values after first calibration
 
@@ -106,8 +111,8 @@ public class Hardware {
      *
      * @return true, if we found the beacon
      */
-    public boolean foundBeacon(OurColor color, float tolerance) {
-        if(color.equals(new OurColor(-1.f, -1.f, -1.f))) {
+    public boolean foundBeacon(CColor color, float tolerance) {
+        if(color.equals(new CColor(-1.f, -1.f, -1.f))) {
     		return false;
     	}
 
@@ -120,11 +125,11 @@ public class Hardware {
     	float lowerMultiply = 1.f - tolerance;
     	float upperMultiply = 1.f + tolerance;
     	
-    	OurColor sensorColors = this.readRGBColor();
-    	OurColor lowerColor = new OurColor(color.getRed()*lowerMultiply, 
+    	CColor sensorColors = this.readRGBColor();
+    	CColor lowerColor = new CColor(color.getRed()*lowerMultiply,
     									   color.getGreen()*lowerMultiply, 
     									   color.getBlue()*lowerMultiply);
-    	OurColor upperColor = new OurColor(color.getRed()*upperMultiply, 
+    	CColor upperColor = new CColor(color.getRed()*upperMultiply,
     									   color.getGreen()*upperMultiply, 
     									   color.getBlue()*upperMultiply);
    
@@ -159,7 +164,7 @@ public class Hardware {
         return sensors.color();
     }
     
-    public OurColor readRGBColor() {
+    public CColor readRGBColor() {
     	return sensors.colorRGB();
     }
 
@@ -516,11 +521,12 @@ public class Hardware {
     }
 
     public void servoGoUp(){
-        servo.rotate(-100);
+        servo.rotate(-90);
     }
 
     public void servoGoDown(){
-        servo.rotate(100);
+
+        servo.rotate(90);
     }
 
     public boolean isEscapeUp(){

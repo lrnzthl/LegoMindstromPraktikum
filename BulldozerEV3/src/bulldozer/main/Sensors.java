@@ -11,7 +11,7 @@ public class Sensors extends Thread{
 
 
     private float touch;//, distance;
-    private OurColor color;
+    private CColor color;
 
 
 
@@ -60,7 +60,7 @@ public class Sensors extends Thread{
         try {
             while (true) {
                 this.touch = this.Stouch.getSample();
-                this.color = new OurColor (this.Scolor.getSample(true));  //return rgb mode sample
+                this.color = new CColor(this.Scolor.getSample(true));  //return rgb mode sample
 
                // this.distance = this.Sdistance.getSample();
 
@@ -87,7 +87,7 @@ public class Sensors extends Thread{
      * @return Returns Array with Index 0 = Red; 1 = Green; 2 = Blue.
      * Values are in the range [0,1].
      */
-    public OurColor colorRGB() {    		
+    public CColor colorRGB() {
         return color;
     }
 

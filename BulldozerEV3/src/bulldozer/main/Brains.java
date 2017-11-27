@@ -7,12 +7,12 @@ public abstract class Brains extends Thread{
 	
     protected boolean running;
     protected Hardware hardware;
-    protected OurColor beaconColor;
+    protected CColor beaconColor;
     protected int returnValue = -1;
 
     public Brains(Hardware hardware){
         running = false;
-        beaconColor = new OurColor(-1.f, -1.f, -1.f);
+        beaconColor = new CColor(-1.f, -1.f, -1.f);
         //checking if the hardware is initialized properly
         if(hardware != null || hardware.isInit() ){
             this.hardware = hardware;

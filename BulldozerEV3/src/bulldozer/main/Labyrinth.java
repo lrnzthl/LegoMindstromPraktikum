@@ -16,7 +16,7 @@ public class Labyrinth extends Brains {
 
     public Labyrinth(Hardware hardware){
         super(hardware);
-        beaconColor = new OurColor(0.54f, 0.16f, 0.10f); //should be blue
+        beaconColor = new CColor(0.54f, 0.16f, 0.10f); //should be blue
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setMotorAccelaration(motorAccelaration);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
