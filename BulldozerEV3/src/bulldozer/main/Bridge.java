@@ -2,7 +2,7 @@ package bulldozer.main;
 
 public class Bridge extends Brains {
 
-    private int motorMaxSpeedProcentage = 60;
+    private int motorMaxSpeedProcentage = 10;
     //default value is 6000
     private int motorAccelaration = 6000;
     private double turnSpeedProcentage = 0.4;
@@ -21,11 +21,13 @@ public class Bridge extends Brains {
     @Override
     public void run() {
         hardware.led(9);
-        hardware.servoGoDown();
+        hardware.servoGoUp();
 
 
         while(running) {
-            hardware.mot
+
+            System.out.println(hardware.getAngle());
+            mySleep(20);
         }
 
     }

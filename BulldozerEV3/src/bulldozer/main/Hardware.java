@@ -59,6 +59,7 @@ public class Hardware {
     public Hardware(){
         //copy the values after first calibration
 
+        led(3);
 
         System.out.println("Hardware is being initialized...");
 
@@ -79,10 +80,10 @@ public class Hardware {
         System.out.println("Color ok");
        
        EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
-       System.out.println("Ultra on");
+       System.out.println("Ultra ok");
 
        EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
-       System.out.println("Gyro Ev3 on");
+       System.out.println("Gyro Ev3 ok");
 
        SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
        SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "RGB");
@@ -202,15 +203,10 @@ public class Hardware {
     }
 
     public void robotTurnBlock(int angle) {
+            motorsWaitStopMoving();
 
-            //90 grad is 540
-            //robotTurnGyro(angle);
-            //return;
-
-            //360 * (2 * pi) / ( (1/4) *2*pi*r1)
             int absoluteAngle = angle * 6;
 
-            //motorsWaitStopMoving();
             motorSetSpeedProcentage(turnSpeedProcentage);
 
             synchMotors();
@@ -226,6 +222,10 @@ public class Hardware {
             deSynchMotors();
 
             motorsWaitStopMoving();
+    }
+
+    public boolean isRightUp() {
+        return Button.LEFT.isUp();
     }
 
 
@@ -354,9 +354,10 @@ public class Hardware {
     }
 
     public void motorForwardBlock(int angle){
+        motorsWaitStopMoving();
         synchMotors();
 
-        motRight.rotate(angle);
+        motRight.rotate(angle, true);
         motLeft.rotate(angle); //in case this works automatic with the first motor
 
         deSynchMotors();
@@ -387,7 +388,7 @@ public class Hardware {
      */
     public void motorSetSpeedProcentage(double procentage){
 
-        //System.out.println("Setting speed to " + procentage + " procent");
+        System.out.println("Setting speed to " + procentage + " procent");
 
         int motorAbsoluteSpeed = (int) Math.round( procentage * (motRight.getMaxSpeed() * motorMaxSpeedProcentage /100)  );
         motRight.setSpeed(motorAbsoluteSpeed);
@@ -561,18 +562,18 @@ public class Hardware {
      * @return current angle, read from the gyro sensor
      */
     public float getAngle(){
-        return sensors.getAngle();
+        return -sensors.getAngle();
     }
 
     public void servoGoUp(){
-        servo.rotate(-100);
-        servo.flt();
+        servo.rotate(-90);
+        //servo.flt();
     }
 
     public void servoGoDown(){
 
         servo.rotate(90);
-        servo.flt();
+        //servo.flt();
     }
 
     public boolean isEscapeUp(){
@@ -605,7 +606,8 @@ public class Hardware {
     private void updateOrientation(){
     	float resetTolerance = 0.2f;
     	if(orientationHistory.isEmpty()){
-    		orientationHistory.add(getAngle());
+            System.out.println("it is empty, so we add, no conditions");
+            orientationHistory.add(getAngle());
     	} else {
     		float average = 0.f;
     		float angle = getAngle();
@@ -613,14 +615,17 @@ public class Hardware {
     			average += value;
     		}
     		average /= orientationHistory.size();
-    		if((Math.abs(average-angle) / angle) > resetTolerance){
-    			orientationHistory.clear();
+    		if((Math.abs(average-angle) ) > Math.abs(angle)*resetTolerance){
+                System.out.println("differnce is above tolerance, claer the list");
+                orientationHistory.clear();
     		}
     		orientationHistory.add(angle);
     		if(orientationHistory.size() > maxOrHistorySize){
     			orientationHistory.removeLast();
     		}
     	}
+
+        System.out.println("after update orientation " + orientationHistory);
     }
     
     /**
@@ -628,7 +633,9 @@ public class Hardware {
      * @return -1 if too less measurepoints are available. Otherwise eastimate an angle.
      */
     public int estimateOrientation(){
-    	if(orientationHistory.size() < 3){
+        System.out.println("Last values: " + orientationHistory);
+
+    	if(orientationHistory.size() < 2){
     		return -1;
     	}
     	float average = 0.f;
