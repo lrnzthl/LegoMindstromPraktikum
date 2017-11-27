@@ -95,12 +95,12 @@ public class Line extends Brains {
             System.out.println("Nope >80, probably end of the line!?!?");
 
             //go back alreadyTurned degrees to the right
-            hardware.robotTurn(Math.round(alreadyTurned));
+            hardware.robotTurnGyro(Math.round(alreadyTurned));
 
             zigZagMovements();
             return;
         }
-        hardware.robotTurn( -toTurn );
+        hardware.robotTurnGyro( -toTurn );
     }
     
     private double getSpeed(long diff){
@@ -162,7 +162,7 @@ public class Line extends Brains {
 
         //rotate right
         System.out.println("turning right...");
-        hardware.robotTurn(90);
+        hardware.robotTurnGyro(90);
 
         hardware.motorForwardBlock(offsetXobstacle);
 
@@ -171,7 +171,7 @@ public class Line extends Brains {
             //go back and try again
             System.out.println("trying to correct...");
             hardware.motorForwardBlock(-180);
-            hardware.robotTurn((int) turningAngle);
+            hardware.robotTurnGyro((int) turningAngle);
             hardware.motorForwardBlock(180);
         }
 
@@ -179,7 +179,7 @@ public class Line extends Brains {
 
         //obstacle is behind us
         //rotate left
-        hardware.robotTurn(-90);
+        hardware.robotTurnGyro(-90);
 
         hardware.motorForwardBlock(offsetYobstacle);
 
@@ -188,21 +188,21 @@ public class Line extends Brains {
             //go back and try again
             System.out.println("trying to correct...");
             hardware.motorForwardBlock(-180);
-            hardware.robotTurn((int) turningAngle);
+            hardware.robotTurnGyro((int) turningAngle);
             hardware.motorForwardBlock(180);
         }
 
         System.out.println("Obstacle should be behind us: 2");
 
         //turn left, we should be close to the white line
-        hardware.robotTurn(-90);
+        hardware.robotTurnGyro(-90);
 
         while( !hardware.isOnMidpointBW()){
             hardware.motorForwardBlock(step);
 
             if(hardware.isTouchPressed()){
                 hardware.motorForwardBlock(-180);
-                hardware.robotTurn((int) -turningAngle);
+                hardware.robotTurnGyro((int) -turningAngle);
             }
         }
     }
@@ -218,7 +218,7 @@ public class Line extends Brains {
 
         //rotate right
         System.out.println("turning right...");
-        hardware.robotTurn(90);
+        hardware.robotTurnGyro(90);
 
         tryToMove(offsetXobstacle);
 
@@ -226,21 +226,21 @@ public class Line extends Brains {
 
         //obstacle is behind us
         //rotate left
-        hardware.robotTurn(-90);
+        hardware.robotTurnGyro(-90);
 
         tryToMove(offsetYobstacle);
 
         System.out.println("Obstacle should be behind us: 2");
 
         //turn left, we should be close to the white line
-        hardware.robotTurn(-90);
+        hardware.robotTurnGyro(-90);
 
         while( !hardware.isOnMidpointBW()){
             hardware.motorForwardBlock(step);
 
             if(hardware.isTouchPressed()){
                 hardware.motorForwardBlock(-180);
-                hardware.robotTurn((int) -turningAngle);
+                hardware.robotTurnGyro((int) -turningAngle);
             }
         }
 
@@ -264,7 +264,7 @@ public class Line extends Brains {
 
                 //turn around and try to finish it
                 hardware.motorForwardBlock(-180);
-                hardware.robotTurn((int) -turningAngle);
+                hardware.robotTurnGyro((int) -turningAngle);
                 tryToMove(toTurnLeft);
             }
 
