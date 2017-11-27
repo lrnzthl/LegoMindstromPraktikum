@@ -8,9 +8,18 @@ public class Labyrinth extends Brains {
     private float turningAngle = 10.f;
     private long lastReset;
 
+    private int motorMaxSpeedProcentage = 60;
+    //default value is 6000
+    private int motorAccelaration = 6000;
+    private double turnSpeedProcentage = 0.4;
+    //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
+
     public Labyrinth(Hardware hardware){
         super(hardware);
         beaconColor = new OurColor(0.54f, 0.16f, 0.10f); //should be blue
+        hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
+        hardware.setMotorAccelaration(motorAccelaration);
+        hardware.setTurnSpeedProcentage(turnSpeedProcentage);
     }
 
     @Override
