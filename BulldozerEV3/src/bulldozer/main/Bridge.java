@@ -25,7 +25,7 @@ public class Bridge extends Brains {
 
 
         while(running) {
-            System.out.println(hardware.readRGBColor());
+            hardware.mot
         }
 
     }

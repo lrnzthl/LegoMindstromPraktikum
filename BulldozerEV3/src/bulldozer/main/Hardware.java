@@ -208,6 +208,34 @@ public class Hardware {
         this.turnSpeedProcentage = turnSpeedProcentage;
     }
 
+    public void robotTurnBlock(int angle) {
+
+            //90 grad is 540
+            //robotTurnGyro(angle);
+            //return;
+
+            //360 * (2 * pi) / ( (1/4) *2*pi*r1)
+            int absoluteAngle = angle * 6;
+
+            //motorsWaitStopMoving();
+            motorSetSpeedProcentage(turnSpeedProcentage);
+
+            synchMotors();
+
+            if(angle < 0){
+                motLeft.rotate(absoluteAngle, true);
+                motRight.rotate(-absoluteAngle, true);
+            }else{
+                motRight.rotate(-absoluteAngle, true);
+                motLeft.rotate(absoluteAngle, true);
+            }
+
+            deSynchMotors();
+
+            motorsWaitStopMoving();
+    }
+
+
     public enum ButtonType {
         UP, DOWN, LEFT, RIGHT, ENTER, ESCAPE, NONE
     }
@@ -323,6 +351,15 @@ public class Hardware {
      * function blocks until the movement is done!
      *
      */
+    public void motorForward(int angle){
+        synchMotors();
+
+        motRight.rotate(angle);
+        motLeft.rotate(angle); //in case this works automatic with the first motor
+
+        deSynchMotors();
+    }
+
     public void motorForwardBlock(int angle){
         synchMotors();
 
@@ -330,6 +367,8 @@ public class Hardware {
         motLeft.rotate(angle); //in case this works automatic with the first motor
 
         deSynchMotors();
+
+        motorsWaitStopMoving();
     }
 
     /**
@@ -355,7 +394,7 @@ public class Hardware {
      */
     public void motorSetSpeedProcentage(double procentage){
 
-        System.out.println("Setting speed to " + procentage + " procent");
+        //System.out.println("Setting speed to " + procentage + " procent");
 
         int motorAbsoluteSpeed = (int) Math.round( procentage * (motRight.getMaxSpeed() * motorMaxSpeedProcentage /100)  );
         motRight.setSpeed(motorAbsoluteSpeed);
@@ -532,12 +571,14 @@ public class Hardware {
     }
 
     public void servoGoUp(){
-        servo.rotate(-90);
+        servo.rotate(-100);
+        servo.flt();
     }
 
     public void servoGoDown(){
 
         servo.rotate(90);
+        servo.flt();
     }
 
     public boolean isEscapeUp(){

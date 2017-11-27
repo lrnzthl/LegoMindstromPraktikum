@@ -10,7 +10,7 @@ public class Line extends Brains {
     private float turningAngle = 10.f;
     private float alreadyTurned = 0.f; //already turned angle
 
-    private int zigZagAngle = 30;
+    private int zigZagAngle = 20;
 
     private long lastReset = 0; //last time we have resetted the time
 
@@ -23,7 +23,7 @@ public class Line extends Brains {
     //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
 
 
-    private int offsetYobstacle= 500; //lenght of obstacle
+    private int offsetYobstacle= 1000; //lenght of obstacle
     private int offsetXobstacle = 500; //lenght of obstacle
 
     public Line(Hardware hardware) {
@@ -65,7 +65,7 @@ public class Line extends Brains {
 
             hardware.motorSetSpeedProcentage(getSpeed(diff));
 
-            hardware.motorForwardBlock(step);
+            hardware.motorForward(step);
 
             //alreadyTurned = hardware.getAngle();
             while(! hardware.isOnMidpointBW()){
@@ -156,52 +156,63 @@ public class Line extends Brains {
     }
 
     private void goAroundObstacle() {
-        assert(hardware.isTouchPressed());
 
+        hardware.motorSetSpeedProcentage(0.8);
+
+        System.out.println("going a little bit back");
         hardware.motorForwardBlock(-180);
+
+
 
         //rotate right
         System.out.println("turning right...");
-        hardware.robotTurn(90);
+        hardware.robotTurnBlock(90);
+
+
 
         hardware.motorForwardBlock(offsetXobstacle);
 
+
         //oops
-        while(!hardware.isTouchPressed()){
+        while(hardware.isTouchPressed()){
             //go back and try again
             System.out.println("trying to correct...");
-            hardware.motorForwardBlock(-180);
+            hardware.motorForward(-180);
             hardware.robotTurn((int) turningAngle);
-            hardware.motorForwardBlock(180);
+            hardware.motorForward(180);
         }
 
         System.out.println("Obstacle should be behind us: 1");
 
         //obstacle is behind us
         //rotate left
-        hardware.robotTurn(-90);
+        hardware.robotTurnBlock(-90);
+
 
         hardware.motorForwardBlock(offsetYobstacle);
 
+
         //oops
-        while(!hardware.isTouchPressed()){
+        while(hardware.isTouchPressed()){
             //go back and try again
             System.out.println("trying to correct...");
-            hardware.motorForwardBlock(-180);
+            hardware.motorForward(-180);
             hardware.robotTurn((int) turningAngle);
-            hardware.motorForwardBlock(180);
+            hardware.motorForward(180);
         }
 
         System.out.println("Obstacle should be behind us: 2");
 
         //turn left, we should be close to the white line
-        hardware.robotTurn(-90);
+        hardware.robotTurnBlock(-90);
+
+
 
         while( !hardware.isOnMidpointBW()){
-            hardware.motorForwardBlock(step);
+            hardware.motorForward(step);
 
             if(hardware.isTouchPressed()){
-                hardware.motorForwardBlock(-180);
+                hardware.motorForward(-180);
                 hardware.robotTurn((int) -turningAngle);
             }
         }
@@ -214,7 +225,7 @@ public class Line extends Brains {
         assert(hardware.isTouchPressed());
 
 
-        hardware.motorForwardBlock(-180);
+        hardware.motorForward(-180);
 
         //rotate right
         System.out.println("turning right...");
@@ -236,10 +247,10 @@ public class Line extends Brains {
         hardware.robotTurn(-90);
 
         while( !hardware.isOnMidpointBW()){
-            hardware.motorForwardBlock(step);
+            hardware.motorForward(step);
 
             if(hardware.isTouchPressed()){
-                hardware.motorForwardBlock(-180);
+                hardware.motorForward(-180);
                 hardware.robotTurn((int) -turningAngle);
             }
         }
@@ -252,6 +263,7 @@ public class Line extends Brains {
      * @param angle; If the touch sensor is pressed, the robot goes back a bit and tries finish what he has left
      */
     private void tryToMove(int angle){
+        System.out.println("try to move...");
         int currentMotorAngle = hardware.getMotorAngle();
         hardware.motorForwardNonBlock(angle);
 
@@ -263,7 +275,7 @@ public class Line extends Brains {
                 int toTurnLeft = offsetXobstacle - currentMotorAngle;
 
                 //turn around and try to finish it
-                hardware.motorForwardBlock(-180);
+                hardware.motorForward(-180);
                 hardware.robotTurn((int) -turningAngle);
                 tryToMove(toTurnLeft);
             }

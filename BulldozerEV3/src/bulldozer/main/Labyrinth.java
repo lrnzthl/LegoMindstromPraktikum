@@ -30,7 +30,7 @@ public class Labyrinth extends Brains {
     	//Drive the distance between the blue beacon line and the white labyrinth
     	while(!hardware.isOnWhite()){
     		hardware.motorSetSpeedProcentage(1.0);
-            hardware.motorForwardBlock(step);
+            hardware.motorForward(step);
     	}
     	
     	//Turn to be in an initial position on the line
@@ -46,7 +46,7 @@ public class Labyrinth extends Brains {
             long diff = now - lastReset;
 
             hardware.motorSetSpeedProcentage(getSpeed(diff));
-            hardware.motorForwardBlock(step);
+            hardware.motorForward(step);
             
             //alreadyTurned = hardware.getAngle();
             while(! hardware.isOnMidpointBW()){

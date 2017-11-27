@@ -1,7 +1,8 @@
 package bulldozer.main;
 
 
-
+import com.jcraft.jsch.HASH;
+import lejos.hardware.Sound;
 
 public class Menu {
 
@@ -39,6 +40,7 @@ public class Menu {
     public void start(){
         boolean running = true;
         showOptions();
+        Sound.twoBeeps();
         while (running) {
             
             int newSelectedState;
