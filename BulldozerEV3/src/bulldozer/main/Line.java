@@ -12,16 +12,11 @@ public class Line extends Brains {
 
     private int zigZagAngle = 20;
 
-    private long lastReset = 0; //last time we have resetted the time
-
-
+    private long lastReset = 0; //last time we have resetted the time counter
 
     private int motorMaxSpeedProcentage = 60;
-    //default value is 6000
-    private int motorAccelaration = 6000;
     private double turnSpeedProcentage = 0.35;
     //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
-
 
     private int offsetXobstacle = 670; //length of obstacle
     private int offsetYobstacle = 1600;
@@ -31,7 +26,6 @@ public class Line extends Brains {
         super(hardware);
         beaconColor = new CColor(0.306f,0.071f,0.215f); //red
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
-        hardware.setMotorAccelaration(motorAccelaration);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
     }
 
@@ -78,7 +72,7 @@ public class Line extends Brains {
                 lastReset = System.currentTimeMillis();
             }
             initialRotationAngle = hardware.getAngle(); //resetting the variable with how much we've turned
-            System.out.println("Resetting already turned and alreadyTruned: " + initialRotationAngle);
+            System.out.println("Resetting init rot: " + initialRotationAngle);
         }
     }
 
@@ -107,13 +101,18 @@ public class Line extends Brains {
         }
         hardware.robotTurn( -toTurn );
     }
-    
+
+    /**
+     * calculates the speed by
+     * @param diff, delta of the time
+     * @return the speed, in procent
+     */
     private double getSpeed(long diff){
         double accel = 10;
         double minimumOffset = 3; //should be smaller than 8
 
         diff = Math.round(accel * diff);
-        double value = 1.0/(1.0+Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
+        double value = 1.0/  (1.0  +  Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
         //return 40;
         return value;
     }
@@ -167,8 +166,6 @@ public class Line extends Brains {
 
         System.out.println("going a little bit back");
         hardware.motorForwardBlock(-180);
-
-
 
         //rotate right
         System.out.println("turning right...");
