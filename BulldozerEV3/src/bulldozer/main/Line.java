@@ -150,7 +150,7 @@ public class Line extends Brains {
                 mySleep(delay);
             }
 
-            //angle = angle*(-1);
+            angle = angle*(-1);
         }
 
     }
