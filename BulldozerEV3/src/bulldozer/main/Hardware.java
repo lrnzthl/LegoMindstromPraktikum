@@ -442,7 +442,7 @@ public class Hardware {
         synchMotors();
 
         if(angle < 0){
-            motRight.rotate(absoluteAngle,true);
+            motRight.rotate(Math.abs(absoluteAngle),true);
         }else{
             motLeft.rotate(absoluteAngle, true);
         }
