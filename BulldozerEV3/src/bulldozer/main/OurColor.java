@@ -129,6 +129,6 @@ public class OurColor {
 	}
 
 	public String toString(){
-		return  "color r:"+r+"g:"+g+"b:"+b+", intens:"+getIntensity();
+		return  "color r:"+r+", g:"+g+", b:"+b+", intens:"+getIntensity();
 	}
 }

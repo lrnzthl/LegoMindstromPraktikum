@@ -1,6 +1,5 @@
 package bulldozer.main;
 
-import java.util.Scanner;
 
 
 import lejos.hardware.Sound;
@@ -13,7 +12,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 import lejos.hardware.Button	;
 import lejos.robotics.RegulatedMotor;
-import sun.management.Sensor;
+
 
 
 public class Hardware {
