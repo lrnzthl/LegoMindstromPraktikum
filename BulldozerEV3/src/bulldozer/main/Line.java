@@ -17,12 +17,24 @@ public class Line extends Brains {
 
     private long lastReset = 0; //last time we have resetted the time
 
+
+
+    private int motorMaxSpeedProcentage = 60;
+    //default value is 6000
+    private int motorAccelaration = 6000;
+    private double turnSpeedProcentage = 0.4;
+    //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
+
+
     private int offsetYobstacle= 500; //lenght of obstacle
     private int offsetXobstacle = 500; //lenght of obstacle
 
     public Line(Hardware hardware) {
         super(hardware);
         beaconColor = new OurColor(0.306f,0.071f,0.215f); //red
+        hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
+        hardware.setMotorAccelaration(motorAccelaration);
+        hardware.setTurnSpeedProcentage(turnSpeedProcentage);
     }
 
     @Override

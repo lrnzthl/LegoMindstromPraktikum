@@ -192,6 +192,18 @@ public class Hardware {
         return motRight.getTachoCount();
     }
 
+    public void setMotorMaxSpeedProcentage(int motorMaxSpeedProcentage) {
+        this.motorMaxSpeedProcentage = motorMaxSpeedProcentage;
+    }
+
+    public void setMotorAccelaration(int motorAccelaration) {
+        this.motorAccelaration = motorAccelaration;
+    }
+
+    public void setTurnSpeedProcentage(double turnSpeedProcentage) {
+        this.turnSpeedProcentage = turnSpeedProcentage;
+    }
+
     public enum ButtonType {
         UP, DOWN, LEFT, RIGHT, ENTER, ESCAPE, NONE
     }
