@@ -10,6 +10,9 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
+
+import java.util.LinkedList;
+
 import lejos.hardware.Button	;
 import lejos.robotics.RegulatedMotor;
 
@@ -20,6 +23,8 @@ public class Hardware {
     private boolean buttonHold;
     private EV3LargeRegulatedMotor motLeft, motRight, servo;
     private Sensors sensors;
+    private LinkedList<Float> orientationHistory;
+    private int maxOrHistorySize = 10;
 
     //in ms, delay between reading the senors
     // preferred value is 20 ms
@@ -79,33 +84,21 @@ public class Hardware {
        EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
        System.out.println("Gyro Ev3 on");
 
-
        SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
        SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "RGB");
        SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultraSensor, "Distance");
        SingleValueSensorWrapper gyro = new SingleValueSensorWrapper(gyroSensor, "Angle");
 
        System.out.println("wrappers ready");
-
-
-
        sensors = new Sensors(sensorReadDelay, touch, col, dist, gyro);
-
-
 
         initialize();
 
-        if(!init){
-            System.out.println("WARNING: Hardware not initialized properly");
-        }
-
-
-
-
-
+	    if(!init){
+	        System.out.println("WARNING: Hardware not initialized properly");
+	    }
+	    orientationHistory = new LinkedList<Float>();
     }
-
-
 
     /**
      *
@@ -516,6 +509,7 @@ public class Hardware {
      */
     public boolean isOnMidpointBW(){
         if(sensors.color() < midPointBWHigh && sensors.color() > midPointBWLow){
+        	updateOrientation();
             System.out.println("I am on the middle");
             return true;
         }
@@ -565,5 +559,42 @@ public class Hardware {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+    
+    private void updateOrientation(){
+    	float resetTolerance = 0.2f;
+    	if(orientationHistory.isEmpty()){
+    		orientationHistory.add(getAngle());
+    	} else {
+    		float average = 0.f;
+    		float angle = getAngle();
+    		for(float value : orientationHistory){
+    			average += value;
+    		}
+    		average /= orientationHistory.size();
+    		if((Math.abs(average-angle) / angle) > resetTolerance){
+    			orientationHistory.clear();
+    		}
+    		orientationHistory.add(angle);
+    		if(orientationHistory.size() > maxOrHistorySize){
+    			orientationHistory.removeLast();
+    		}
+    	}
+    }
+    
+    /**
+     * 
+     * @return -1 if too less measurepoints are available. Otherwise eastimate an angle.
+     */
+    public int estimateOrientation(){
+    	if(orientationHistory.size() < 3){
+    		return -1;
+    	}
+    	float average = 0.f;
+		for(float value : orientationHistory){
+			average += value;
+		}
+		average /= orientationHistory.size();
+		return Math.round(average);
     }
 }
