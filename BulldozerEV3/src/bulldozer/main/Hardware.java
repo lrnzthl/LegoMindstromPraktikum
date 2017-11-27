@@ -382,6 +382,8 @@ public class Hardware {
      */
     public void robotTurn(int angle){
         //90 grad is 540
+        //robotTurnGyro(angle);
+        //return;
 
         //360 * (2 * pi) / ( (1/4) *2*pi*r1)
         int absoluteAngle = angle * 6;
@@ -399,9 +401,8 @@ public class Hardware {
             motLeft.rotate(absoluteAngle, true);
         }
 
-        System.out.println("Rotation is send");
-
         deSynchMotors();
+
     }
 
 
@@ -411,24 +412,34 @@ public class Hardware {
 
         motorSetSpeedProcentage(turnSpeedProcentage);
 
-        int finalAngleToReach = Math.round(getAngle()) + angle;
+        System.out.println("current: "+ getAngle());
+        float finalAngleToReach = getAngle() + angle;
+        System.out.println("finalAngleToReach " + finalAngleToReach);
 
         //motorsWaitStopMoving();
 
         synchMotors();
 
-        if(angle < 0){
-            motLeft.rotate(angle*2, true);
-            motRight.rotate(-angle*2, true);
-        }else{
-            motRight.rotate(-angle*2, true);
-            motLeft.rotate(angle*2, true);
-        }
-        System.out.println("Rotation is send");
 
-        while( Math.round(getAngle()) < finalAngleToReach){
+
+        // getAngle < finalAngle
+        System.out.println("current: " + getAngle() + " final:"+ finalAngleToReach  );
+        System.out.println("before: " + (Float.compare(getAngle(),finalAngleToReach) < 0) );
+        while( Float.compare(getAngle(),finalAngleToReach) < 0 ){
+            if(angle < 0){
+                motLeft.rotate(angle*20, true);
+                motRight.rotate(-angle*20, true);
+            }else{
+                motRight.rotate(-angle*20, true);
+                motLeft.rotate(angle*20, true);
+            }
+
+            System.out.println("current: " + getAngle() + " final:"+ finalAngleToReach  );
+            System.out.println(" in while ");
+            System.out.println("schleifeinvariant " + (Float.compare(getAngle(),finalAngleToReach) < 0) );
             mySleep(5);
         }
+        System.out.println("ready with the turn");
         //when final angle is reached, we should stop the motors
         motorStop();
 
