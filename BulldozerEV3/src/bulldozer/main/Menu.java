@@ -90,7 +90,7 @@ public class Menu {
                 //
                 break;
             case BRIDGE:
-                //
+                brain = new Bridge(hardware);
                 break;
          //   case FINDCOLOUR:
                 //

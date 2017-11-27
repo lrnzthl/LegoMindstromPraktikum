@@ -127,4 +127,8 @@ public class OurColor {
 		}
 	    return returnValue;
 	}
+
+	public String toString(){
+		return  "color r:"+r+"g:"+g+"b:"+b+", intens:"+getIntensity();
+	}
 }
