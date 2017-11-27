@@ -8,7 +8,7 @@ public class Line extends Brains {
 
     private final int delay = 30; //different delays in ms
     private float turningAngle = 10.f;
-    private float alreadyTurned = 0.f; //already turned angle
+    private float initialRotationAngle = 0.f; //already turned angle
 
     private int zigZagAngle = 20;
 
@@ -23,8 +23,8 @@ public class Line extends Brains {
     //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
 
 
-    private int offsetXobstacle = 670; //lenght of obstacle
-    private int offsetYobstacle = 1600; //lenght of obstacle
+    private int offsetXobstacle = 670; //length of obstacle
+    private int offsetYobstacle = 1600;
 
 
     public Line(Hardware hardware) {
@@ -69,16 +69,16 @@ public class Line extends Brains {
 
             hardware.motorForward(step);
 
-            //alreadyTurned = hardware.getAngle();
+            //initialRotationAngle = hardware.getAngle();
             while(! hardware.isOnMidpointBW()){
                 hardware.led(8);
-                System.out.println("we have already turned " + alreadyTurned + " angles");
+                System.out.println("are initial rot. angle:  " + initialRotationAngle);
                 System.out.println("Not in middle, trying to rotate, color:" + hardware.readColor());
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
             }
-            alreadyTurned = hardware.getAngle(); //resetting the variable with how much we've turned
-            System.out.println("Resetting already turned and alreadyTruned: " + alreadyTurned);
+            initialRotationAngle = hardware.getAngle(); //resetting the variable with how much we've turned
+            System.out.println("Resetting already turned and alreadyTruned: " + initialRotationAngle);
         }
     }
 
@@ -87,16 +87,17 @@ public class Line extends Brains {
         float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
         int toTurn = Math.round(correction * turningAngle) ;
 
-        System.out.print(" correction:" + correction+", with angle toTurn:"+toTurn + ".....");
-        System.out.print("current angle:"+(alreadyTurned - hardware.getAngle())+"...");
+        float currentGyroAngle = hardware.getAngle();
+        float angleDiff = initialRotationAngle - currentGyroAngle;
 
-        float angleDiff = alreadyTurned - hardware.getAngle();
+        System.out.println("current gyro angle:" + currentGyroAngle);
+        System.out.print(" correction:" + correction + ", with angle toTurn:"+ toTurn + ".....");
+        System.out.print("current angle:"+ angleDiff +"...");
+
+
 
         if( Math.abs(angleDiff) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
-            
-            //go back alreadyTurned degrees to the right
-            //hardware.robotTurn(- Math.round(angleDiff));
 
             hardware.robotTurn(Math.round(hardware.estimateOrientation() + angleDiff ));
 
@@ -119,7 +120,6 @@ public class Line extends Brains {
 
     /**
      * performs forward zig-zag movements, trying to find right side of the white line
-     * @return true if the midpoint is found
      */
     private void zigZagMovements(){
         System.out.println("starting zig zag");
@@ -129,7 +129,7 @@ public class Line extends Brains {
         int angle = -2*zigZagAngle;
 
         //inital turn
-        hardware.robotTurnNonBlock(initialAngle);
+        hardware.robotTurnNonBlockOneWheel(initialAngle);
         while(hardware.motorsAreMoving()) {
 
             if(hardware.isOnMidpointBW()){
@@ -144,7 +144,7 @@ public class Line extends Brains {
         while(! hardware.isOnMidpointBW()){
             System.out.println("Searching white line...");
 
-            hardware.robotTurnNonBlock(angle);
+            hardware.robotTurnNonBlockOneWheel(angle);
             while(hardware.motorsAreMoving()) {
 
                 if(hardware.isOnMidpointBW()){
@@ -177,16 +177,6 @@ public class Line extends Brains {
         hardware.motorSetSpeedProcentage(motorSpeed);
         hardware.motorForwardBlock(offsetXobstacle);
 
-
-        //oops
-        while(hardware.isTouchPressed()){
-            //go back and try again
-            System.out.println("trying to correct...");
-            hardware.motorForward(-180);
-            hardware.robotTurn((int) turningAngle);
-            hardware.motorForward(180);
-        }
-
         System.out.println("Obstacle should be behind us: 1");
 
         //obstacle is behind us
@@ -196,7 +186,20 @@ public class Line extends Brains {
         hardware.motorSetSpeedProcentage(motorSpeed);
         hardware.motorForwardBlock(offsetYobstacle);
 
+        System.out.println("Obstacle should be behind us: 2");
 
+        //turn left, we should be close to the white line
+        hardware.robotTurnBlock(-90);
+
+        while( !hardware.isOnMidpointBW()){
+            hardware.motorForward(step);
+        }
+
+        hardware.motorStop();
+        initialRotationAngle = hardware.getAngle();
+
+
+        /*
         //oops
         while(hardware.isTouchPressed()){
             //go back and try again
@@ -205,27 +208,7 @@ public class Line extends Brains {
             hardware.robotTurnBlock((int) turningAngle);
             hardware.motorForwardBlock(180);
         }
-
-        System.out.println("Obstacle should be behind us: 2");
-
-        //turn left, we should be close to the white line
-        hardware.robotTurnBlock(-90);
-
-
-
-        while( !hardware.isOnMidpointBW()){
-            hardware.motorForward(step);
-
-           /* if(hardware.isTouchPressed()){
-                hardware.motorForwardBlock(-180);
-                hardware.robotTurnBlock((int) -turningAngle);
-            }
-            */
-        }
-
-        hardware.motorStop();
-        //hardware.robotTurnBlock(30);
-        alreadyTurned = hardware.getAngle();
+        */
     }
 
 

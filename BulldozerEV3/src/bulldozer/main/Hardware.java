@@ -112,23 +112,6 @@ public class Hardware {
 
     	return color.equalsTolerance(this.readColor());
 
-    	/*
-        boolean returnValue = false;
-    	int checkComponents = 0;
-    	
-    	float lowerMultiply = 1.f - tolerance;
-    	float upperMultiply = 1.f + tolerance;
-    	
-    	CColor sensorColors = this.readRGBColor();
-    	CColor lowerColor = new CColor(color.getRed()*lowerMultiply,
-    									   color.getGreen()*lowerMultiply, 
-    									   color.getBlue()*lowerMultiply);
-    	CColor upperColor = new CColor(color.getRed()*upperMultiply,
-    									   color.getGreen()*upperMultiply, 
-    									   color.getBlue()*upperMultiply);
-   
-    	return sensorColors.isGreaterThan(lowerColor) && sensorColors.isLessThan(upperColor);
-    	*/
     }
 
 
@@ -480,13 +463,13 @@ public class Hardware {
     }
 
 
-    public void robotTurnNonBlock(int angle){
-        //%TODO:
+    public void robotTurnNonBlockOneWheel(int angle){
+
         int absoluteAngle = angle * 12;
 
         motorsWaitStopMoving();
 
-        //%TODO: problem with synching motors?
+
         synchMotors();
 
         if(angle < 0){
