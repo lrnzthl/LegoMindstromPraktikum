@@ -26,10 +26,10 @@ public class Hardware {
     // preferred value is 20 ms
     private final int sensorReadDelay = 20;
 
+    /** these are default values, they should be modified in Line, Labyrinth and ..**/
     private int motorMaxSpeedProcentage = 60;
     //default value is 6000
     private int motorAccelaration = 6000;
-
     private double turnSpeedProcentage = 0.4;
     //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
 
