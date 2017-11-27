@@ -59,7 +59,7 @@ public class Hardware {
     public Hardware(){
         //copy the values after first calibration
 
-        led(3);
+        led(9);
 
         System.out.println("Hardware is being initialized...");
 
@@ -98,6 +98,10 @@ public class Hardware {
 	    if(!init){
 	        System.out.println("WARNING: Hardware not initialized properly");
 	    }
+
+	    led(1);
+
+        Sound.setVolume(20);
 	    orientationHistory = new LinkedList<Float>();
     }
 
@@ -285,11 +289,7 @@ public class Hardware {
 
         init = sensors.initialize() ? true : false;
 
-        if(init == true){
-            Button.LEDPattern(1);
-        }else{
-            Button.LEDPattern(5);
-        }
+
         
         return init;
     }

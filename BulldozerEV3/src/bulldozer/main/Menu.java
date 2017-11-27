@@ -41,6 +41,7 @@ public class Menu {
         boolean running = true;
         showOptions();
         Sound.twoBeeps();
+        hardware.led(4);
         while (running) {
             
             int newSelectedState;

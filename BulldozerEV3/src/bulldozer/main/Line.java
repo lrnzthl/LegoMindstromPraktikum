@@ -54,7 +54,7 @@ public class Line extends Brains {
 
         //we are on the middle
         while(running){
-            hardware.led(3);
+            hardware.led(7);
 
             while(hardware.isTouchPressed()){
                 System.out.println("Touch is pressed, cannot go forward");
