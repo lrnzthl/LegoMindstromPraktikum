@@ -404,35 +404,29 @@ public class Hardware {
 
 
     public void robotTurnGyro(int angle){
-        //90 grad is 540
 
-        //360 * (2 * pi) / ( (1/4) *2*pi*r1)
-        int absoluteAngle = angle * 6;
         motorSetSpeedProcentage(turnSpeedProcentage);
 
-        int finalAngleToReach = Math.round(getAngle()) + absoluteAngle;
+        int finalAngleToReach = Math.round(getAngle()) + angle;
 
         //motorsWaitStopMoving();
-
 
         synchMotors();
 
         if(angle < 0){
-            motLeft.rotate(absoluteAngle*2, true);
-            motRight.rotate(-absoluteAngle*2, true);
+            motLeft.rotate(angle*2, true);
+            motRight.rotate(-angle*2, true);
         }else{
-            motRight.rotate(-absoluteAngle*2, true);
-            motLeft.rotate(absoluteAngle*2, true);
+            motRight.rotate(-angle*2, true);
+            motLeft.rotate(angle*2, true);
         }
         System.out.println("Rotation is send");
 
         while( Math.round(getAngle()) < finalAngleToReach){
             mySleep(5);
         }
-
+        //when final angle is reached, we should stop the motors
         motorStop();
-
-
 
         deSynchMotors();
     }
