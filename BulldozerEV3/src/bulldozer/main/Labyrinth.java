@@ -10,7 +10,7 @@ public class Labyrinth extends Brains {
 
     public Labyrinth(Hardware hardware){
         super(hardware);
-        beaconColor = new OurColor(0.0f, 0.3f, 0.0f);
+        beaconColor = new OurColor(0.54f, 0.16f, 0.10f); //should be blue
     }
 
     @Override
