@@ -7,8 +7,8 @@ public class Line extends Brains {
     private final float Kp = 2.5f;
 
     private final int delay = 30; //different delays in ms
-    private float turningAngle = 10.f;
-    private float initialRotationAngle = 0.f; //already turned angle
+    private int turningAngle = 10;
+    private int initialRotationAngle = 0; //already turned angle
 
     private int zigZagAngle = 20;
 
@@ -80,10 +80,12 @@ public class Line extends Brains {
     private void rotateToMiddle() {
 
         float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
-        int toTurn = Math.round(correction * turningAngle) ;
+        //always round to the bigger number, lower possibility of getting 0
+        int toTurn = (int) Math.ceil(correction * turningAngle);
 
-        float currentGyroAngle = hardware.getAngle();
-        float angleDiff = initialRotationAngle - currentGyroAngle;
+
+        int currentGyroAngle = hardware.getAngle();
+        int angleDiff = initialRotationAngle - currentGyroAngle;
 
         System.out.println("current gyro angle:" + currentGyroAngle);
         System.out.print(" correction:" + correction + ", with angle toTurn:"+ toTurn + ".....");

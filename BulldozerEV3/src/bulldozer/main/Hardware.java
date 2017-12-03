@@ -23,7 +23,7 @@ public class Hardware {
     private boolean buttonHold;
     private EV3LargeRegulatedMotor motLeft, motRight, servo;
     private Sensors sensors;
-    private LinkedList<Float> orientationHistory;
+    private LinkedList<Integer> orientationHistory;
     private int maxOrHistorySize = 10;
 
     //in ms, delay between reading the senors
@@ -103,7 +103,7 @@ public class Hardware {
 	    led(1);
 
         Sound.setVolume(20);
-	    orientationHistory = new LinkedList<Float>();
+	    orientationHistory = new LinkedList<>();
     }
 
     /**
@@ -544,8 +544,8 @@ public class Hardware {
      *
      * @return current angle, read from the gyro sensor
      */
-    public float getAngle(){
-        return -sensors.getAngle();
+    public int getAngle(){
+        return Math.round(-sensors.getAngle());
     }
 
     public void servoGoUp(){
@@ -593,11 +593,12 @@ public class Hardware {
             orientationHistory.add(getAngle());
     	} else {
     		float average = 0.f;
-    		float angle = getAngle();
+    		int angle = getAngle();
     		for(float value : orientationHistory){
     			average += value;
     		}
     		average /= orientationHistory.size();
+            //%TODO: Turn avarge-angle to int or compare with Float.compare
     		if((Math.abs(average-angle) ) > Math.abs(angle)*resetTolerance){
                 System.out.println("differnce is above tolerance, claer the list");
                 orientationHistory.clear();
