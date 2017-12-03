@@ -397,7 +397,6 @@ public class Hardware {
      * negative means go left, positive means go right
      */
     public void robotTurn(int angle){
-        //90 grad is 540
         //robotTurnGyro(angle);
         //return;
 
@@ -409,13 +408,9 @@ public class Hardware {
 
         synchMotors();
 
-        if(angle < 0){
-            motLeft.rotate(absoluteAngle, true);
-            motRight.rotate(-absoluteAngle, true);
-        }else{
-            motRight.rotate(-absoluteAngle, true);
-            motLeft.rotate(absoluteAngle, true);
-        }
+        motRight.rotate(-absoluteAngle, true);
+        motLeft.rotate(absoluteAngle, true);
+
 
         deSynchMotors();
 
@@ -425,34 +420,23 @@ public class Hardware {
 
 
     public void robotTurnGyro(int angle){
-
         motorSetSpeedProcentage(turnSpeedProcentage);
 
-        System.out.println("current: "+ getAngle());
-        float finalAngleToReach = getAngle() + angle;
-        System.out.println("finalAngleToReach " + finalAngleToReach);
+        int currentAngle = getAngle();
+        int finalAngleToReach = getAngle() + angle;
+        System.out.println("VOR:current: " + currentAngle + " final:"+ finalAngleToReach  );
 
         //motorsWaitStopMoving();
-
         synchMotors();
 
+        while( currentAngle < finalAngleToReach ){
+            motRight.rotate(-angle*20, true);
+            motLeft.rotate(angle*20, true);
 
+            System.out.println("current: " + currentAngle + " final:"+ finalAngleToReach  );
+            System.out.println("schleifeinvariant " + (currentAngle < finalAngleToReach) );
 
-        // getAngle < finalAngle
-        System.out.println("current: " + getAngle() + " final:"+ finalAngleToReach  );
-        System.out.println("before: " + (Float.compare(getAngle(),finalAngleToReach) < 0) );
-        while( Float.compare(getAngle(),finalAngleToReach) < 0 ){
-            if(angle < 0){
-                motLeft.rotate(angle*20, true);
-                motRight.rotate(-angle*20, true);
-            }else{
-                motRight.rotate(-angle*20, true);
-                motLeft.rotate(angle*20, true);
-            }
-
-            System.out.println("current: " + getAngle() + " final:"+ finalAngleToReach  );
-            System.out.println(" in while ");
-            System.out.println("schleifeinvariant " + (Float.compare(getAngle(),finalAngleToReach) < 0) );
+            currentAngle = getAngle();
             mySleep(5);
         }
         System.out.println("ready with the turn");
