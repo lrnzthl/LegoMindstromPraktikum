@@ -35,11 +35,6 @@ public class Line extends Brains {
         hardware.led(9);
         hardware.servoGoUp();
 
-        if(hardware.getColorBlack() ==0 || hardware.getColorWhite() == 0){
-            System.out.println("Colors not calibrated");
-            returnValue = -1;
-            return;
-        }
 
         while (! hardware.isOnMidpointBW()){
             System.out.println("Put me on between white and black!");
@@ -83,15 +78,12 @@ public class Line extends Brains {
         //always round to the bigger number, lower possibility of getting 0
         int toTurn = (int) Math.ceil(correction * turningAngle);
 
-
         int currentGyroAngle = hardware.getAngle();
         int angleDiff = initialRotationAngle - currentGyroAngle;
 
         System.out.println("current gyro angle:" + currentGyroAngle);
         System.out.print(" correction:" + correction + ", with angle toTurn:"+ toTurn + ".....");
         System.out.print("current angle:"+ angleDiff +"...");
-
-
 
         if( Math.abs(angleDiff) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
@@ -248,7 +240,7 @@ public class Line extends Brains {
 
             if(hardware.isTouchPressed()){
                 hardware.motorForward(-180);
-                hardware.robotTurn((int) -turningAngle);
+                hardware.robotTurn(-turningAngle);
             }
         }
 
@@ -273,17 +265,13 @@ public class Line extends Brains {
 
                 //turn around and try to finish it
                 hardware.motorForward(-180);
-                hardware.robotTurn((int) -turningAngle);
+                hardware.robotTurn(-turningAngle);
                 tryToMove(toTurnLeft);
             }
 
             mySleep(delay);
         }
     }
-
-
-
-
 
 
 }

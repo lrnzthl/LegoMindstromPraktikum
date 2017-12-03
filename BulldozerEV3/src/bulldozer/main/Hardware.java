@@ -48,9 +48,6 @@ public class Hardware {
     private float midPointWRHigh = (float) 0.28;
     private float midPointWRLow = (float) 0.11;
 
-    private float colorWhite = (float) 0.33;
-    private float colorBlack = (float) 0.05;
-    private float colorRed = (float) 0.15;
 
     private CColor red = new CColor(0.339f, 0.087f, 0.032f);
     private CColor blue = new CColor(0.050f, 0.17f, 0.13f);
@@ -507,7 +504,7 @@ public class Hardware {
      * DO NOT USE to check if sensor is on white -> isOnWhite() function
      */
     public float getMidPointBW(){
-        return (colorWhite + colorBlack)/2 + colorBlack;
+        return (white.getIntensity() + black.getIntensity())/2 + black.getIntensity();
     }
 
     /**
@@ -553,13 +550,7 @@ public class Hardware {
 
     public boolean isLeftUp() { return Button.LEFT.isUp(); }
 
-    public float getColorWhite(){
-        return colorWhite;
-    }
 
-    public float getColorBlack(){
-        return colorBlack;
-    }
 
     private void mySleep(int millis) {
         try {
