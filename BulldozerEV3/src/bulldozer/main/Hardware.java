@@ -550,7 +550,7 @@ public class Hardware {
        if(sensors.color() > midPointRBHigh ){
            //System.out.println("sensor on white");
            return true;
-       }else if( sensors.color() < midPointRBLow){
+       }else if( sensors.color() <  midPointRBLow){
            return false;
        }else{
            //System.out.println("Hitting midPoint");
