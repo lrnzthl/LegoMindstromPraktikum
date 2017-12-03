@@ -23,7 +23,7 @@ public class Hardware {
     private boolean buttonHold;
     private EV3LargeRegulatedMotor motLeft, motRight, servo;
     private Sensors sensors;
-    private LinkedList<Float> orientationHistory;
+    private LinkedList<Integer> orientationHistory;
     private int maxOrHistorySize = 10;
 
     //in ms, delay between reading the senors
@@ -34,8 +34,9 @@ public class Hardware {
     private int motorMaxSpeedProcentage = 60;
     //default value is 6000
     private int motorAccelaration = 6000;
-    private double turnSpeedProcentage = 0.4;
-    //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
+
+    private int turnSpeedProcentage = 40;
+    //050 is too much swings back and fort, 25 is okay, just stop, 40 is also all right
 
     //eveyrhing over high is white
     private float midPointBWHigh = (float) 0.28;
@@ -46,11 +47,11 @@ public class Hardware {
 
     private float midPointWRHigh = (float) 0.28;
     private float midPointWRLow = (float) 0.11;
-
     private float colorWhite = (float) 0.33;
     private float colorBlack = (float) 0.05;
     private float colorRed = (float) 0.15;
     private float colorBlue = (float) 0.12;
+
 
     private CColor red = new CColor(0.339f, 0.087f, 0.032f);
     private CColor blue = new CColor(0.050f, 0.17f, 0.13f);
@@ -66,6 +67,7 @@ public class Hardware {
     public Hardware(){
         //copy the values after first calibration
 
+        led(9);
 
         System.out.println("Hardware is being initialized...");
 
@@ -86,10 +88,10 @@ public class Hardware {
         System.out.println("Color ok");
        
        EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
-       System.out.println("Ultra on");
+       System.out.println("Ultra ok");
 
        EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
-       System.out.println("Gyro Ev3 on");
+       System.out.println("Gyro Ev3 ok");
 
        SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
        SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "RGB");
@@ -104,7 +106,11 @@ public class Hardware {
 	    if(!init){
 	        System.out.println("WARNING: Hardware not initialized properly");
 	    }
-	    orientationHistory = new LinkedList<Float>();
+
+	    led(1);
+
+        Sound.setVolume(20);
+	    orientationHistory = new LinkedList<>();
     }
 
     /**
@@ -118,23 +124,6 @@ public class Hardware {
 
     	return color.equalsTolerance(this.readColor());
 
-    	/*
-        boolean returnValue = false;
-    	int checkComponents = 0;
-    	
-    	float lowerMultiply = 1.f - tolerance;
-    	float upperMultiply = 1.f + tolerance;
-    	
-    	CColor sensorColors = this.readRGBColor();
-    	CColor lowerColor = new CColor(color.getRed()*lowerMultiply,
-    									   color.getGreen()*lowerMultiply, 
-    									   color.getBlue()*lowerMultiply);
-    	CColor upperColor = new CColor(color.getRed()*upperMultiply,
-    									   color.getGreen()*upperMultiply, 
-    									   color.getBlue()*upperMultiply);
-   
-    	return sensorColors.isGreaterThan(lowerColor) && sensorColors.isLessThan(upperColor);
-    	*/
     }
 
 
@@ -204,20 +193,15 @@ public class Hardware {
         this.motorAccelaration = motorAccelaration;
     }
 
-    public void setTurnSpeedProcentage(double turnSpeedProcentage) {
+    public void setTurnSpeedProcentage(int turnSpeedProcentage) {
         this.turnSpeedProcentage = turnSpeedProcentage;
     }
 
     public void robotTurnBlock(int angle) {
+            motorsWaitStopMoving();
 
-            //90 grad is 540
-            //robotTurnGyro(angle);
-            //return;
-
-            //360 * (2 * pi) / ( (1/4) *2*pi*r1)
             int absoluteAngle = angle * 6;
 
-            //motorsWaitStopMoving();
             motorSetSpeedProcentage(turnSpeedProcentage);
 
             synchMotors();
@@ -233,6 +217,10 @@ public class Hardware {
             deSynchMotors();
 
             motorsWaitStopMoving();
+    }
+
+    public boolean isRightUp() {
+        return Button.LEFT.isUp();
     }
 
 
@@ -309,11 +297,7 @@ public class Hardware {
 
         init = sensors.initialize() ? true : false;
 
-        if(init == true){
-            Button.LEDPattern(1);
-        }else{
-            Button.LEDPattern(5);
-        }
+
         
         return init;
     }
@@ -361,9 +345,10 @@ public class Hardware {
     }
 
     public void motorForwardBlock(int angle){
+        motorsWaitStopMoving();
         synchMotors();
 
-        motRight.rotate(angle);
+        motRight.rotate(angle, true);
         motLeft.rotate(angle); //in case this works automatic with the first motor
 
         deSynchMotors();
@@ -392,11 +377,10 @@ public class Hardware {
      * sets the speed ot the motor to a procentage of the maximum speed
      * @param procentage; must be between 0 and 1
      */
-    public void motorSetSpeedProcentage(double procentage){
+    public void motorSetSpeedProcentage(int procentage){
 
-        //System.out.println("Setting speed to " + procentage + " procent");
-
-        int motorAbsoluteSpeed = (int) Math.round( procentage * (motRight.getMaxSpeed() * motorMaxSpeedProcentage /100)  );
+        System.out.println("Setting speed to " + procentage + " procent");
+        int motorAbsoluteSpeed = Math.round (motLeft.getMaxSpeed() * procentage / 100 );
         motRight.setSpeed(motorAbsoluteSpeed);
         motLeft.setSpeed(motorAbsoluteSpeed);
     }
@@ -420,7 +404,6 @@ public class Hardware {
      * negative means go left, positive means go right
      */
     public void robotTurn(int angle){
-        //90 grad is 540
         //robotTurnGyro(angle);
         //return;
 
@@ -432,13 +415,9 @@ public class Hardware {
 
         synchMotors();
 
-        if(angle < 0){
-            motLeft.rotate(absoluteAngle, true);
-            motRight.rotate(-absoluteAngle, true);
-        }else{
-            motRight.rotate(-absoluteAngle, true);
-            motLeft.rotate(absoluteAngle, true);
-        }
+        motRight.rotate(-absoluteAngle, true);
+        motLeft.rotate(absoluteAngle, true);
+
 
         deSynchMotors();
 
@@ -448,34 +427,23 @@ public class Hardware {
 
 
     public void robotTurnGyro(int angle){
-
         motorSetSpeedProcentage(turnSpeedProcentage);
 
-        System.out.println("current: "+ getAngle());
-        float finalAngleToReach = getAngle() + angle;
-        System.out.println("finalAngleToReach " + finalAngleToReach);
+        int currentAngle = getAngle();
+        int finalAngleToReach = getAngle() + angle;
+        System.out.println("VOR:current: " + currentAngle + " final:"+ finalAngleToReach  );
 
         //motorsWaitStopMoving();
-
         synchMotors();
 
+        while( currentAngle < finalAngleToReach ){
+            motRight.rotate(-angle*20, true);
+            motLeft.rotate(angle*20, true);
 
+            System.out.println("current: " + currentAngle + " final:"+ finalAngleToReach  );
+            System.out.println("schleifeinvariant " + (currentAngle < finalAngleToReach) );
 
-        // getAngle < finalAngle
-        System.out.println("current: " + getAngle() + " final:"+ finalAngleToReach  );
-        System.out.println("before: " + (Float.compare(getAngle(),finalAngleToReach) < 0) );
-        while( Float.compare(getAngle(),finalAngleToReach) < 0 ){
-            if(angle < 0){
-                motLeft.rotate(angle*20, true);
-                motRight.rotate(-angle*20, true);
-            }else{
-                motRight.rotate(-angle*20, true);
-                motLeft.rotate(angle*20, true);
-            }
-
-            System.out.println("current: " + getAngle() + " final:"+ finalAngleToReach  );
-            System.out.println(" in while ");
-            System.out.println("schleifeinvariant " + (Float.compare(getAngle(),finalAngleToReach) < 0) );
+            currentAngle = getAngle();
             mySleep(5);
         }
         System.out.println("ready with the turn");
@@ -486,13 +454,13 @@ public class Hardware {
     }
 
 
-    public void robotTurnNonBlock(int angle){
-        //%TODO:
+    public void robotTurnNonBlockOneWheel(int angle){
+
         int absoluteAngle = angle * 12;
 
         motorsWaitStopMoving();
 
-        //%TODO: problem with synching motors?
+
         synchMotors();
 
         if(angle < 0){
@@ -565,7 +533,7 @@ public class Hardware {
      * DO NOT USE to check if sensor is on white -> isOnWhite() function
      */
     public float getMidPointBW(){
-        return (colorWhite + colorBlack)/2 + colorBlack;
+        return (white.getIntensity() + black.getIntensity())/2 + black.getIntensity();
     }
 
     /**
@@ -614,19 +582,19 @@ public class Hardware {
      *
      * @return current angle, read from the gyro sensor
      */
-    public float getAngle(){
-        return sensors.getAngle();
+    public int getAngle(){
+        return Math.round(-sensors.getAngle());
     }
 
     public void servoGoUp(){
-        servo.rotate(-100);
-        servo.flt();
+        servo.rotate(-90);
+        //servo.flt();
     }
 
     public void servoGoDown(){
 
         servo.rotate(90);
-        servo.flt();
+        //servo.flt();
     }
 
     public boolean isEscapeUp(){
@@ -639,9 +607,7 @@ public class Hardware {
 
     public boolean isLeftUp() { return Button.LEFT.isUp(); }
 
-    public float getColorWhite(){
-        return colorWhite;
-    }
+
 
     public float getColorBlack(){
         return colorBlack;
@@ -654,7 +620,7 @@ public class Hardware {
     public float getColorBlue(){
         return colorBlue;
     }
-    
+
     private void mySleep(int millis) {
         try {
             Thread.sleep(millis);
@@ -668,22 +634,27 @@ public class Hardware {
     	
     	float resetTolerance = 0.2f;
     	if(orientationHistory.isEmpty()){
-    		orientationHistory.add(getAngle());
+            System.out.println("it is empty, so we add, no conditions");
+            orientationHistory.add(getAngle());
     	} else {
     		float average = 0.f;
-    		float angle = getAngle();
+    		int angle = getAngle();
     		for(float value : orientationHistory){
     			average += value;
     		}
     		average /= orientationHistory.size();
-    		if((Math.abs(average-angle) / angle) > resetTolerance){
-    			orientationHistory.clear();
+            //%TODO: Turn avarge-angle to int or compare with Float.compare
+    		if((Math.abs(average-angle) ) > Math.abs(angle)*resetTolerance){
+                System.out.println("differnce is above tolerance, claer the list");
+                orientationHistory.clear();
     		}
     		orientationHistory.add(angle);
     		if(orientationHistory.size() > maxOrHistorySize){
     			orientationHistory.removeLast();
     		}
     	}
+
+        System.out.println("after update orientation " + orientationHistory);
     }
     
     /**
@@ -691,7 +662,9 @@ public class Hardware {
      * @return -1 if too less measurepoints are available. Otherwise eastimate an angle.
      */
     public int estimateOrientation(){
-    	if(orientationHistory.size() < 3){
+        System.out.println("Last values: " + orientationHistory);
+
+    	if(orientationHistory.size() < 2){
     		return -1;
     	}
     	float average = 0.f;

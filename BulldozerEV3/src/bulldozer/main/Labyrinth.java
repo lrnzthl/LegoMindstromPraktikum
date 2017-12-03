@@ -9,10 +9,8 @@ public class Labyrinth extends Brains {
     private long lastReset;
 
     private int motorMaxSpeedProcentage = 60;
-    //default value is 6000
-    private int motorAccelaration = 6000;
-    private double turnSpeedProcentage = 0.4;
-    //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
+    private int turnSpeedProcentage = 40;
+
 
    
     
@@ -20,7 +18,6 @@ public class Labyrinth extends Brains {
         super(hardware);
         beaconColor = new CColor(0.54f, 0.16f, 0.10f); //should be blue
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
-        hardware.setMotorAccelaration(motorAccelaration);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
     }
 
@@ -30,8 +27,10 @@ public class Labyrinth extends Brains {
 
     	//Find the labyrinth. 
     	//Drive the distance between the blue beacon line and the white labyrinth
+
+    
     	while(!hardware.isOnWhite() || !hardware.isOnRed()){
-    		hardware.motorSetSpeedProcentage(1.0);
+    		hardware.motorSetSpeedProcentage(10);
             hardware.motorForward(step);
     	}
     	
@@ -66,6 +65,7 @@ public class Labyrinth extends Brains {
         int toTurn = Math.round(correction * turningAngle) ;
         hardware.robotTurn( -toTurn );
     }
+
     	else {
     		float correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
             int toTurn = Math.round(correction * turningAngle) ;
@@ -73,14 +73,22 @@ public class Labyrinth extends Brains {
     	}
     	
     } 
-    private double getSpeed(long diff){
+    
+
+    /**
+     * calculates the speed by
+     * @param diff, delta of the time
+     * @return the speed, in procent
+     */
+    private int getSpeed(long diff){
+
         double accel = 10;
         double minimumOffset = 3; //should be smaller than 8
 
         diff = Math.round(accel * diff);
-        double value = 1.0/(1.0+Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
-        //return 40;
-        return value;
+        double value = 1.0/  (1.0  +  Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
+
+        return (int) Math.round( value*100 );
     }
 
     private void goingUntilWhiteLineIsLost(){
