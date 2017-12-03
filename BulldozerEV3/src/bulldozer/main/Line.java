@@ -15,8 +15,9 @@ public class Line extends Brains {
     private long lastReset = 0; //last time we have resetted the time counter
 
     private int motorMaxSpeedProcentage = 60;
-    private double turnSpeedProcentage = 0.35;
-    //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
+    //private double turnSpeedProcentage = 0.35;
+    private int turnSpeedProcentage = 35;
+    //50 swings too much back and fort, 25 is okay, just stop, 40 is also all right
 
     private int offsetXobstacle = 670; //length of obstacle
     private int offsetYobstacle = 1600;
@@ -107,14 +108,14 @@ public class Line extends Brains {
      * @param diff, delta of the time
      * @return the speed, in procent
      */
-    private double getSpeed(long diff){
+    private int getSpeed(long diff){
         double accel = 10;
         double minimumOffset = 3; //should be smaller than 8
 
         diff = Math.round(accel * diff);
         double value = 1.0/  (1.0  +  Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
-        //return 40;
-        return value;
+
+        return (int) Math.round( value*100 );
     }
 
     /**
@@ -159,8 +160,10 @@ public class Line extends Brains {
 
     }
 
+
+
     private void goAroundObstacle() {
-        float motorSpeed = 0.7f;
+        int motorSpeed = 70;
 
         hardware.motorSetSpeedProcentage(motorSpeed);
 
@@ -209,7 +212,9 @@ public class Line extends Brains {
     }
 
 
-
+    /**
+     * to be used in the case, that the dimensions of the obstacle are not known
+     */
     private void goAroundObstacle1() {
 
         assert(hardware.isTouchPressed());

@@ -34,8 +34,9 @@ public class Hardware {
     private int motorMaxSpeedProcentage = 60;
     //default value is 6000
     private int motorAccelaration = 6000;
-    private double turnSpeedProcentage = 0.4;
-    //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
+
+    private int turnSpeedProcentage = 40;
+    //050 is too much swings back and fort, 25 is okay, just stop, 40 is also all right
 
     //eveyrhing over high is white
     private float midPointBWHigh = (float) 0.28;
@@ -185,7 +186,7 @@ public class Hardware {
         this.motorAccelaration = motorAccelaration;
     }
 
-    public void setTurnSpeedProcentage(double turnSpeedProcentage) {
+    public void setTurnSpeedProcentage(int turnSpeedProcentage) {
         this.turnSpeedProcentage = turnSpeedProcentage;
     }
 
@@ -369,11 +370,10 @@ public class Hardware {
      * sets the speed ot the motor to a procentage of the maximum speed
      * @param procentage; must be between 0 and 1
      */
-    public void motorSetSpeedProcentage(double procentage){
+    public void motorSetSpeedProcentage(int procentage){
 
         System.out.println("Setting speed to " + procentage + " procent");
-
-        int motorAbsoluteSpeed = (int) Math.round( procentage * (motRight.getMaxSpeed() * motorMaxSpeedProcentage /100)  );
+        int motorAbsoluteSpeed = (int) (motLeft.getMaxSpeed() * procentage / 100 );
         motRight.setSpeed(motorAbsoluteSpeed);
         motLeft.setSpeed(motorAbsoluteSpeed);
     }
