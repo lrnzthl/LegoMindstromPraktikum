@@ -47,13 +47,8 @@ public class Hardware {
 
     private float midPointWRHigh = (float) 0.28;
     private float midPointWRLow = (float) 0.11;
-    private float colorWhite = (float) 0.33;
-    private float colorBlack = (float) 0.05;
-    private float colorRed = (float) 0.15;
-    private float colorBlue = (float) 0.12;
 
-
-    private CColor red = new CColor(0.339f, 0.087f, 0.032f);
+        private CColor red = new CColor(0.339f, 0.087f, 0.032f);
     private CColor blue = new CColor(0.050f, 0.17f, 0.13f);
     private CColor white = new CColor(0.296f, 0.474f, 0.232f);
     private CColor black = new CColor(0.054f, 0.091f, 0.028f);
@@ -296,7 +291,6 @@ public class Hardware {
         motLeft.setAcceleration(motorAccelaration);
 
         init = sensors.initialize() ? true : false;
-
 
         
         return init;
@@ -542,7 +536,7 @@ public class Hardware {
     * DO NOT USE to check if sensor is on white -> isOnWhite() function
     */
    public float getMidPointRB(){
-       return (colorRed + colorBlack)/2 + colorBlack;
+       return (red.getIntensity() + black.getIntensity())/2 + black.getIntensity();
    }
     
     /**
@@ -609,17 +603,7 @@ public class Hardware {
 
 
 
-    public float getColorBlack(){
-        return colorBlack;
-    }
-    
-    public float getColorRed(){
-        return colorRed;
-    }
-    
-    public float getColorBlue(){
-        return colorBlue;
-    }
+
 
     private void mySleep(int millis) {
         try {
@@ -645,7 +629,7 @@ public class Hardware {
     		average /= orientationHistory.size();
             //%TODO: Turn avarge-angle to int or compare with Float.compare
     		if((Math.abs(average-angle) ) > Math.abs(angle)*resetTolerance){
-                System.out.println("differnce is above tolerance, claer the list");
+                System.out.println("differnce is above tolerance, clear the list");
                 orientationHistory.clear();
     		}
     		orientationHistory.add(angle);
