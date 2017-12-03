@@ -41,8 +41,8 @@ public class Hardware {
     private float midPointBWHigh = (float) 0.28;
     private float midPointBWLow = (float) 0.11;
 
-    private float midPointRBHigh = (float) 0.28;
-    private float midPointRBLow = (float) 0.11;
+    private float midPointRBHigh = (float) 0.1;
+    private float midPointRBLow = (float) 0.75;
 
     private float midPointWRHigh = (float) 0.28;
     private float midPointWRLow = (float) 0.11;
@@ -50,12 +50,19 @@ public class Hardware {
     private float colorWhite = (float) 0.33;
     private float colorBlack = (float) 0.05;
     private float colorRed = (float) 0.15;
+    private float colorBlue = (float) 0.12;
 
     private CColor red = new CColor(0.339f, 0.087f, 0.032f);
     private CColor blue = new CColor(0.050f, 0.17f, 0.13f);
     private CColor white = new CColor(0.296f, 0.474f, 0.232f);
     private CColor black = new CColor(0.054f, 0.091f, 0.028f);
 
+    //To let us know if we have to correct to red or white
+    enum actualColor{
+    	BW, RB;
+    }
+    public actualColor acColor;
+    
     public Hardware(){
         //copy the values after first calibration
 
@@ -532,6 +539,24 @@ public class Hardware {
             return false;
         }
     }
+    
+    /**
+    *
+    * @return true, if the color sensor is on white; works with check with the midpoint
+    */
+   public boolean isOnRed(){
+
+       if(sensors.color() > midPointRBHigh ){
+           //System.out.println("sensor on white");
+           return true;
+       }else if( sensors.color() < midPointRBLow){
+           return false;
+       }else{
+           //System.out.println("Hitting midPoint");
+           return false;
+       }
+   }
+    
 
     /**
      *
@@ -543,19 +568,47 @@ public class Hardware {
     }
 
     /**
+    *
+    * @return the midPoint;
+    * DO NOT USE to check if sensor is on white -> isOnWhite() function
+    */
+   public float getMidPointRB(){
+       return (colorRed + colorBlack)/2 + colorBlack;
+   }
+    
+    /**
      *
      * @return true if the sensor is on the midpoint between black and white
      */
     public boolean isOnMidpointBW(){
         if(sensors.color() < midPointBWHigh && sensors.color() > midPointBWLow){
         	updateOrientation();
-            System.out.println("I am on the middle");
+        		acColor = actualColor.BW;
+            System.out.println("I am on the middle BW");
+            return true;
+        }
+
+        return false;
+    }
+    
+    public boolean isOnMidpointRB(){
+        if(sensors.color() < midPointRBHigh && sensors.color() > midPointRBLow){
+        	updateOrientation();
+        		acColor = actualColor.RB;
+            System.out.println("I am on the middle RB");
             return true;
         }
 
         return false;
     }
 
+    
+    public actualColor getActualColor () {
+    		return acColor;
+    }
+    
+
+    
     /**
      *
      * @return current angle, read from the gyro sensor
@@ -592,7 +645,15 @@ public class Hardware {
     public float getColorBlack(){
         return colorBlack;
     }
-
+    
+    public float getColorRed(){
+        return colorRed;
+    }
+    
+    public float getColorBlue(){
+        return colorBlue;
+    }
+    
     private void mySleep(int millis) {
         try {
             Thread.sleep(millis);
@@ -603,6 +664,7 @@ public class Hardware {
     }
     
     private void updateOrientation(){
+    	
     	float resetTolerance = 0.2f;
     	if(orientationHistory.isEmpty()){
     		orientationHistory.add(getAngle());

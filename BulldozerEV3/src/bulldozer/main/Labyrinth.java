@@ -14,6 +14,8 @@ public class Labyrinth extends Brains {
     private double turnSpeedProcentage = 0.4;
     //0.5 is too much swings back and fort, 0.25 is okay, just stop, 0.4 is also all right
 
+   
+    
     public Labyrinth(Hardware hardware){
         super(hardware);
         beaconColor = new CColor(0.54f, 0.16f, 0.10f); //should be blue
@@ -28,13 +30,13 @@ public class Labyrinth extends Brains {
 
     	//Find the labyrinth. 
     	//Drive the distance between the blue beacon line and the white labyrinth
-    	while(!hardware.isOnWhite()){
+    	while(!hardware.isOnWhite() || !hardware.isOnRed()){
     		hardware.motorSetSpeedProcentage(1.0);
             hardware.motorForward(step);
     	}
     	
     	//Turn to be in an initial position on the line
-        while(! hardware.isOnMidpointBW()){
+        while(! hardware.isOnMidpointBW() || ! hardware.isOnMidpointRB() ){
             hardware.led(8);
             rotateToMiddle();
             lastReset = System.currentTimeMillis();
@@ -49,7 +51,7 @@ public class Labyrinth extends Brains {
             hardware.motorForward(step);
             
             //alreadyTurned = hardware.getAngle();
-            while(! hardware.isOnMidpointBW()){
+            while(! hardware.isOnMidpointBW() || ! hardware.isOnMidpointRB() ){
                 hardware.led(8);
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
@@ -58,11 +60,19 @@ public class Labyrinth extends Brains {
     }
 
     private void rotateToMiddle() {
+    		
+    	if (hardware.getActualColor().equals(hardware.acColor.BW)) {
         float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
         int toTurn = Math.round(correction * turningAngle) ;
         hardware.robotTurn( -toTurn );
     }
-    
+    	else {
+    		float correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
+            int toTurn = Math.round(correction * turningAngle) ;
+            hardware.robotTurn( -toTurn );
+    	}
+    	
+    } 
     private double getSpeed(long diff){
         double accel = 10;
         double minimumOffset = 3; //should be smaller than 8
