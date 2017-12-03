@@ -17,7 +17,7 @@ public class Line extends Brains {
     private int motorMaxSpeedProcentage = 60;
     //private double turnSpeedProcentage = 0.35;
     private int turnSpeedProcentage = 35;
-    //50 swings too much back and fort, 25 is okay, just stop, 40 is also all right
+    //50% swings too much back and fort, 25 is okay, just stop, 40 is also all right
 
     private int offsetXobstacle = 670; //length of obstacle
     private int offsetYobstacle = 1600;

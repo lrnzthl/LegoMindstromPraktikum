@@ -373,7 +373,7 @@ public class Hardware {
     public void motorSetSpeedProcentage(int procentage){
 
         System.out.println("Setting speed to " + procentage + " procent");
-        int motorAbsoluteSpeed = (int) (motLeft.getMaxSpeed() * procentage / 100 );
+        int motorAbsoluteSpeed = Math.round (motLeft.getMaxSpeed() * procentage / 100 );
         motRight.setSpeed(motorAbsoluteSpeed);
         motLeft.setSpeed(motorAbsoluteSpeed);
     }
