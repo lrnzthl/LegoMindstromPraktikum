@@ -542,7 +542,8 @@ public class Hardware {
     
     /**
     *
-    * @return true, if the color sensor is on white; works with check with the midpoint
+    * @return true, if the color sensor is on red
+    * ; works with check with the midpoint
     */
    public boolean isOnRed(){
 
