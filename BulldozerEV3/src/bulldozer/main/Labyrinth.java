@@ -61,7 +61,7 @@ public class Labyrinth extends Brains {
             
             //alreadyTurned = hardware.getAngle();
             while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
-            		System.out.println("Lost the midpoint ");
+            		System.out.println("Lost the midpoint inside running");
                 hardware.led(8);
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
