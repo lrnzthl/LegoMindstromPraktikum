@@ -35,7 +35,7 @@ public class Labyrinth extends Brains {
     	}
     	
     	//Turn to be in an initial position on the line
-        while(! hardware.isOnMidpointBW() || ! hardware.isOnMidpointRB() ){
+        while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
             hardware.led(8);
             rotateToMiddle();
             lastReset = System.currentTimeMillis();
@@ -61,14 +61,14 @@ public class Labyrinth extends Brains {
     private void rotateToMiddle() {
     		
     	if (hardware.getActualColor().equals(hardware.getAcColorBW())) {
-        float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
-        int toTurn = Math.round(correction * turningAngle) ;
-        hardware.robotTurn( -toTurn );
+       float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
+       int toTurn = Math.round(correction * turningAngle) ;
+       hardware.robotTurn( -toTurn );
     }
     	else {
-    		float correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
-            int toTurn = Math.round(correction * turningAngle) ;
-            hardware.robotTurn( -toTurn );
+    	   float correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
+       int toTurn = Math.round(correction * turningAngle) ;
+       hardware.robotTurn( -toTurn );
     	}
     	
     } 
