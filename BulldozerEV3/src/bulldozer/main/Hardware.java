@@ -334,7 +334,7 @@ public class Hardware {
     public void motorForward(int angle){
         synchMotors();
 
-        motRight.rotate(angle);
+        motRight.rotate(angle, true);
         motLeft.rotate(angle); //in case this works automatic with the first motor
 
         deSynchMotors();

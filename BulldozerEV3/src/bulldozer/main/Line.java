@@ -10,13 +10,13 @@ public class Line extends Brains {
     private int turningAngle = 10;
     private int initialRotationAngle = 0; //already turned angle
 
-    private int zigZagAngle = 30;
+    private int zigZagAngle = 15;
 
     private long lastReset = 0; //last time we have resetted the time counter
 
     private int motorMaxSpeedProcentage = 60;
     //private double turnSpeedProcentage = 0.35;
-    private int turnSpeedProcentage = 30;
+    private int turnSpeedProcentage = 25;
     //50% swings too much back and fort, 25 is okay, just stop, 40 is also all right
 
     private int offsetXobstacle = 670; //length of obstacle
@@ -88,7 +88,7 @@ public class Line extends Brains {
         if( Math.abs(angleDiff) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
             int estimateOrientation = hardware.estimateOrientation();
-            int toGoBack = estimateOrientation - currentGyroAngle;
+            int toGoBack = -angleDiff;//estimateOrientation - currentGyroAngle;
 
             System.out.println("angleDiff is " + angleDiff + ", estimatedOrientantaion: " + estimateOrientation);
             System.out.println("Then, we have to turn " + toGoBack);
@@ -108,7 +108,7 @@ public class Line extends Brains {
      * @return the speed, in procent
      */
     private int getSpeed(long diff){
-        double accel = 10;
+        double accel = 7;
         double minimumOffset = 3; //should be smaller than 8
 
         diff = Math.round(accel * diff);
@@ -125,7 +125,7 @@ public class Line extends Brains {
         //assert we are exactly in the middle!
         int initialAngle = -zigZagAngle;
 
-        int angle = -2*zigZagAngle;
+        int angle = 2*zigZagAngle;
 
         //inital turn
         hardware.robotTurnNonBlockOneWheel(initialAngle);
@@ -191,7 +191,7 @@ public class Line extends Brains {
         hardware.robotTurnBlock(-90);
 
         while( !hardware.isOnMidpointBW()){
-            hardware.motorForward(step);
+            hardware.motorForwardBlock(step);
         }
 
         hardware.motorStop();
