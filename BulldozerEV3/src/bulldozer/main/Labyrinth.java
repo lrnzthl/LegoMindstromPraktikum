@@ -7,11 +7,11 @@ public class Labyrinth extends Brains {
     private final int step = 45;
     private final int delay = 30; //ms
     private final float Kp = 2.5f;
-    private float turningAngle = 10.f;
+    private int turningAngle = 10;
     private long lastReset;
 
     private int motorMaxSpeedProcentage = 60;
-    private int turnSpeedProcentage = 40;
+    private int turnSpeedProcentage = 20;
 
     
 
