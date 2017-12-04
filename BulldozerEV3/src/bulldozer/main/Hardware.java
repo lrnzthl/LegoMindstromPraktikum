@@ -552,7 +552,7 @@ public class Hardware {
             acColor = actualColor.BW;
             return true;
         }
-
+        
         return false;
     }
     
