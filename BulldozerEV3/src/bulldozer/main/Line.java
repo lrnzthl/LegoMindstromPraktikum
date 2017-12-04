@@ -43,6 +43,7 @@ public class Line extends Brains {
         }
 
         //we are on the middle
+        lastReset = System.currentTimeMillis();
         while(running){
             hardware.led(7);
 
@@ -149,6 +150,7 @@ public class Line extends Brains {
                 if(hardware.isOnMidpointBW()){
                     System.out.println("Found mid point!");
                     hardware.motorStop();
+                    //%TODO: rotate right, unitl u see black
                 }
 
                 mySleep(delay);

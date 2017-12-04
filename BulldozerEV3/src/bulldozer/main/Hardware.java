@@ -308,7 +308,7 @@ public class Hardware {
      * @param color
      */
     public void led(int color){
-        Button.LEDPattern(color);
+        //Button.LEDPattern(color);
     }
 
     /**
@@ -458,7 +458,7 @@ public class Hardware {
         synchMotors();
 
         if(angle < 0){
-            motRight.rotate((int) Math.abs(absoluteAngle*1.45), true);
+            motRight.rotate((int) Math.abs(absoluteAngle*1.2), true);
         }else{
             motLeft.rotate((int) Math.round(absoluteAngle), true);
         }
@@ -561,6 +561,7 @@ public class Hardware {
         	updateOrientation();
             System.out.println("I am on the middle RB");
             acColor = actualColor.RB;
+            beep();
             return true;
         }
 
@@ -638,7 +639,7 @@ public class Hardware {
     		}
     	}
 
-        System.out.println("after update orientation " + orientationHistory);
+       // System.out.println("after update orientation " + orientationHistory);
     }
     
     /**
@@ -646,7 +647,7 @@ public class Hardware {
      * @return -1 if too less measurepoints are available. Otherwise eastimate an angle.
      */
     public int estimateOrientation(){
-        System.out.println("Last values: " + orientationHistory);
+        //System.out.println("Last values: " + orientationHistory);
 
     	if(orientationHistory.size() < 2){
     		return -1;

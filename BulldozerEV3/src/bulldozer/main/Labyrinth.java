@@ -11,7 +11,7 @@ public class Labyrinth extends Brains {
     private long lastReset;
 
     private int motorMaxSpeedProcentage = 30;
-    private int turnSpeedProcentage = 10;
+    private int turnSpeedProcentage = 20;
 
     
 
@@ -56,7 +56,7 @@ public class Labyrinth extends Brains {
         		long now = System.currentTimeMillis();
         		long diff = now - lastReset;
 
-            hardware.motorSetSpeedProcentage(getSpeed(diff));
+            //hardware.motorSetSpeedProcentage(getSpeed(diff));
             hardware.motorForward(step);
             
             //alreadyTurned = hardware.getAngle();
