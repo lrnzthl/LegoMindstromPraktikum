@@ -88,7 +88,7 @@ public class Line extends Brains {
         if( Math.abs(angleDiff) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
 
-            hardware.robotTurn(Math.round(hardware.estimateOrientation() + angleDiff ));
+            hardware.robotTurnGyro(Math.round(hardware.estimateOrientation() + angleDiff ));
 
             zigZagMovements();
             lastReset = System.currentTimeMillis();

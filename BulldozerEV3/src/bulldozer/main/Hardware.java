@@ -48,7 +48,7 @@ public class Hardware {
     private float midPointWRHigh = (float) 0.28;
     private float midPointWRLow = (float) 0.11;
 
-        private CColor red = new CColor(0.339f, 0.087f, 0.032f);
+    private CColor red = new CColor(0.339f, 0.087f, 0.032f);
     private CColor blue = new CColor(0.050f, 0.17f, 0.13f);
     private CColor white = new CColor(0.296f, 0.474f, 0.232f);
     private CColor black = new CColor(0.054f, 0.091f, 0.028f);
@@ -74,16 +74,16 @@ public class Hardware {
         System.out.println("Motor left is ok");
 
         servo = new EV3LargeRegulatedMotor(MotorPort.B);
-        System.out.println("Servo is ok");
+        System.out.println("Servo is ok, touch:");
 
 
         EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
-        System.out.println("Touch ok");
+        System.out.println("Touch ok, color:");
         EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
-        System.out.println("Color ok");
+        System.out.println("Color ok, ultra:");
        
        EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
-       System.out.println("Ultra ok");
+       System.out.println("Ultra ok, gyro:");
 
        EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
        System.out.println("Gyro Ev3 ok");
@@ -428,23 +428,26 @@ public class Hardware {
         System.out.println("VOR:current: " + currentAngle + " final:"+ finalAngleToReach  );
 
         //motorsWaitStopMoving();
-        synchMotors();
 
-        while( currentAngle < finalAngleToReach ){
-            motRight.rotate(-angle*20, true);
-            motLeft.rotate(angle*20, true);
+
+        robotTurn((int) Math.round(angle * 1.3) );
+
+        while( Math.abs(currentAngle - finalAngleToReach) > 1 ){
+
 
             System.out.println("current: " + currentAngle + " final:"+ finalAngleToReach  );
             System.out.println("schleifeinvariant " + (currentAngle < finalAngleToReach) );
 
             currentAngle = getAngle();
-            mySleep(5);
+            mySleep(1);
         }
-        System.out.println("ready with the turn");
+
         //when final angle is reached, we should stop the motors
         motorStop();
 
-        deSynchMotors();
+        System.out.println("NACH:current: " + currentAngle + " final:"+ finalAngleToReach  );
+        System.out.println("ready with the turn");
+
     }
 
 

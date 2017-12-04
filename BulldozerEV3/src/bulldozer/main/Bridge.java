@@ -27,7 +27,14 @@ public class Bridge extends Brains {
         while(running) {
 
 
-            System.out.println(hardware.getAngle());
+            hardware.motorForwardBlock(-45);
+
+            mySleep(60);
+            hardware.robotTurnGyro(-90);
+            mySleep(10000);
+            hardware.robotTurnGyro(90);
+            mySleep(10000);
+
             mySleep(20);
 
         }
