@@ -32,25 +32,29 @@ public class Labyrinth extends Brains {
     	while(!hardware.isOnWhite() || !hardware.isOnRed()){
     		hardware.motorSetSpeedProcentage(10);
             hardware.motorForward(step);
+            System.out.println("Searching the line ...");
     	}
     	
     	//Turn to be in an initial position on the line
         while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
+        		System.out.println("Lost the midpoint");
             hardware.led(8);
             rotateToMiddle();
             lastReset = System.currentTimeMillis();
         }
         
-        //On the line, start to solve the lab
-        while(running){        	
-            long now = System.currentTimeMillis();
-            long diff = now - lastReset;
+        //On the line, start to solve the labyrinth
+        while(running){
+        		System.out.println("Began running");
+        		long now = System.currentTimeMillis();
+        		long diff = now - lastReset;
 
             hardware.motorSetSpeedProcentage(getSpeed(diff));
             hardware.motorForward(step);
             
             //alreadyTurned = hardware.getAngle();
-            while(! hardware.isOnMidpointBW() || ! hardware.isOnMidpointRB() ){
+            while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
+            		System.out.println("Lost the midpoint ");
                 hardware.led(8);
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
@@ -61,14 +65,16 @@ public class Labyrinth extends Brains {
     private void rotateToMiddle() {
     		
     	if (hardware.getActualColor().equals(hardware.getAcColorBW())) {
-       float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
-       int toTurn = Math.round(correction * turningAngle) ;
-       hardware.robotTurn( -toTurn );
+    		System.out.println("Rotating to BW");
+    		float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
+    		int toTurn = Math.round(correction * turningAngle) ;
+    		hardware.robotTurn( -toTurn );
     }
     	else {
-    	   float correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
-       int toTurn = Math.round(correction * turningAngle) ;
-       hardware.robotTurn( -toTurn );
+    		System.out.println("Rotating to RB");
+    		float correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
+    		int toTurn = Math.round(correction * turningAngle) ;
+    		hardware.robotTurn( -toTurn );
     	}
     	
     } 
