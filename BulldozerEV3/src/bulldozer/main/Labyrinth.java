@@ -1,5 +1,7 @@
 package bulldozer.main;
 
+import bulldozer.main.Hardware.actualColor;
+
 public class Labyrinth extends Brains {
 
     private final int step = 45;
@@ -11,6 +13,7 @@ public class Labyrinth extends Brains {
     private int motorMaxSpeedProcentage = 60;
     private int turnSpeedProcentage = 40;
 
+    
 
    
     
@@ -34,6 +37,9 @@ public class Labyrinth extends Brains {
             hardware.motorForward(step);
             System.out.println("Searching the line ...");
     	}
+    	
+   
+    	
     	
     	//Turn to be in an initial position on the line
         while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
@@ -64,7 +70,7 @@ public class Labyrinth extends Brains {
 
     private void rotateToMiddle() {
     		
-    	if (hardware.getActualColor().equals(hardware.getAcColorBW())) {
+    	if (hardware.acColor.equals(actualColor.BW)) {
     		System.out.println("Rotating to BW");
     		float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
     		int toTurn = Math.round(correction * turningAngle) ;
@@ -110,4 +116,6 @@ public class Labyrinth extends Brains {
         //robot is no more on the white line
         hardware.motorStop();
     }
+    
+
 }

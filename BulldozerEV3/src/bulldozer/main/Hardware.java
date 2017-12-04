@@ -54,10 +54,10 @@ public class Hardware {
     private CColor black = new CColor(0.054f, 0.091f, 0.028f);
 
     //To let us know if we have to correct to red or white
-    enum actualColor{
+    public enum actualColor{
     	BW, RB;
     }
-    private actualColor acColor;
+    public actualColor acColor;
     
     public Hardware() throws IllegalArgumentException{
         //copy the values after first calibration
@@ -494,6 +494,7 @@ public class Hardware {
 
         if(sensors.color() > midPointBWHigh ){
             //System.out.println("sensor on white");
+        	    acColor = actualColor.BW;
             return true;
         }else if( sensors.color() < midPointBWLow){
             return false;
@@ -512,6 +513,7 @@ public class Hardware {
 
        if(sensors.color() > midPointRBHigh ){
            //System.out.println("sensor on white");
+    	   	   acColor = actualColor.RB;
            return true;
        }else if( sensors.color() <  midPointRBLow){
            return false;
@@ -547,8 +549,8 @@ public class Hardware {
     public boolean isOnMidpointBW(){
         if(sensors.color() < midPointBWHigh && sensors.color() > midPointBWLow){
         	updateOrientation();
-        		acColor = actualColor.BW;
             System.out.println("I am on the middle BW");
+            acColor = actualColor.BW;
             return true;
         }
 
@@ -558,8 +560,8 @@ public class Hardware {
     public boolean isOnMidpointRB(){
         if(sensors.color() < midPointRBHigh && sensors.color() > midPointRBLow){
         	updateOrientation();
-        		acColor = actualColor.RB;
             System.out.println("I am on the middle RB");
+            acColor = actualColor.RB;
             return true;
         }
 
@@ -567,9 +569,7 @@ public class Hardware {
     }
 
     
-    public actualColor getActualColor () {
-    		return acColor;
-    }
+    
     
 
     
@@ -660,12 +660,5 @@ public class Hardware {
 		return Math.round(average);
     }
     
-    public actualColor getAcColorBW () {
-		return acColor.BW;
-    	
-    }
     
-    public actualColor getAcColorRB () {
-     	return acColor.RB;
-    }
 }
