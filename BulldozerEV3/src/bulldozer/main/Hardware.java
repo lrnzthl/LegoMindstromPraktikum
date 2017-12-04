@@ -458,9 +458,9 @@ public class Hardware {
         synchMotors();
 
         if(angle < 0){
-            motRight.rotate(Math.abs(absoluteAngle),true);
+            motRight.rotate((int) Math.abs(absoluteAngle*1.45), true);
         }else{
-            motLeft.rotate((int) Math.round(absoluteAngle*1.2), true);
+            motLeft.rotate((int) Math.round(absoluteAngle), true);
         }
 
         deSynchMotors();
