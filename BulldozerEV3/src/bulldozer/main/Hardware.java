@@ -619,19 +619,19 @@ public class Hardware {
     
     private void updateOrientation(){
     	
-    	float resetTolerance = 0.2f;
+    	int resetTolerance = 40;
     	if(orientationHistory.isEmpty()){
             System.out.println("it is empty, so we add, no conditions");
             orientationHistory.add(getAngle());
     	} else {
-    		float average = 0.f;
+    		int average = 0;
     		int angle = getAngle();
     		for(float value : orientationHistory){
     			average += value;
     		}
     		average /= orientationHistory.size();
             //%TODO: Turn avarge-angle to int or compare with Float.compare
-    		if((Math.abs(average-angle) ) > Math.abs(angle)*resetTolerance){
+    		if(  (Math.abs(average-angle) ) > resetTolerance){
                 System.out.println("differnce is above tolerance, clear the list");
                 orientationHistory.clear();
     		}
