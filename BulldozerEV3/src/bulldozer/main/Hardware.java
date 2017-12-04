@@ -59,34 +59,36 @@ public class Hardware {
     }
     private actualColor acColor;
     
-    public Hardware(){
+    public Hardware() throws IllegalArgumentException{
         //copy the values after first calibration
 
         led(9);
 
-        System.out.println("Hardware is being initialized...");
 
-        motRight = new EV3LargeRegulatedMotor(MotorPort.D);
-        System.out.println("Motor right is ok");
+            System.out.println("Hardware is being initialized...");
 
-
-        motLeft = new EV3LargeRegulatedMotor(MotorPort.A);
-        System.out.println("Motor left is ok");
-
-        servo = new EV3LargeRegulatedMotor(MotorPort.B);
-        System.out.println("Servo is ok, touch:");
+            motRight = new EV3LargeRegulatedMotor(MotorPort.D);
+            System.out.println("Motor right is ok");
 
 
-        EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
-        System.out.println("Touch ok, color:");
-        EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
-        System.out.println("Color ok, ultra:");
-       
-       EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
-       System.out.println("Ultra ok, gyro:");
+            motLeft = new EV3LargeRegulatedMotor(MotorPort.A);
+            System.out.println("Motor left is ok");
 
-       EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
-       System.out.println("Gyro Ev3 ok");
+            servo = new EV3LargeRegulatedMotor(MotorPort.B);
+            System.out.println("Servo is ok, touch:");
+
+
+            EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
+            System.out.println("Touch ok, color:");
+            EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
+            System.out.println("Color ok, ultra:");
+
+            EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
+            System.out.println("Ultra ok, gyro:");
+
+            EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
+            System.out.println("Gyro Ev3 ok");
+
 
        SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
        SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "RGB");
@@ -433,10 +435,6 @@ public class Hardware {
         robotTurn((int) Math.round(angle * 1.3) );
 
         while( Math.abs(currentAngle - finalAngleToReach) > 1 ){
-
-
-            System.out.println("current: " + currentAngle + " final:"+ finalAngleToReach  );
-            System.out.println("schleifeinvariant " + (currentAngle < finalAngleToReach) );
 
             currentAngle = getAngle();
             mySleep(1);

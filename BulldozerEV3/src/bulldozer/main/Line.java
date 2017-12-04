@@ -4,19 +4,19 @@ public class Line extends Brains {
 
     //rotaion for motors to go forward
     private final int step = 45;
-    private final float Kp = 2.5f;
+    private final float Kp = 1.5f;
 
     private final int delay = 30; //different delays in ms
     private int turningAngle = 10;
     private int initialRotationAngle = 0; //already turned angle
 
-    private int zigZagAngle = 20;
+    private int zigZagAngle = 30;
 
     private long lastReset = 0; //last time we have resetted the time counter
 
     private int motorMaxSpeedProcentage = 60;
     //private double turnSpeedProcentage = 0.35;
-    private int turnSpeedProcentage = 35;
+    private int turnSpeedProcentage = 30;
     //50% swings too much back and fort, 25 is okay, just stop, 40 is also all right
 
     private int offsetXobstacle = 670; //length of obstacle
@@ -59,7 +59,7 @@ public class Line extends Brains {
 
             hardware.motorForward(step);
 
-            //initialRotationAngle = hardware.getAngle();
+            initialRotationAngle = hardware.getAngle();  //resetting the variable with how much we've turned
             while(! hardware.isOnMidpointBW()){
                 hardware.led(8);
                 System.out.println("are initial rot. angle:  " + initialRotationAngle);
@@ -67,7 +67,7 @@ public class Line extends Brains {
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
             }
-            initialRotationAngle = hardware.getAngle(); //resetting the variable with how much we've turned
+
             System.out.println("Resetting init rot: " + initialRotationAngle);
         }
     }
@@ -76,7 +76,7 @@ public class Line extends Brains {
 
         float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
         //always round to the bigger number, lower possibility of getting 0
-        int toTurn = (int) Math.ceil(correction * turningAngle);
+        int toTurn = (int) Math.ceil(correction * turningAngle) + ( correction<0 ? -1 : 1) ;
 
         int currentGyroAngle = hardware.getAngle();
         int angleDiff = initialRotationAngle - currentGyroAngle;
@@ -87,8 +87,13 @@ public class Line extends Brains {
 
         if( Math.abs(angleDiff) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
+            int estimateOrientation = hardware.estimateOrientation();
+            int toGoBack = estimateOrientation - currentGyroAngle;
 
-            hardware.robotTurnGyro(Math.round(hardware.estimateOrientation() + angleDiff ));
+            System.out.println("angleDiff is " + angleDiff + ", estimatedOrientantaion: " + estimateOrientation);
+            System.out.println("Then, we have to turn " + toGoBack);
+
+            hardware.robotTurnGyro(toGoBack);
 
             zigZagMovements();
             lastReset = System.currentTimeMillis();
@@ -118,7 +123,7 @@ public class Line extends Brains {
     private void zigZagMovements(){
         System.out.println("starting zig zag");
         //assert we are exactly in the middle!
-        int initialAngle = zigZagAngle;
+        int initialAngle = -zigZagAngle;
 
         int angle = -2*zigZagAngle;
 
