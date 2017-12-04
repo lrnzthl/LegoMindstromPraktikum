@@ -48,7 +48,7 @@ public class Hardware {
     private float midPointWRHigh = (float) 0.28;
     private float midPointWRLow = (float) 0.11;
 
-        private CColor red = new CColor(0.339f, 0.087f, 0.032f);
+    private CColor red = new CColor(0.339f, 0.087f, 0.032f);
     private CColor blue = new CColor(0.050f, 0.17f, 0.13f);
     private CColor white = new CColor(0.296f, 0.474f, 0.232f);
     private CColor black = new CColor(0.054f, 0.091f, 0.028f);
@@ -57,7 +57,7 @@ public class Hardware {
     enum actualColor{
     	BW, RB;
     }
-    public actualColor acColor;
+    private actualColor acColor;
     
     public Hardware(){
         //copy the values after first calibration
@@ -657,5 +657,14 @@ public class Hardware {
 		}
 		average /= orientationHistory.size();
 		return Math.round(average);
+    }
+    
+    public actualColor getAcColorBW () {
+		return acColor.BW;
+    	
+    }
+    
+    public actualColor getAcColorRB () {
+     	return acColor.RB;
     }
 }
