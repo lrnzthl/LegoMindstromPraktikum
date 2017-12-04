@@ -88,12 +88,12 @@ public class Line extends Brains {
         if( Math.abs(angleDiff) > 80 ){
             System.out.println("Nope >80, probably end of the line!?!?");
             int estimateOrientation = hardware.estimateOrientation();
-            int toGoBack = -angleDiff;//estimateOrientation - currentGyroAngle;
+            int toGoBack = angleDiff;//estimateOrientation - currentGyroAngle;
 
             System.out.println("angleDiff is " + angleDiff + ", estimatedOrientantaion: " + estimateOrientation);
             System.out.println("Then, we have to turn " + toGoBack);
 
-            hardware.robotTurnGyro(toGoBack);
+            hardware.robotTurn(toGoBack);
 
             zigZagMovements();
             lastReset = System.currentTimeMillis();
@@ -123,9 +123,9 @@ public class Line extends Brains {
     private void zigZagMovements(){
         System.out.println("starting zig zag");
         //assert we are exactly in the middle!
-        int initialAngle = -zigZagAngle;
+        int initialAngle = zigZagAngle;
 
-        int angle = 2*zigZagAngle;
+        int angle = -2*zigZagAngle;
 
         //inital turn
         hardware.robotTurnNonBlockOneWheel(initialAngle);

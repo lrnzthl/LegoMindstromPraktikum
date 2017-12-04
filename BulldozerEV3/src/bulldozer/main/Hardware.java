@@ -455,13 +455,12 @@ public class Hardware {
 
         motorsWaitStopMoving();
 
-
         synchMotors();
 
         if(angle < 0){
             motRight.rotate(Math.abs(absoluteAngle),true);
         }else{
-            motLeft.rotate(absoluteAngle, true);
+            motLeft.rotate((int) Math.round(absoluteAngle*1.2), true);
         }
 
         deSynchMotors();
