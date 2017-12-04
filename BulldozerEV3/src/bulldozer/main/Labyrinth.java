@@ -10,8 +10,8 @@ public class Labyrinth extends Brains {
     private int turningAngle = 10;
     private long lastReset;
 
-    private int motorMaxSpeedProcentage = 60;
-    private int turnSpeedProcentage = 20;
+    private int motorMaxSpeedProcentage = 30;
+    private int turnSpeedProcentage = 10;
 
     
 
@@ -93,7 +93,7 @@ public class Labyrinth extends Brains {
      */
     private int getSpeed(long diff){
 
-        double accel = 10;
+        double accel = 5;
         double minimumOffset = 3; //should be smaller than 8
 
         diff = Math.round(accel * diff);

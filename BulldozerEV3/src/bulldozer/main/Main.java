@@ -1,6 +1,7 @@
 package bulldozer.main;
 
 import lejos.hardware.Button;
+import lejos.hardware.DeviceException;
 import lejos.hardware.Sound;
 
 public class Main {
@@ -14,11 +15,16 @@ public class Main {
 
             menu.start();
 
-
-        } catch (IllegalArgumentException e){
+            //lejos.hardware.DeviceException
+        } catch (IllegalArgumentException e ){
             Sound.beepSequence();
             Button.LEDPattern(0);
             e.printStackTrace();
+            System.exit(-1);
+        }catch (DeviceException e2 ){
+            Sound.beepSequence();
+            Button.LEDPattern(0);
+            e2.printStackTrace();
             System.exit(-1);
         }
     }
