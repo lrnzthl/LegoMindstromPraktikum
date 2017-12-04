@@ -74,11 +74,11 @@ public class Labyrinth extends Brains {
     		
     	if (hardware.acColor.equals(actualColor.BW)) {
     		System.out.println("Rotating to BW");
-    		correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
+    		correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColorIntensity() ) );
         }
     	else {
     		System.out.println("Rotating to RB");
-    		correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
+    		correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColorIntensity() ) );
     	}
         int toTurn = (int) (Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1)) ;
         hardware.robotTurn( -toTurn );
@@ -102,20 +102,5 @@ public class Labyrinth extends Brains {
         return (int) Math.round( value*100 );
     }
 
-    private void goingUntilWhiteLineIsLost(){
-        //start going
-        System.out.println("...going forward");
-        hardware.motorForward();
-
-        while(hardware.isOnWhite()){
-            mySleep(100);
-        }
-
-        System.out.println("I don't see the white line");
-
-        //robot is no more on the white line
-        hardware.motorStop();
-    }
-    
 
 }

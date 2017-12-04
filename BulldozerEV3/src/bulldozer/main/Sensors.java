@@ -77,7 +77,7 @@ public class Sensors extends Thread{
         return touch;
     }
 
-    public float color() {
+    public float colorIntensity() {
     	
         //System.out.println("intenisty: "+intensity);
         return color.getIntensity();

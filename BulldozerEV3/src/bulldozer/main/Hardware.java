@@ -53,6 +53,8 @@ public class Hardware {
     private CColor white = new CColor(0.296f, 0.474f, 0.232f);
     private CColor black = new CColor(0.054f, 0.091f, 0.028f);
 
+
+
     //To let us know if we have to correct to red or white
     public enum actualColor{
     	BW, RB;
@@ -79,7 +81,7 @@ public class Hardware {
 
 
             EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
-            System.out.println("Touch ok, color:");
+            System.out.println("Touch ok, colorIntensity:");
             EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
             System.out.println("Color ok, ultra:");
 
@@ -119,7 +121,7 @@ public class Hardware {
     		return false;
     	}
 
-    	return color.equalsTolerance(this.readColor());
+    	return color.equalsTolerance(this.readColorIntensity());
 
     }
 
@@ -146,10 +148,11 @@ public class Hardware {
         Sound.beep();
     }
 
-    public float readColor() {
-        return sensors.color();
+    public float readColorIntensity() {
+        return sensors.colorIntensity();
     }
-    
+
+
     public CColor readRGBColor() {
     	return sensors.colorRGB();
     }
@@ -160,22 +163,6 @@ public class Hardware {
      */
     public int getDistance() {
         return Math.round(sensors.getDistance()*100);
-    }
-
-    /**
-     * both motors rotate
-     * @param angle degrees forward without blcking
-     */
-    public void motorForwardNonBlock(int angle) {
-        motLeft.stop();
-        motRight.stop();
-
-        synchMotors();
-        motLeft.rotate(angle, true);
-        motRight.rotate(angle, true);
-
-        deSynchMotors();
-
     }
 
     public int getMotorAngle() {
@@ -308,7 +295,7 @@ public class Hardware {
      * @param color
      */
     public void led(int color){
-        //Button.LEDPattern(color);
+        //Button.LEDPattern(colorIntensity);
     }
 
     /**
@@ -352,14 +339,7 @@ public class Hardware {
         motorsWaitStopMoving();
     }
 
-    /**
-     * both motors are started;
-     * motorStop must be called for the robot to be stopped
-     */
-    public void motorForward(){
-        motRight.forward();
-        motLeft.forward();
-    }
+
 
     /**
      * stopping both motors
@@ -487,34 +467,39 @@ public class Hardware {
 
     /**
      *
-     * @return true, if the color sensor is on white; works with check with the midpoint
+     * @return true, if the colorIntensity sensor is on white; works with check with the midpoint
      */
     public boolean isOnWhite(){
 
-        if(sensors.color() > midPointBWHigh ){
+        if(sensors.colorIntensity() > midPointBWHigh ){
             //System.out.println("sensor on white");
         	    acColor = actualColor.BW;
             return true;
-        }else if( sensors.color() < midPointBWLow){
+        }else if( sensors.colorIntensity() < midPointBWLow){
             return false;
         }else{
             //System.out.println("Hitting midPoint");
             return false;
         }
     }
+
+
+    public boolean isOnBlack() {
+        return readRGBColor().equalsTolerance(black);
+    }
     
     /**
     *
-    * @return true, if the color sensor is on red
+    * @return true, if the colorIntensity sensor is on red
     * ; works with check with the midpoint
     */
    public boolean isOnRed(){
 
-       if(sensors.color() > midPointRBHigh ){
+       if(sensors.colorIntensity() > midPointRBHigh ){
            //System.out.println("sensor on white");
     	   	   acColor = actualColor.RB;
            return true;
-       }else if( sensors.color() <  midPointRBLow){
+       }else if( sensors.colorIntensity() <  midPointRBLow){
            return false;
        }else{
            //System.out.println("Hitting midPoint");
@@ -546,7 +531,7 @@ public class Hardware {
      * @return true if the sensor is on the midpoint between black and white
      */
     public boolean isOnMidpointBW(){
-        if(sensors.color() < midPointBWHigh && sensors.color() > midPointBWLow){
+        if(sensors.colorIntensity() < midPointBWHigh && sensors.colorIntensity() > midPointBWLow){
         	updateOrientation();
             System.out.println("I am on the middle BW");
             acColor = actualColor.BW;
@@ -557,7 +542,7 @@ public class Hardware {
     }
     
     public boolean isOnMidpointRB(){
-        if(sensors.color() < midPointRBHigh && sensors.color() > midPointRBLow){
+        if(sensors.colorIntensity() < midPointRBHigh && sensors.colorIntensity() > midPointRBLow){
         	updateOrientation();
             System.out.println("I am on the middle RB");
             acColor = actualColor.RB;

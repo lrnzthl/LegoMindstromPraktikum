@@ -43,7 +43,6 @@ public class Line extends Brains {
         }
 
         //we are on the middle
-        lastReset = System.currentTimeMillis();
         while(running){
             hardware.led(7);
 
@@ -64,7 +63,7 @@ public class Line extends Brains {
             while(! hardware.isOnMidpointBW()){
                 hardware.led(8);
                 System.out.println("are initial rot. angle:  " + initialRotationAngle);
-                System.out.println("Not in middle, trying to rotate, color:" + hardware.readColor());
+                System.out.println("Not in middle, trying to rotate, colorIntensity:" + hardware.readColorIntensity());
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
             }
@@ -75,7 +74,7 @@ public class Line extends Brains {
 
     private void rotateToMiddle() {
 
-        float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
+        float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColorIntensity() ) );
         //always round to the bigger number, lower possibility of getting 0
         int toTurn = (int) Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1) ;
 
@@ -133,14 +132,14 @@ public class Line extends Brains {
         while(hardware.motorsAreMoving()) {
 
             if(hardware.isOnMidpointBW()){
-                System.out.println("Found mid point!");
-                hardware.motorStop();
+                break;
             }
 
             mySleep(delay);
         }
 
         //following turns
+        outer:
         while(! hardware.isOnMidpointBW()){
             System.out.println("Searching white line...");
 
@@ -148,15 +147,23 @@ public class Line extends Brains {
             while(hardware.motorsAreMoving()) {
 
                 if(hardware.isOnMidpointBW()){
-                    System.out.println("Found mid point!");
-                    hardware.motorStop();
-                    //%TODO: rotate right, unitl u see black
+                    break outer;
                 }
 
                 mySleep(delay);
             }
 
             angle = angle*(-1);
+        }
+
+
+        //we are on midpoint
+        hardware.motorsWaitStopMoving();
+        System.out.println("Found mid point!");
+        //rotate right, black is reached
+        hardware.robotTurn(90);
+        while( ! hardware.isOnBlack() ){
+            mySleep(delay);
         }
 
     }
@@ -213,72 +220,7 @@ public class Line extends Brains {
     }
 
 
-    /**
-     * to be used in the case, that the dimensions of the obstacle are not known
-     */
-    private void goAroundObstacle1() {
 
-        assert(hardware.isTouchPressed());
-
-
-        hardware.motorForward(-180);
-
-        //rotate right
-        System.out.println("turning right...");
-        hardware.robotTurn(90);
-
-        tryToMove(offsetXobstacle);
-
-        System.out.println("Obstacle should be behind us: 1");
-
-        //obstacle is behind us
-        //rotate left
-        hardware.robotTurn(-90);
-
-        tryToMove(offsetYobstacle);
-
-        System.out.println("Obstacle should be behind us: 2");
-
-        //turn left, we should be close to the white line
-        hardware.robotTurnBlock(-90);
-
-        while( !hardware.isOnMidpointBW()){
-            hardware.motorForward(step);
-
-            if(hardware.isTouchPressed()){
-                hardware.motorForward(-180);
-                hardware.robotTurn(-turningAngle);
-            }
-        }
-
-
-    }
-
-    /**
-     * robot tries to rotate both motors
-     * @param angle; If the touch sensor is pressed, the robot goes back a bit and tries finish what he has left
-     */
-    private void tryToMove(int angle){
-        System.out.println("try to move...");
-        int currentMotorAngle = hardware.getMotorAngle();
-        hardware.motorForwardNonBlock(angle);
-
-
-        while(hardware.motorsAreMoving()){
-
-            if(hardware.isTouchPressed()){
-                hardware.motorStop();
-                int toTurnLeft = offsetXobstacle - currentMotorAngle;
-
-                //turn around and try to finish it
-                hardware.motorForward(-180);
-                hardware.robotTurn(-turningAngle);
-                tryToMove(toTurnLeft);
-            }
-
-            mySleep(delay);
-        }
-    }
 
 
 }
