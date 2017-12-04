@@ -57,7 +57,7 @@ public class Hardware {
     enum actualColor{
     	BW, RB;
     }
-    public actualColor acColor;
+    private actualColor acColor;
     
     public Hardware(){
         //copy the values after first calibration
@@ -660,5 +660,14 @@ public class Hardware {
 		}
 		average /= orientationHistory.size();
 		return Math.round(average);
+    }
+    
+    public actualColor getAcColorBW () {
+		return acColor.BW;
+    	
+    }
+    
+    public actualColor getAcColorRB () {
+     	return acColor.RB;
     }
 }
