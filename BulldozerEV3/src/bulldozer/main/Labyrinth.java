@@ -69,19 +69,18 @@ public class Labyrinth extends Brains {
     }
 
     private void rotateToMiddle() {
+        float correction = 0.f;
     		
     	if (hardware.acColor.equals(actualColor.BW)) {
     		System.out.println("Rotating to BW");
-    		float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
-    		int toTurn = Math.round(correction * turningAngle) ;
-    		hardware.robotTurn( -toTurn );
-    }
+    		correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
+          }
     	else {
     		System.out.println("Rotating to RB");
-    		float correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
-    		int toTurn = Math.round(correction * turningAngle) ;
-    		hardware.robotTurn( -toTurn );
+    		correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColor() ) );
     	}
+        int toTurn = Math.round(correction * turningAngle) + ( correction < 0 ? -1 : 1) ;
+        hardware.robotTurn( -toTurn );
     	
     } 
     

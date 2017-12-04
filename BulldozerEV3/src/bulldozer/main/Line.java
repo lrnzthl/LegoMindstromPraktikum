@@ -76,7 +76,7 @@ public class Line extends Brains {
 
         float correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColor() ) );
         //always round to the bigger number, lower possibility of getting 0
-        int toTurn = (int) Math.ceil(correction * turningAngle) + ( correction<0 ? -1 : 1) ;
+        int toTurn = (int) Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1) ;
 
         int currentGyroAngle = hardware.getAngle();
         int angleDiff = initialRotationAngle - currentGyroAngle;
