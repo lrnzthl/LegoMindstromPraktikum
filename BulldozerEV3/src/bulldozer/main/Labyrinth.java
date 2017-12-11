@@ -10,15 +10,14 @@ public class Labyrinth extends Brains {
     private int turningAngle = 10;
     private long lastReset;
 
-    private int motorMaxSpeedProcentage = 30;
+    private int motorMaxSpeedProcentage = 40;
     private int turnSpeedProcentage = 20;
 
     
-
-   
-    
     public Labyrinth(Hardware hardware){
         super(hardware);
+
+       // beaconColor.add(hardware.blue);
 
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
@@ -57,7 +56,7 @@ public class Labyrinth extends Brains {
             
             //alreadyTurned = hardware.getAngle();
             while( ! hardware.isOnMidpointRB() ){
-                System.out.println("Lost the midpoint inside running");
+                //System.out.println("Lost the midpoint inside running");
                 hardware.led(8);
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
@@ -65,22 +64,27 @@ public class Labyrinth extends Brains {
 
 
         }
+
+        hardware.led(0);
     }
 
     private void rotateToMiddle() {
         float correction = 0.f;
-    		
-    	if (hardware.acColor.equals(actualColor.BW)) {
-    		//System.out.println("Rotating to BW");
+
+        CColor current = hardware.readRGBColor();
+
+    	if ( current.equalsTolerance(hardware.blackwhite)   ) {
+    		System.out.println("Rotating to BW");
     		correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColorIntensity() ) );
         }
     	else {
-    		//System.out.println("Rotating to RB");
+    		System.out.println("Rotating to RB");
     		correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColorIntensity() ) );
     	}
         int toTurn = (int) (Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1)) ;
+        System.out.println("toTurn: " + toTurn);
 
-    	hardware.robotTurn( -toTurn );
+        hardware.robotTurn( -toTurn );
     	
     } 
     
@@ -99,6 +103,11 @@ public class Labyrinth extends Brains {
         double value = 1.0/  (1.0  +  Math.exp(-((((double) diff)/1000.0) - 8.0 + minimumOffset))) ;
 
         return (int) Math.round( value*100 );
+    }
+
+
+    private void resetTimer(){
+        lastReset = System.currentTimeMillis();
     }
 
 
