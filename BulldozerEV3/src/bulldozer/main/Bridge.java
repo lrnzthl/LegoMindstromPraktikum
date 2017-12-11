@@ -13,7 +13,7 @@ public class Bridge extends Brains {
 
     public Bridge(Hardware hardware) {
         super(hardware);
-        beaconColor = new CColor(0.306f,0.071f,0.215f); //red
+
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setMotorAccelaration(motorAccelaration);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
@@ -28,17 +28,15 @@ public class Bridge extends Brains {
 
         while(running) {
 
+            CColor actual = hardware.readRGBColor();
 
-            hardware.motorForwardBlock(-45);
+            System.out.println("actual: " + actual);
 
-            mySleep(60);
-            hardware.robotTurnGyro(-90);
-            mySleep(10000);
-            hardware.robotTurnGyro(90);
-            mySleep(10000);
+            System.out.println("red: " + actual.equalsTolerance(hardware.red));
+            System.out.println("white: " + actual.equalsTolerance(hardware.white));
+
 
             mySleep(20);
-
         }
 
     }

@@ -25,7 +25,12 @@ public class Line extends Brains {
 
     public Line(Hardware hardware) {
         super(hardware);
-        beaconColor = new CColor(0.306f,0.071f,0.215f); //red
+
+
+
+        beaconColor.add(hardware.red);
+        beaconColor.add(hardware.dRed);
+
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
     }
@@ -41,6 +46,7 @@ public class Line extends Brains {
             hardware.beep();
             mySleep(delay);
         }
+        resetTimer();
 
         //we are on the middle
         while(running){
@@ -198,13 +204,15 @@ public class Line extends Brains {
         //turn left, we should be close to the white line
         hardware.robotTurnBlock(-90);
 
+
         hardware.motorsWaitStopMoving();
         hardware.motorStop();
+        hardware.motorSetSpeedProcentage(10);
 
-        while(!hardware.isOnWhite()){
-            hardware.motorSetSpeedProcentage(10);
+        mySleep(50);
+        System.out.println("Searching the line ...");
+        while(!hardware.isOnWhite() && !hardware.isOnMidpointBW()){
             hardware.motorForward(step);
-            System.out.println("Searching the line ...");
         }
 
 
