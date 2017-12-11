@@ -73,7 +73,7 @@ public class Labyrinth extends Brains {
 
         CColor current = hardware.readRGBColor();
 
-    	if ( current.equalsTolerance(hardware.blackwhite)   || current.equalsTolerance(hardware.white)) {
+    	if ( hardware.acColor.equals(actualColor.BW)) {
     		System.out.println("Rotating to BW");
     		correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColorIntensity() ) );
         }

@@ -557,13 +557,26 @@ public class Hardware {
         //updateOrientation();
         CColor actual = readRGBColor();
 
-        //is white?
-        if(actual.getIntensity() < midPointBWHigh && actual.getIntensity() > midPointBWLow){
-           // System.out.println("found whiteMid in midpoint rb");
+
+        if(actual.equalsTolerance(red)  || actual.equalsTolerance(redwhite)){
+            acColor = actualColor.RB;
+            if(actual.getIntensity() < midPointRBHigh && actual.getIntensity() > midPointRBLow){
+                return true;
+            }
+
+        }else{
             acColor = actualColor.BW;
-            returnValue = true;
+
+            //is white?
+            if(actual.getIntensity() < midPointBWHigh && actual.getIntensity() > midPointBWLow){
+                // System.out.println("found whiteMid in midpoint rb");
+                return true;
+                //returnValue = true;
+            }
         }
 
+        return false;
+        /*
         //red white
         if( actual.equalsTolerance(redwhite) ) {
          //   System.out.println("found redwhite in midpoint rb");
@@ -578,7 +591,7 @@ public class Hardware {
         }
 
         System.out.println("midpointRB: " + returnValue);
-        return returnValue;
+        return returnValue;*/
     }
 
     
