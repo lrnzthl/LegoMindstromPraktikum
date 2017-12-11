@@ -201,11 +201,12 @@ public class Line extends Brains {
         hardware.motorsWaitStopMoving();
         hardware.motorStop();
 
-        hardware.setTurnSpeedProcentage(20);
-        mySleep(200);
-        while( !hardware.isOnMidpointBW()){
-            hardware.motorForwardBlock(step/2);
+        while(!hardware.isOnWhite()){
+            hardware.motorSetSpeedProcentage(10);
+            hardware.motorForward(step);
+            System.out.println("Searching the line ...");
         }
+
 
         hardware.motorStop();
         initialRotationAngle = hardware.getAngle();

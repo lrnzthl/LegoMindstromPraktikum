@@ -546,13 +546,11 @@ public class Hardware {
         	updateOrientation();
             System.out.println("I am on the middle RB");
             acColor = actualColor.RB;
-            beep();
             return true;
         } else if(sensors.colorRGB().getRed() < 0.31f && sensors.colorRGB().getRed() > 0.2f) {
         	updateOrientation();
             System.out.println("I am on the middle RB");
             acColor = actualColor.RB;
-            beep();
             return true;
         }
 
