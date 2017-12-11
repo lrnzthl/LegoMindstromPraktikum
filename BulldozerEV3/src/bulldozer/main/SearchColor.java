@@ -19,7 +19,7 @@ public class SearchColor extends Brains{
     
     
     private int expectedDistance;
-    private int distanceTolerance = 5;
+    private int distanceTolerance = 3;
     
 	public SearchColor(Hardware hardware){
         super(hardware);
