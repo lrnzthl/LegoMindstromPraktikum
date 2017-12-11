@@ -48,10 +48,12 @@ public class Hardware {
     private float midPointWRHigh = (float) 0.28;
     private float midPointWRLow = (float) 0.11;
 
-    private CColor red = new CColor(0.339f, 0.087f, 0.032f);
-    private CColor blue = new CColor(0.050f, 0.17f, 0.13f);
-    private CColor white = new CColor(0.296f, 0.474f, 0.232f);
-    private CColor black = new CColor(0.054f, 0.091f, 0.028f);
+    public final CColor red = new CColor(0.2937f, 0.08f, 0.025f);
+    public final CColor dRed = new CColor(0.339f, 0.087f, 0.032f);
+    public final CColor blue = new CColor(0.050f, 0.17f, 0.13f);
+    public final CColor white = new CColor(0.296f, 0.474f, 0.232f);
+    public final CColor black = new CColor(0.054f, 0.091f, 0.028f);
+    public final CColor redwhite = new CColor(0.304f, 0.319f, 0.142f);
 
 
 
@@ -116,13 +118,21 @@ public class Hardware {
      *
      * @return true, if we found the beacon
      */
-    public boolean foundBeacon(CColor color, float tolerance) {
-        if(color.equals(new CColor(-1.f, -1.f, -1.f))) {
-    		return false;
-    	}
+    public boolean foundBeacon(LinkedList<CColor> beaconList) {
+        if(beaconList == null){
+            System.out.println("beaconList is null");
+            return false;
+        }
 
-    	return color.equalsTolerance(this.readColorIntensity());
+        CColor current = readRGBColor();
 
+        for ( CColor colorIt : beaconList){
+            if (colorIt.equalsTolerance(current)){
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -355,7 +365,7 @@ public class Hardware {
      */
     public void motorSetSpeedProcentage(int procentage){
 
-        System.out.println("Setting speed to " + procentage + " procent");
+       // System.out.println("Setting speed to " + procentage + " procent");
         int motorAbsoluteSpeed = Math.round (motLeft.getMaxSpeed() * procentage / 100 );
         motRight.setSpeed(motorAbsoluteSpeed);
         motLeft.setSpeed(motorAbsoluteSpeed);
@@ -542,19 +552,30 @@ public class Hardware {
     }
     
     public boolean isOnMidpointRB(){
-        if(sensors.colorIntensity() < midPointRBHigh && sensors.colorIntensity() > midPointRBLow){
-        	updateOrientation();
-            System.out.println("I am on the middle RB");
-            acColor = actualColor.RB;
-            return true;
-        } else if(sensors.colorRGB().getRed() < 0.31f && sensors.colorRGB().getRed() > 0.2f) {
-        	updateOrientation();
-            System.out.println("I am on the middle RB");
-            acColor = actualColor.RB;
-            return true;
+        boolean returnValue = false;
+        //updateOrientation();
+        CColor actual = readRGBColor();
+
+        //is white?
+        if(actual.getIntensity() < midPointBWHigh && actual.getIntensity() > midPointBWLow){
+           // System.out.println("found whiteMid in midpoint rb");
+            acColor = actualColor.BW;
+            returnValue = true;
         }
 
-        return false;
+        //red white
+        if( actual.equalsTolerance(redwhite) ) {
+            System.out.println("found redwhite in midpoint rb");
+            returnValue = false;
+        }
+
+        if( actual.equalsTolerance(red) ) {
+            System.out.println("found red in midpoint rb");
+            returnValue = false;
+        }
+
+        System.out.println("midpointRB: " + returnValue);
+        return returnValue;
     }
 
     

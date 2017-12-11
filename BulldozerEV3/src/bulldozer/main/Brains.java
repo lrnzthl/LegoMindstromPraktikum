@@ -2,17 +2,23 @@ package bulldozer.main;
 
 import lejos.hardware.Sound;
 
+import java.util.LinkedList;
+
 public abstract class Brains extends Thread{
     private final int delay = 20; //ms
 	
     protected boolean running;
     protected Hardware hardware;
-    protected CColor beaconColor;
+    protected LinkedList<CColor> beaconColor;
     protected int returnValue = -1;
 
     public Brains(Hardware hardware){
         running = false;
-        beaconColor = new CColor(-1.f, -1.f, -1.f);
+
+        beaconColor = new LinkedList<>();
+
+        beaconColor.clear();
+
         //checking if the hardware is initialized properly
         if(hardware != null || hardware.isInit() ){
             this.hardware = hardware;
@@ -28,11 +34,12 @@ public abstract class Brains extends Thread{
             if(! hardware.isEscapeUp() || ! hardware.isLeftUp()){
                 System.out.println("Program is from button terminated");
                 returnValue = -1;
+                hardware.led(0);
                 running = false;
                 break;
             }
 
-            if(hardware.foundBeacon(beaconColor, -1)){
+            if(hardware.foundBeacon(beaconColor)){
                 System.out.println("Beacon is found");
                 Sound.beepSequenceUp();
                 returnValue = 1;

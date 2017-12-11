@@ -19,7 +19,7 @@ public class Labyrinth extends Brains {
     
     public Labyrinth(Hardware hardware){
         super(hardware);
-        beaconColor = new CColor(0.54f, 0.16f, 0.10f); //should be blue
+
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
     }
@@ -30,15 +30,13 @@ public class Labyrinth extends Brains {
 
     	//Find the labyrinth. 
     	//Drive the distance between the blue beacon line and the white labyrinth
+        System.out.println("Searching the line ...");
     	while(!hardware.isOnWhite() || !hardware.isOnRed()){
     		hardware.motorSetSpeedProcentage(10);
             hardware.motorForward(step);
-            System.out.println("Searching the line ...");
+
     	}
-    	
-   
-    	
-    	
+
     	//Turn to be in an initial position on the line
         while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
             System.out.println("Lost the midpoint");
@@ -47,49 +45,23 @@ public class Labyrinth extends Brains {
             rotateToMiddle();
             lastReset = System.currentTimeMillis();
         }
-        
+
+        System.out.println("Began running");
         //On the line, start to solve the labyrinth
         while(running){
-        		System.out.println("Began running");
-        		long now = System.currentTimeMillis();
-        		long diff = now - lastReset;
+        	long now = System.currentTimeMillis();
+        	long diff = now - lastReset;
 
             //hardware.motorSetSpeedProcentage(getSpeed(diff));
             hardware.motorForward(step);
             
             //alreadyTurned = hardware.getAngle();
-          /*  while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
-            		System.out.println("Lost the midpoint inside running");
+            while( ! hardware.isOnMidpointRB() ){
+                System.out.println("Lost the midpoint inside running");
                 hardware.led(8);
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
-            }*/
-
-
-            while(true){
-                boolean midRB=false;
-                boolean midBW=false;
-
-                if (hardware.isOnMidpointRB()){
-                    System.out.println("Midpoint RB");
-                    midRB = true;
-                    break;
-                }
-
-                if (hardware.isOnMidpointBW()){
-                    System.out.println("Midpoint BW");
-                    midBW = true;
-                    break;
-                }
-
-                if(!midBW && !midRB){
-                    System.out.println("lost the midpoint");
-                    rotateToMiddle();
-                }else{
-                    break;
-                }
             }
-
 
 
         }
@@ -99,15 +71,16 @@ public class Labyrinth extends Brains {
         float correction = 0.f;
     		
     	if (hardware.acColor.equals(actualColor.BW)) {
-    		System.out.println("Rotating to BW");
+    		//System.out.println("Rotating to BW");
     		correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColorIntensity() ) );
         }
     	else {
-    		System.out.println("Rotating to RB");
+    		//System.out.println("Rotating to RB");
     		correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColorIntensity() ) );
     	}
         int toTurn = (int) (Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1)) ;
-        hardware.robotTurn( -toTurn );
+
+    	hardware.robotTurn( -toTurn );
     	
     } 
     
