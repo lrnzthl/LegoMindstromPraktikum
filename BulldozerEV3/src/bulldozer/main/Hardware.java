@@ -565,6 +565,9 @@ public class Hardware {
             }
 
         }else{
+            if (acColor.equals(actualColor.RB)) {
+                motorForwardBlock(20);
+            }
             acColor = actualColor.BW;
 
             //is white?

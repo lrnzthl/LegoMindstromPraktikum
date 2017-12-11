@@ -86,7 +86,7 @@ public class Labyrinth extends Brains {
         int toTurn = (int) (Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1)) ;
         System.out.println("toTurn: " + toTurn);
 
-        hardware.robotTurnBlock( -toTurn );
+        hardware.robotTurn( -toTurn );
     	
     } 
     
