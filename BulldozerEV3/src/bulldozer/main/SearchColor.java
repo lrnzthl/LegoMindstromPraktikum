@@ -41,10 +41,7 @@ public class SearchColor extends Brains{
 			
 			while(!hardware.isOnRed() && !hardware.isOnWhite()) {
 				
-				while(hardware.isTouchPressed()){
-	                System.out.println("Touch is pressed, cannot go forward");
-	                rotateInTheWall();
-	            }
+				
 				
 				
 				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
@@ -52,10 +49,14 @@ public class SearchColor extends Brains{
 	                rotateToDistance();
 	            }
 				
+				while(hardware.isTouchPressed()){
+	                System.out.println("Touch is pressed, cannot go forward");
+	                rotateInTheWall();
+	            }
+				
 				hardware.motorSetSpeedProcentage(20);
 	            hardware.motorForward(step);
-	           // System.out.println("Searching the colors ...");
-	            
+
 	            
 	            
 			}
@@ -78,6 +79,7 @@ public class SearchColor extends Brains{
 		
 		while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
 			System.out.println("Begin to rotate");
+			
 			if (hardware.getDistance() > expectedDistance ) {
 				System.out.println("Rotating to left");
 				hardware.rotateRightMotor(5);
