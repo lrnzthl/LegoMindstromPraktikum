@@ -17,10 +17,13 @@ public class SearchColor extends Brains{
     // 1 for the last rotation to right, -1 for last rotation to left
     private int lastRotation = 1;
     
+    
     private int expectedDistance;
+    private int distanceTolerance = 5;
     
 	public SearchColor(Hardware hardware){
         super(hardware);
+        
         
     }
 
@@ -30,6 +33,7 @@ public class SearchColor extends Brains{
 		
 		//The distance expected between the robot and the wall
 		expectedDistance = hardware.getDistance();
+		System.out.println("The distance is : " + expectedDistance);
 		
 		while(!(foundRed && foundWhite)) {
 			
@@ -43,7 +47,7 @@ public class SearchColor extends Brains{
 	            }
 				
 				
-				while(!(hardware.getDistance() == expectedDistance)){
+				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
 					System.out.println("Error in the distance, correcting");
 	                rotateToDistance();
 	            }
@@ -70,13 +74,17 @@ public class SearchColor extends Brains{
 	//Rotates if it´s getting further away or closer of the wall.
 	public void rotateToDistance() {
 		
-		while(hardware.getDistance() != expectedDistance) {
+		while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
 			
-			float correction =  ( Kp * ( expectedDistance - hardware.getDistance() ) );
-	        //always round to the bigger number, lower possibility of getting 0
-	        int toTurn = (int) Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1) ;
-	        	        
-	        hardware.robotTurn( -toTurn );
+			if (hardware.getDistance() > expectedDistance) {
+				System.out.println("Rotating to left");
+				hardware.rotateRightMotor(20);
+			}
+			else {
+				System.out.println("Rotating to right");
+				hardware.rotateLeftMotor(20);
+			}
+			
 		}
 	}
 	

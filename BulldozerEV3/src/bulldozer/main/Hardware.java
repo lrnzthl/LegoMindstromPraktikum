@@ -670,5 +670,12 @@ public class Hardware {
 		return Math.round(average);
     }
     
+    public void rotateRightMotor(int angle) {
+    	   motRight.rotate(angle, true);
+    }
+    
+    public void rotateLeftMotor(int angle) {
+    		motLeft.rotate(angle, true);
+    }
     
 }
