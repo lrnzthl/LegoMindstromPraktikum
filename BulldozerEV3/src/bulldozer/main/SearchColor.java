@@ -6,6 +6,10 @@ public class SearchColor extends Brains{
 	
     
     private final int step = 45;
+    private int turningAngle = 10;
+    
+
+    private final float Kp = 1.5f;
     
     private boolean foundRed = false;
     private boolean foundWhite = false;
@@ -40,9 +44,12 @@ public class SearchColor extends Brains{
 	                rotateInTheWall();
 	            }
 				
+				/*
 				while(!(hardware.getDistance() == expectedDistance)){
+					System.out.println("Error in the distance, correcting");
 	                rotateToDistance();
 	            }
+				*/
 				
 				hardware.motorSetSpeedProcentage(20);
 	            hardware.motorForward(step);
@@ -68,12 +75,11 @@ public class SearchColor extends Brains{
 		
 		while(hardware.getDistance() != expectedDistance) {
 			
-			if (hardware.getDistance() < expectedDistance) {
-				//Rotate to right
-			}
-			else {
-				//Rotate to left 
-			}
+			float correction =  ( Kp * ( expectedDistance - hardware.getDistance() ) );
+	        //always round to the bigger number, lower possibility of getting 0
+	        int toTurn = (int) Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1) ;
+	        	        
+	        hardware.robotTurn( -toTurn );
 		}
 	}
 	
