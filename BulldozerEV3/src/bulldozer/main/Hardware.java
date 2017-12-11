@@ -54,6 +54,7 @@ public class Hardware {
     public final CColor white = new CColor(0.296f, 0.474f, 0.232f);
     public final CColor black = new CColor(0.054f, 0.091f, 0.028f);
     public final CColor redwhite = new CColor(0.304f, 0.319f, 0.142f);
+    public final CColor blackwhite = new CColor(0.136f, 0.211f, 0.067f);
 
 
 
@@ -565,12 +566,14 @@ public class Hardware {
 
         //red white
         if( actual.equalsTolerance(redwhite) ) {
-            System.out.println("found redwhite in midpoint rb");
+         //   System.out.println("found redwhite in midpoint rb");
+            acColor = actualColor.RB;
             returnValue = false;
         }
 
         if( actual.equalsTolerance(red) ) {
-            System.out.println("found red in midpoint rb");
+        //    System.out.println("found red in midpoint rb");
+            acColor = actualColor.RB;
             returnValue = false;
         }
 
