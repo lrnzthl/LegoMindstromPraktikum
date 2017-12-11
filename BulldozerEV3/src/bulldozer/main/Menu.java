@@ -89,8 +89,8 @@ public class Menu {
             case LABYRINTH:
                 brain = new Labyrinth(hardware);
                 break;
-            case BARRIER:
-                //
+            case SEARCHCOLOR:
+                brain = new SearchColor(hardware);
                 break;
             case BRIDGE:
                 brain = new Bridge(hardware);
