@@ -200,7 +200,7 @@ public class Line extends Brains {
         hardware.robotTurnBlock(-90);
 
         while( !hardware.isOnMidpointBW()){
-            hardware.motorForwardBlock(step);
+            hardware.motorForward(step);
         }
 
         hardware.motorStop();

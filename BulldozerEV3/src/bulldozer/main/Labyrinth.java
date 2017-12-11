@@ -42,38 +42,13 @@ public class Labyrinth extends Brains {
     	
     	
     	//Turn to be in an initial position on the line
-        while(true){
-            boolean midRB=false;
-            boolean midBW=false;
-
-            if (hardware.isOnMidpointRB()){
-                System.out.println("Midpoint RB");
-                midRB = true;
-                break;
-            }
-
-            if (hardware.isOnMidpointBW()){
-                System.out.println("Midpoint BW");
-                midBW = true;
-                break;
-            }
-
-            if(!midBW && !midRB){
-                System.out.println("lost the midpoint");
-                rotateToMiddle();
-            }else{
-                break;
-            }
-        }
-
-        /*
         while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
         		System.out.println("Lost the midpoint");
         		System.out.println(hardware.acColor);
             hardware.led(8);
             rotateToMiddle();
             lastReset = System.currentTimeMillis();
-        }*/
+        }
         
         //On the line, start to solve the labyrinth
         while(running){
@@ -85,12 +60,40 @@ public class Labyrinth extends Brains {
             hardware.motorForward(step);
             
             //alreadyTurned = hardware.getAngle();
-            while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
+          /*  while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
             		System.out.println("Lost the midpoint inside running");
                 hardware.led(8);
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
+            }*/
+
+
+            while(true){
+                boolean midRB=false;
+                boolean midBW=false;
+
+                if (hardware.isOnMidpointRB()){
+                    System.out.println("Midpoint RB");
+                    midRB = true;
+                    break;
+                }
+
+                if (hardware.isOnMidpointBW()){
+                    System.out.println("Midpoint BW");
+                    midBW = true;
+                    break;
+                }
+
+                if(!midBW && !midRB){
+                    System.out.println("lost the midpoint");
+                    rotateToMiddle();
+                }else{
+                    break;
+                }
             }
+
+
+
         }
     }
 
