@@ -62,9 +62,11 @@ public class SearchColor extends Brains{
 			
 			
 			if (hardware.isOnRed()) {
+				System.out.println("FOUND THE RED");
 				foundRed = true;
 			}
 			else if (hardware.isOnWhite()) {
+				System.out.println("FOUND THE WHITE");
 				foundWhite = true;
 			}
 		}
@@ -75,14 +77,14 @@ public class SearchColor extends Brains{
 	public void rotateToDistance() {
 		
 		while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
-			
-			if (hardware.getDistance() > expectedDistance) {
+			System.out.println("Begin to rotate");
+			if (hardware.getDistance() > expectedDistance ) {
 				System.out.println("Rotating to left");
-				hardware.rotateRightMotor(20);
+				hardware.rotateRightMotor(5);
 			}
 			else {
 				System.out.println("Rotating to right");
-				hardware.rotateLeftMotor(20);
+				hardware.rotateLeftMotor(5);
 			}
 			
 		}
