@@ -30,8 +30,6 @@ public class Labyrinth extends Brains {
 
     	//Find the labyrinth. 
     	//Drive the distance between the blue beacon line and the white labyrinth
-
-    
     	while(!hardware.isOnWhite() || !hardware.isOnRed()){
     		hardware.motorSetSpeedProcentage(10);
             hardware.motorForward(step);
@@ -43,8 +41,8 @@ public class Labyrinth extends Brains {
     	
     	//Turn to be in an initial position on the line
         while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
-        		System.out.println("Lost the midpoint");
-        		System.out.println(hardware.acColor);
+            System.out.println("Lost the midpoint");
+            System.out.println(hardware.acColor);
             hardware.led(8);
             rotateToMiddle();
             lastReset = System.currentTimeMillis();

@@ -81,7 +81,7 @@ public class Hardware {
 
 
             EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
-            System.out.println("Touch ok, colorIntensity:");
+            System.out.println("Touch ok, color:");
             EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
             System.out.println("Color ok, ultra:");
 
@@ -291,11 +291,11 @@ public class Hardware {
      1/2/3: static light green/red/yellow
      4/5/6: normal blinking light green/red/yellow
      7/8/9: fast blinking light green/red/yellow
-     >9: same as 9.
+     >9: sam as 9.
      * @param color
      */
     public void led(int color){
-        //Button.LEDPattern(colorIntensity);
+        Button.LEDPattern(color);
     }
 
     /**
@@ -546,13 +546,11 @@ public class Hardware {
         	updateOrientation();
             System.out.println("I am on the middle RB");
             acColor = actualColor.RB;
-            beep();
             return true;
         } else if(sensors.colorRGB().getRed() < 0.31f && sensors.colorRGB().getRed() > 0.2f) {
         	updateOrientation();
             System.out.println("I am on the middle RB");
             acColor = actualColor.RB;
-            beep();
             return true;
         }
 
