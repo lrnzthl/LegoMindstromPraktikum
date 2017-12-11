@@ -21,8 +21,6 @@ public class SearchColor extends Brains{
     
 	public SearchColor(Hardware hardware){
         super(hardware);
-        beaconColor = new CColor(0.54f, 0.16f, 0.10f); //should be blue
-        
         
     }
 
@@ -44,12 +42,11 @@ public class SearchColor extends Brains{
 	                rotateInTheWall();
 	            }
 				
-				/*
+				
 				while(!(hardware.getDistance() == expectedDistance)){
 					System.out.println("Error in the distance, correcting");
 	                rotateToDistance();
 	            }
-				*/
 				
 				hardware.motorSetSpeedProcentage(20);
 	            hardware.motorForward(step);
