@@ -54,7 +54,7 @@ public class SearchColor extends Brains{
 				
 				hardware.motorSetSpeedProcentage(20);
 	            hardware.motorForward(step);
-	            System.out.println("Searching the colors ...");
+	           // System.out.println("Searching the colors ...");
 	            
 	            
 	            

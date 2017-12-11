@@ -8,7 +8,7 @@ public class CColor {
 	private float g;
 	private float b;
 
-	private float tolerance = 0.3f; //for comparing 2 colors
+	private float tolerance = 0.4f; //for comparing 2 colors
 
 	public CColor(float red, float green, float blue) {
 		this.r = red;

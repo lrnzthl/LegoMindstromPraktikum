@@ -551,6 +551,18 @@ public class Hardware {
         
         return false;
     }
+
+
+    public boolean isOnMidpointRW(){
+        if(sensors.colorIntensity() < midPointWRHigh && sensors.colorIntensity() > midPointWRLow){
+            updateOrientation();
+            System.out.println("I am on the middle BW");
+            acColor = actualColor.BW;
+            return true;
+        }
+
+        return false;
+    }
     
     public boolean isOnMidpointRB(){
         boolean returnValue = false;
@@ -558,7 +570,7 @@ public class Hardware {
         CColor actual = readRGBColor();
 
 
-        if(actual.equalsTolerance(red)  || actual.equalsTolerance(redwhite)){
+        if(actual.equalsTolerance(red)  || actual.equalsTolerance(redwhite) ){
             acColor = actualColor.RB;
             if(actual.getIntensity() < midPointRBHigh && actual.getIntensity() > midPointRBLow){
                 return true;
