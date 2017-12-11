@@ -81,7 +81,7 @@ public class Hardware {
 
 
             EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
-            System.out.println("Touch ok, colorIntensity:");
+            System.out.println("Touch ok, color:");
             EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
             System.out.println("Color ok, ultra:");
 

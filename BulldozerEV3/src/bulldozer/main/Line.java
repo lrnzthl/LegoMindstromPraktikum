@@ -44,19 +44,18 @@ public class Line extends Brains {
 
         //we are on the middle
         while(running){
+            long now = System.currentTimeMillis();
+            long diff = now - lastReset;
+
             hardware.led(7);
 
             while(hardware.isTouchPressed()){
                 System.out.println("Touch is pressed, cannot go forward");
                 goAroundObstacle();
-                lastReset = System.currentTimeMillis();
+                resetTimer();
             }
 
-            long now = System.currentTimeMillis();
-            long diff = now - lastReset;
-
             hardware.motorSetSpeedProcentage(getSpeed(diff));
-
             hardware.motorForward(step);
 
             initialRotationAngle = hardware.getAngle();  //resetting the variable with how much we've turned
@@ -65,7 +64,7 @@ public class Line extends Brains {
                 System.out.println("are initial rot. angle:  " + initialRotationAngle);
                 System.out.println("Not in middle, trying to rotate, colorIntensity:" + hardware.readColorIntensity());
                 rotateToMiddle();
-                lastReset = System.currentTimeMillis();
+                resetTimer();
             }
 
             System.out.println("Resetting init rot: " + initialRotationAngle);
@@ -96,7 +95,7 @@ public class Line extends Brains {
             hardware.robotTurn(toGoBack);
 
             zigZagMovements();
-            lastReset = System.currentTimeMillis();
+            resetTimer();
             return;
         }
         hardware.robotTurn( -toTurn );
@@ -199,14 +198,19 @@ public class Line extends Brains {
         //turn left, we should be close to the white line
         hardware.robotTurnBlock(-90);
 
+        hardware.motorsWaitStopMoving();
+        hardware.motorStop();
+
+        hardware.setTurnSpeedProcentage(20);
+        mySleep(200);
         while( !hardware.isOnMidpointBW()){
-            hardware.motorForward(step);
+            hardware.motorForwardBlock(step/2);
         }
 
         hardware.motorStop();
         initialRotationAngle = hardware.getAngle();
 
-
+        resetTimer();
         /*
         //oops
         while(hardware.isTouchPressed()){
@@ -220,7 +224,9 @@ public class Line extends Brains {
     }
 
 
-
+    private void resetTimer(){
+        lastReset = System.currentTimeMillis();
+    }
 
 
 }
