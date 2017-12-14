@@ -37,16 +37,17 @@ public class Labyrinth extends Brains {
     	}
 
     	//Turn to be in an initial position on the line
-        while(! hardware.isOnMidpointBW() && ! hardware.isOnMidpointRB() ){
+        while( !hardware.isOnMidpointRed()  ){
             System.out.println("Lost the midpoint");
-            System.out.println(hardware.acColor);
             hardware.led(8);
             rotateToMiddle();
             lastReset = System.currentTimeMillis();
         }
 
         System.out.println("Began running");
+
         //On the line, start to solve the labyrinth
+        resetTimer();
         while(running){
         	long now = System.currentTimeMillis();
         	long diff = now - lastReset;
@@ -55,9 +56,8 @@ public class Labyrinth extends Brains {
             hardware.motorForward(step);
             
             //alreadyTurned = hardware.getAngle();
-            while( ! hardware.isOnMidpointRB() ){
-                //System.out.println("Lost the midpoint inside running");
-
+            while( ! hardware.isOnMidpointRed() ){
+                System.out.println("Lost the midpoint inside running");
                 hardware.led(8);
                 rotateToMiddle();
                 lastReset = System.currentTimeMillis();
@@ -74,19 +74,10 @@ public class Labyrinth extends Brains {
 
         CColor current = hardware.readRGBColor();
 
-    	if ( hardware.acColor.equals(actualColor.BW)) {
-    		System.out.println("Rotating to BW");
-    		correction =  ( Kp * ( hardware.getMidPointBW() - hardware.readColorIntensity() ) );
-        }
-    	else {
-    		System.out.println("Rotating to RB");
-    		correction =  ( Kp * ( hardware.getMidPointRB() - hardware.readColorIntensity() ) );
-    		//correction =  ( Kp * ( 0.256f - hardware.readColorIntensity() ) );
-    		correction*= -1;
-    	}
+    	correction = ( Kp * ( hardware.getMidPointRed() - current.getRed() ) );
         int toTurn = (int) (Math.ceil(correction * turningAngle) + ( correction < 0 ? -1 : 1)) ;
-        System.out.println("toTurn: " + toTurn);
 
+        System.out.println("toTurn: " + toTurn);
         hardware.robotTurn( -toTurn );
     	
     } 

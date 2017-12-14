@@ -42,11 +42,8 @@ public class Hardware {
     private float midPointBWHigh = (float) 0.28;
     private float midPointBWLow = (float) 0.11;
 
-    private float midPointRBHigh = (float) 0.1;
-    private float midPointRBLow = (float) 0.75;
-
-    private float midPointWRHigh = (float) 0.28;
-    private float midPointWRLow = (float) 0.11;
+    private float midPointRedHigh = (float) 0.175;
+    private float midPointRedLow = (float) 0.125;
 
     public final CColor red = new CColor(0.2937f, 0.08f, 0.025f);
     public final CColor dRed = new CColor(0.339f, 0.087f, 0.032f);
@@ -482,16 +479,9 @@ public class Hardware {
      */
     public boolean isOnWhite(){
 
-        if(sensors.colorIntensity() > midPointBWHigh ){
-            //System.out.println("sensor on white");
-        	    acColor = actualColor.BW;
-            return true;
-        }else if( sensors.colorIntensity() < midPointBWLow){
-            return false;
-        }else{
-            //System.out.println("Hitting midPoint");
-            return false;
-        }
+        CColor current = readRGBColor();
+        return current.equalsTolerance(white);
+
     }
 
 
@@ -505,17 +495,8 @@ public class Hardware {
     * ; works with check with the midpoint
     */
    public boolean isOnRed(){
-
-       if(sensors.colorIntensity() > midPointRBHigh ){
-           //System.out.println("sensor on white");
-    	   	   acColor = actualColor.RB;
-           return true;
-       }else if( sensors.colorIntensity() <  midPointRBLow){
-           return false;
-       }else{
-           //System.out.println("Hitting midPoint");
-           return false;
-       }
+       CColor current = readRGBColor();
+       return current.equalsTolerance(red);
    }
     
 
@@ -533,8 +514,9 @@ public class Hardware {
     * @return the midPoint;
     * DO NOT USE to check if sensor is on white -> isOnWhite() function
     */
-   public float getMidPointRB(){
-       return (red.getIntensity() + black.getIntensity())/2 + black.getIntensity();
+   public float getMidPointRed(){
+       return 0.15f;
+       //return (red.getRed()/2 + black.getRed())/2 + black.getRed();
    }
     
     /**
@@ -552,68 +534,17 @@ public class Hardware {
         return false;
     }
 
+    public boolean isOnMidpointRed(){
+        CColor current = readRGBColor();
 
-    public boolean isOnMidpointRW(){
-        if(sensors.colorIntensity() < midPointWRHigh && sensors.colorIntensity() > midPointWRLow){
-            updateOrientation();
-            System.out.println("I am on the middle BW");
-            acColor = actualColor.BW;
+        if(current.getRed() > midPointRedLow && current.getRed() < midPointRedHigh ){
             return true;
         }
 
         return false;
     }
-    
-    public boolean isOnMidpointRB(){
-        boolean returnValue = false;
-        //updateOrientation();
-        CColor actual = readRGBColor();
 
 
-        if(actual.equalsTolerance(red)  || actual.equalsTolerance(redwhite) ){
-            acColor = actualColor.RB;
-            if(actual.getIntensity() < midPointRBHigh && actual.getIntensity() > midPointRBLow){
-                return true;
-            }
-
-        }else{
-            if (acColor.equals(actualColor.RB)) {
-                motorForwardBlock(20);
-            }
-            acColor = actualColor.BW;
-
-            //is white?
-            if(actual.getIntensity() < midPointBWHigh && actual.getIntensity() > midPointBWLow){
-                // System.out.println("found whiteMid in midpoint rb");
-                return true;
-                //returnValue = true;
-            }
-        }
-
-        return false;
-        /*
-        //red white
-        if( actual.equalsTolerance(redwhite) ) {
-         //   System.out.println("found redwhite in midpoint rb");
-            acColor = actualColor.RB;
-            returnValue = false;
-        }
-
-        if( actual.equalsTolerance(red) ) {
-        //    System.out.println("found red in midpoint rb");
-            acColor = actualColor.RB;
-            returnValue = false;
-        }
-
-        System.out.println("midpointRB: " + returnValue);
-        return returnValue;*/
-    }
-
-    
-    
-    
-
-    
     /**
      *
      * @return current angle, read from the gyro sensor
