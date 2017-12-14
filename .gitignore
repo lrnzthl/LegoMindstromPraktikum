@@ -1,7 +1,7 @@
 BulldozerEV3/*.jar
 BulldozerEV3/out
 Main.jar
-BulldozerEV3/META-INF
+BulldozerEV3/src/META-INF
 
 metadata
 bin/
