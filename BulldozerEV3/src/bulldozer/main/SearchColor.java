@@ -62,13 +62,15 @@ public class SearchColor extends Brains{
 			}
 			
 			
-			if (hardware.isOnRed()) {
+			if (hardware.isOnRed() && !foundRed) {
 				System.out.println("FOUND THE RED");
 				foundRed = true;
+				hardware.beep();
 			}
-			else if (hardware.isOnWhite()) {
+			else if (hardware.isOnWhite() && !foundWhite) {
 				System.out.println("FOUND THE WHITE");
 				foundWhite = true;
+				hardware.beep();
 			}
 		}
 		
@@ -97,29 +99,14 @@ public class SearchColor extends Brains{
 	public void rotateInTheWall() {
 		hardware.motorForwardBlock(-180);
 		
-		if (lastRotation > 0) {
-			System.out.println("turning left...");
-			
-			hardware.robotTurnBlock(-90);
-			hardware.motorForward(180);
-	        hardware.robotTurnBlock(-90);
-	        
-	        expectedDistance = hardware.getDistance();
-	        
-			lastRotation = -1;
-		}
-		else {
-			System.out.println("turning right...");
-			
-	        hardware.robotTurnBlock(90);
-	        hardware.motorForward(180);
-	        hardware.robotTurnBlock(90);
-	        
-	        expectedDistance = hardware.getDistance();
-	        
-	        lastRotation = 1;
-		}
-	}
+	    System.out.println("Turning...");
+		hardware.robotTurnBlock(lastRotation * -90);
+        hardware.motorForward(180);
+        hardware.robotTurnBlock(lastRotation * -90);
+        expectedDistance = hardware.getDistance();
+
+        lastRotation *= -1;
+    }
 	
 	
 }
