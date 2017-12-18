@@ -52,6 +52,7 @@ public class Hardware {
     public final CColor black = new CColor(0.054f, 0.091f, 0.028f);
     public final CColor redwhite = new CColor(0.304f, 0.319f, 0.142f);
     public final CColor blackwhite = new CColor(0.136f, 0.211f, 0.067f);
+    public final CColor nothing = new CColor(0.0f, 0.0f, 0.0f);
 
 
 
@@ -420,10 +421,7 @@ public class Hardware {
         deSynchMotors();
 
     }
-
-
-
-
+    
     public void robotTurnGyro(int angle){
         motorSetSpeedProcentage(turnSpeedProcentage);
 
@@ -649,9 +647,15 @@ public class Hardware {
     public void rotateRightMotor(int angle) {
     	   motRight.rotate(angle, true);
     }
+    public void rotateRightMotorBlocking(int angle) {
+ 	   motRight.rotate(angle);
+    }
     
     public void rotateLeftMotor(int angle) {
     		motLeft.rotate(angle, true);
     }
     
+    public void rotateLeftMotorBlocking(int angle) {
+		motLeft.rotate(angle);
+}
 }
