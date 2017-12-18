@@ -62,43 +62,57 @@ public class Hardware {
     public actualColor acColor;
     
     public Hardware() throws IllegalArgumentException{
-        //copy the values after first calibration
+	    //copy the values after first calibration
+	    led(9);
+	    
+	    System.out.println("Hardware is being initialized...");
+	
+	    System.out.println("Checking motor right...");
+	    motRight = new EV3LargeRegulatedMotor(MotorPort.D);
+	    System.out.println("Done!");
+	
+	    System.out.println("Checking motor left...");
+	    motLeft = new EV3LargeRegulatedMotor(MotorPort.A);
+	    System.out.println("Done!");
+	
+	    System.out.println("Checking servo...");
+	    servo = new EV3LargeRegulatedMotor(MotorPort.B);
+	    System.out.println("Done!");
+	
+	    System.out.println("Checking touch sensor...");
+	    EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
+	    System.out.println("Done!");
+	    
+	    System.out.println("Checking color sensor...");
+	    EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
+	    System.out.println("Done!");
+	    
+	    System.out.println("Checking ultrasonic sensor...");
+	    EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
+	    System.out.println("Done!");
+	    
+	    System.out.println("Checking gyro sensor...");
+	    EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
+	    System.out.println("Done!");
 
-        led(9);
-
-
-            System.out.println("Hardware is being initialized...");
-
-            motRight = new EV3LargeRegulatedMotor(MotorPort.D);
-            System.out.println("Motor right is ok");
-
-
-            motLeft = new EV3LargeRegulatedMotor(MotorPort.A);
-            System.out.println("Motor left is ok");
-
-            servo = new EV3LargeRegulatedMotor(MotorPort.B);
-            System.out.println("Servo is ok, touch:");
-
-
-            EV3TouchSensor touchSensor = new EV3TouchSensor(SensorPort.S3);
-            System.out.println("Touch ok, color:");
-            EV3ColorSensor color = new EV3ColorSensor(SensorPort.S4);
-            System.out.println("Color ok, ultra:");
-
-            EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
-            System.out.println("Ultra ok, gyro:");
-
-            EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
-            System.out.println("Gyro Ev3 ok");
-
-
-       SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
-       SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "RGB");
-       SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultraSensor, "Distance");
-       SingleValueSensorWrapper gyro = new SingleValueSensorWrapper(gyroSensor, "Angle");
-
-       System.out.println("wrappers ready");
-       sensors = new Sensors(sensorReadDelay, touch, col, dist, gyro);
+	    System.out.println("Initialising the wrappers...");
+	    System.out.println("touch wrapper...");
+	    SingleValueSensorWrapper touch = new SingleValueSensorWrapper(touchSensor, "Touch");
+	    System.out.println("Done!");
+	    
+	    System.out.println("color wrapper...");
+	    SingleValueSensorWrapper col = new SingleValueSensorWrapper(color, "RGB");
+	    System.out.println("Done!");
+	    
+	    System.out.println("ultrasonic wrapper...");
+	    SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultraSensor, "Distance");
+	    System.out.println("Done!");
+	    
+	    System.out.println("gyro wrapper...");
+	    SingleValueSensorWrapper gyro = new SingleValueSensorWrapper(gyroSensor, "Angle");
+	    System.out.println("Done!");
+	    
+	    sensors = new Sensors(sensorReadDelay, touch, col, dist, gyro);
 
         initialize();
 
