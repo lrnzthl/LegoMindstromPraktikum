@@ -95,9 +95,9 @@ public class Menu {
             case BRIDGE:
                 brain = new Bridge(hardware);
                 break;
-         //   case FINDCOLOUR:
-                //
-          //      break;
+            case DRIVEFREE:
+            	brain = new DriveFree(hardware);
+                break;
             default:
                 System.out.println("Cannot start MENU state");
                 break;
@@ -120,13 +120,14 @@ public class Menu {
         case 0:
         	break;
         case 1:
+        	System.out.println("Completed last task :)");
         	if(state.getId() < state.values().length - 1){
         		state = state.values()[state.getId() + 1];
         		selectedState = state;
+        		System.out.println("Going to start task: " + state);
         		startBrain();
         	} else {
         		state = ParcourState.MENU;
-        		System.out.println("Completed last task :)");
         	}
         	break;
         default:

@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 public abstract class Brains extends Thread{
     private final int delay = 20; //ms
+    private boolean searchBeaconState = true;
 	
     protected boolean running;
     protected Hardware hardware;
@@ -39,7 +40,7 @@ public abstract class Brains extends Thread{
                 break;
             }
 
-            if(hardware.foundBeacon(beaconColor)){
+            if(hardware.foundBeacon(beaconColor) && searchBeaconState){
                 System.out.println("Beacon is found");
                 Sound.beepSequenceUp();
                 returnValue = 1;
@@ -53,6 +54,10 @@ public abstract class Brains extends Thread{
 
     public abstract void run();
 
+    protected void setSearchForBeacon(boolean state){
+    	searchBeaconState = state;
+    }
+    
     protected void mySleep(int millis) {
         try {
             Thread.sleep(millis);

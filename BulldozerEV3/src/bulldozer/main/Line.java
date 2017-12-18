@@ -65,7 +65,7 @@ public class Line extends Brains {
             hardware.motorForward(step);
 
             initialRotationAngle = hardware.getAngle();  //resetting the variable with how much we've turned
-            while(! hardware.isOnMidpointBW()){
+            while(! hardware.isOnMidpointBW() && running){
                 hardware.led(8);
                 System.out.println("are initial rot. angle:  " + initialRotationAngle);
                 System.out.println("Not in middle, trying to rotate, colorIntensity:" + hardware.readColorIntensity());

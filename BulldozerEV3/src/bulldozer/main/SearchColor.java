@@ -22,9 +22,7 @@ public class SearchColor extends Brains{
     private int distanceTolerance = 3;
     
 	public SearchColor(Hardware hardware){
-        super(hardware);
-        
-        
+        super(hardware);  
     }
 
 	@Override
@@ -68,14 +66,11 @@ public class SearchColor extends Brains{
 	public void rotateToDistance() {
 		
 		while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
-			System.out.println("Begin to rotate");
-			
+			hardware.motorSetSpeedProcentage(5);
 			if (hardware.getDistance() > expectedDistance ) {
-				System.out.println("Rotating to left");
 				hardware.rotateRightMotor(5);
 			}
 			else {
-				System.out.println("Rotating to right");
 				hardware.rotateLeftMotor(5);
 			}
 			
