@@ -17,7 +17,7 @@ public class Labyrinth extends Brains {
     public Labyrinth(Hardware hardware){
         super(hardware);
 
-       // beaconColor.add(hardware.blue);
+        beaconColor.add(hardware.blue);
 
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
@@ -30,8 +30,8 @@ public class Labyrinth extends Brains {
     	//Find the labyrinth. 
     	//Drive the distance between the blue beacon line and the white labyrinth
         System.out.println("Searching the line ...");
-    	while(!hardware.isOnWhite() || !hardware.isOnRed()){
-    		hardware.motorSetSpeedProcentage(10);
+    	while(!hardware.isOnWhite() && !hardware.isOnRed()){
+    		hardware.motorSetSpeedProcentage(20);
             hardware.motorForward(step);
 
     	}

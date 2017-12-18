@@ -42,8 +42,8 @@ public class Hardware {
     private float midPointBWHigh = (float) 0.28;
     private float midPointBWLow = (float) 0.11;
 
-    private float midPointRedHigh = (float) 0.175;
-    private float midPointRedLow = (float) 0.125;
+    private float midPointRedHigh = (float) 0.2;
+    private float midPointRedLow = (float) 0.1;
 
     public final CColor red = new CColor(0.2937f, 0.08f, 0.025f);
     public final CColor dRed = new CColor(0.339f, 0.087f, 0.032f);

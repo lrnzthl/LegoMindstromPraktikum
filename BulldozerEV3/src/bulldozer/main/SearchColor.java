@@ -36,31 +36,19 @@ public class SearchColor extends Brains{
 		System.out.println("The distance is : " + expectedDistance);
 		
 		while(!(foundRed && foundWhite)) {
-			
 			hardware.servoGoUp();
-			
 			while(!hardware.isOnRed() && !hardware.isOnWhite()) {
-				
-				
-				
-				
 				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
 					System.out.println("Error in the distance, correcting");
 	                rotateToDistance();
 	            }
-				
 				while(hardware.isTouchPressed()){
 	                System.out.println("Touch is pressed, cannot go forward");
 	                rotateInTheWall();
 	            }
-				
 				hardware.motorSetSpeedProcentage(20);
 	            hardware.motorForward(step);
-
-	            
-	            
 			}
-			
 			
 			if (hardware.isOnRed() && !foundRed) {
 				System.out.println("FOUND THE RED");
