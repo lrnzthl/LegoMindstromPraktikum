@@ -61,6 +61,7 @@ public class DriveFree extends Brains {
         while( Math.abs(hardware.getDistance() - distanceFromWall) > offset ){
             System.out.println("Correcting distance");
             int current = hardware.getDistance();
+            System.out.println("... distance is " + current);
 
             if(current < distanceFromWall){
                 System.out.println("going right");
