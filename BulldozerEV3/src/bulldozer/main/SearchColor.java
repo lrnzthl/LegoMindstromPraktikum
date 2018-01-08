@@ -27,7 +27,17 @@ public class SearchColor extends Brains{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+
+	    /*
+        int number = 100000000;
+		hardware.servoGoDown();
+        while(number>0){
+            System.out.println("Angle is " + hardware.getAngle());
+            System.out.println("color is " + hardware.readRGBColor());
+            number--;
+            mySleep(20);
+        }*/
+
 		
 		//The distance expected between the robot and the wall
 		expectedDistance = hardware.getDistance();

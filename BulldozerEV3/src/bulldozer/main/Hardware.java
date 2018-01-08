@@ -50,9 +50,15 @@ public class Hardware {
     public final CColor blue = new CColor(0.050f, 0.17f, 0.13f);
     public final CColor white = new CColor(0.296f, 0.474f, 0.232f);
     public final CColor black = new CColor(0.054f, 0.091f, 0.028f);
+    public final CColor brown = new CColor(0.05f, 0.06f, 0.025f);
+    public final CColor trueblack = new CColor(0.06f, 0.013f, 0.01f);
+
+
     public final CColor redwhite = new CColor(0.304f, 0.319f, 0.142f);
     public final CColor blackwhite = new CColor(0.136f, 0.211f, 0.067f);
-    public final CColor nothing = new CColor(0.0f, 0.0f, 0.0f);
+    public final CColor bluewhite = new CColor ( 0.105f, 0.235f, 0.148f);
+    public final CColor blueblack = new CColor(0.165f, 0.262f, 0.119f);
+    public final CColor nothing = new CColor(0.0f, 0.00098f, 0.00098f);
 
 
 
@@ -141,6 +147,7 @@ public class Hardware {
 
         for ( CColor colorIt : beaconList){
             if (colorIt.equalsTolerance(current)){
+                System.out.println("Beacon found!");
                 return true;
             }
         }
@@ -205,6 +212,7 @@ public class Hardware {
     }
 
     public void robotTurnBlock(int angle) {
+            mySleep(50);
             motorsWaitStopMoving();
 
             int absoluteAngle = angle * 6;

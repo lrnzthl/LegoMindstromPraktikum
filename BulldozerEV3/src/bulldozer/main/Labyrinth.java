@@ -16,8 +16,13 @@ public class Labyrinth extends Brains {
     
     public Labyrinth(Hardware hardware){
         super(hardware);
+
         this.setSearchForBeacon(false);
+
         beaconColor.add(hardware.blue);
+       // beaconColor.add(hardware.blueblack);
+       // beaconColor.add(hardware.bluewhite);
+
 
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setTurnSpeedProcentage(turnSpeedProcentage);
@@ -37,7 +42,7 @@ public class Labyrinth extends Brains {
             hardware.motorForward(step);
 
     	}
-    	this.setSearchForBeacon(false);
+    	this.setSearchForBeacon(true);
     	
     	//Turn to be in an initial position on the line
         while( !hardware.isOnMidpointRed()  ){

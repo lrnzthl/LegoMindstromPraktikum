@@ -27,7 +27,6 @@ public class Line extends Brains {
         super(hardware);
 
 
-
         beaconColor.add(hardware.red);
         beaconColor.add(hardware.dRed);
 
@@ -183,11 +182,17 @@ public class Line extends Brains {
         System.out.println("going a little bit back");
         hardware.motorForwardBlock(-180);
 
+        mySleep(50);
+
         //rotate right
         System.out.println("turning right...");
         hardware.robotTurnBlock(90);
 
+        mySleep(50);
+
+
         hardware.motorSetSpeedProcentage(motorSpeed);
+        mySleep(50);
         hardware.motorForwardBlock(offsetXobstacle);
 
         System.out.println("Obstacle should be behind us: 1");
@@ -197,6 +202,7 @@ public class Line extends Brains {
         hardware.robotTurnBlock(-90);
 
         hardware.motorSetSpeedProcentage(motorSpeed);
+
         hardware.motorForwardBlock(offsetYobstacle);
 
         System.out.println("Obstacle should be behind us: 2");
@@ -204,12 +210,10 @@ public class Line extends Brains {
         //turn left, we should be close to the white line
         hardware.robotTurnBlock(-90);
 
-
         hardware.motorsWaitStopMoving();
         hardware.motorStop();
         hardware.motorSetSpeedProcentage(10);
 
-        mySleep(50);
         System.out.println("Searching the line ...");
         while(!hardware.isOnWhite() && !hardware.isOnMidpointBW()){
             hardware.motorForward(step);
@@ -220,16 +224,6 @@ public class Line extends Brains {
         initialRotationAngle = hardware.getAngle();
 
         resetTimer();
-        /*
-        //oops
-        while(hardware.isTouchPressed()){
-            //go back and try again
-            System.out.println("trying to correct...");
-            hardware.motorForwardBlock(-180);
-            hardware.robotTurnBlock((int) turningAngle);
-            hardware.motorForwardBlock(180);
-        }
-        */
     }
 
 

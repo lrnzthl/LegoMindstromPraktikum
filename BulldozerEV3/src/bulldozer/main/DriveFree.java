@@ -5,7 +5,10 @@ public class DriveFree extends Brains {
     //default value is 6000
     private int motorAccelaration = 6000;
     private int turnSpeedProcentage = 10;
-	
+
+    private int distanceFromWall = 12;
+    private int offset = 5;
+
     public DriveFree(Hardware hardware) {
         super(hardware);
 
@@ -41,11 +44,37 @@ public class DriveFree extends Brains {
         	secondSample = hardware.getDistance();
         } while (firstSample - secondSample > 0 );
         System.out.println("Adjusted!");
-        
+        hardware.robotTurnBlock(-5);
+        mySleep(50);
+
         System.out.println("Search the beacon...");
         while(true){
+            getBackToDistance();
+
         	hardware.motorSetSpeedProcentage(40);
             hardware.motorForward(45);
         }
 	}
+
+
+    private void getBackToDistance(){
+        while( Math.abs(hardware.getDistance() - distanceFromWall) > offset ){
+            System.out.println("Correcting distance");
+            int current = hardware.getDistance();
+
+            if(current < distanceFromWall){
+                System.out.println("going right");
+                hardware.robotTurnBlock(10);
+            }else{
+                //current > distanceFromWall
+                System.out.println("going left");
+                hardware.robotTurnBlock(-10);
+            }
+
+        }
+    }
+
+
 }
+
+
