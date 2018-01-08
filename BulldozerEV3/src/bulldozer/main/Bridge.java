@@ -46,12 +46,12 @@ public class Bridge extends Brains {
         		if(blacksFound == 0) {
         			hardware.motorStop();
             		hardware.setTurnSpeedProcentage(turnSpeedProcentage);
-            		hardware.motorForward(90);
+            		hardware.motorForwardBlock(90);
             		blacksFound++;
         		} else {
         			hardware.motorStop();
             		hardware.setTurnSpeedProcentage(turnSpeedProcentage);
-            		hardware.motorForward(-90);
+            		hardware.motorForwardBlock(-90);
             		hardware.robotTurnBlock(-90);
         		}
         	}
