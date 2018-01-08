@@ -212,7 +212,7 @@ public class Line extends Brains {
 
         hardware.motorsWaitStopMoving();
         hardware.motorStop();
-        hardware.motorSetSpeedProcentage(10);
+        hardware.motorSetSpeedProcentage(15);
 
         System.out.println("Searching the line ...");
         while(!hardware.isOnWhite() && !hardware.isOnMidpointBW()){
