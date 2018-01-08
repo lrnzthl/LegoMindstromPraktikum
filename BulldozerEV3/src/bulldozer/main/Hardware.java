@@ -647,15 +647,21 @@ public class Hardware {
     public void rotateRightMotor(int angle) {
     	   motRight.rotate(angle, true);
     }
-    public void rotateRightMotorBlocking(int angle) {
- 	   motRight.rotate(angle);
+
+
+    public void rotateRightMotorBlock(int angle) {
+        motorsWaitStopMoving();
+        motorSetSpeedProcentage(turnSpeedProcentage);
+ 	    motRight.rotate(angle);
     }
     
     public void rotateLeftMotor(int angle) {
     		motLeft.rotate(angle, true);
     }
     
-    public void rotateLeftMotorBlocking(int angle) {
-		motLeft.rotate(angle);
-}
+    public void rotateLeftMotorBlock(int angle) {
+        motorsWaitStopMoving();
+        motorSetSpeedProcentage(turnSpeedProcentage);
+        motLeft.rotate(angle);
+    }
 }
