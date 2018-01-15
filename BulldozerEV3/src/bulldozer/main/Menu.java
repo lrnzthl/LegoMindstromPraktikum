@@ -125,6 +125,9 @@ public class Menu {
         		state = state.values()[state.getId() + 1];
         		selectedState = state;
         		System.out.println("Going to start task: " + state);
+
+                mySleep(2000);
+
         		startBrain();
         	} else {
         		state = ParcourState.MENU;
@@ -150,5 +153,15 @@ public class Menu {
             System.out.print("  ");
         }
         System.out.println();
+    }
+
+
+   private void mySleep(int millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
