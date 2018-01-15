@@ -38,12 +38,13 @@ public class SearchColor extends Brains{
             number--;
             mySleep(20);
         }*/
-		
-		
+
 		hardware.motorForwardBlock(360);
-		hardware.robotTurnBlock(-15);
-		hardware.motorForwardBlock(360);
-		hardware.robotTurnBlock(15);
+
+
+		hardware.robotTurnBlock(-17);
+		hardware.motorForwardBlock(450);
+		hardware.robotTurnBlock(17);
 		
 
 		
@@ -52,9 +53,9 @@ public class SearchColor extends Brains{
 		expectedDistance = hardware.getDistance();
 		System.out.println("The distance is : " + expectedDistance);
 		
-		while(!(foundRed && foundWhite)) {
+		while(!foundRed && !foundWhite) {
 			
-			while(!hardware.isOnRed() && !hardware.isOnWhite()) {
+			while(!hardware.isOnRed() || !hardware.isOnWhite()) {
 				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
 					System.out.println("Error in the distance, correcting");
 	                rotateToDistance();
@@ -64,7 +65,10 @@ public class SearchColor extends Brains{
 	                rotateInTheWall();
 	                expectedDistance = hardware.getDistance();
 	            }
+
+	            mySleep(50);
 				hardware.motorSetSpeedProcentage(30);
+				mySleep(50);
 	            hardware.motorForward(step);
 			}
 			
@@ -88,10 +92,12 @@ public class SearchColor extends Brains{
 		while(hardware.getDistance() > (expectedDistance + distanceTolerance) || hardware.getDistance() < (expectedDistance - distanceTolerance)){
 			hardware.motorSetSpeedProcentage(5); 
 			if (hardware.getDistance() > expectedDistance ) {
-				hardware.rotateRightMotor(5);
+				//hardware.rotateRightMotorBlock(5);
+			    hardware.rotateLeftMotorBlock(-10);
 			}
 			else {
-				hardware.rotateLeftMotor(5);
+				//hardware.rotateLeftMotorBlock(5);
+                hardware.rotateRightMotorBlock(-10);
 			}
 			
 		}
@@ -106,7 +112,7 @@ public class SearchColor extends Brains{
 	    mySleep(50);
 		hardware.robotTurnBlock(lastRotation * -90);
 		mySleep(50);
-        hardware.motorForwardBlock(270);
+        hardware.motorForwardBlock(180);
         mySleep(50);
         hardware.robotTurnBlock(lastRotation * -90);
 

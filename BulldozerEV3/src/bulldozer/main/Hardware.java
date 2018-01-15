@@ -97,10 +97,12 @@ public class Hardware {
 	    System.out.println("Checking ultrasonic sensor...");
 	    EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
 	    System.out.println("Done!");
-	    
+
+	    /*
 	    System.out.println("Checking gyro sensor...");
 	    EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
 	    System.out.println("Done!");
+        */
 
 	    System.out.println("Initialising the wrappers...");
 	    System.out.println("touch wrapper...");
@@ -115,11 +117,13 @@ public class Hardware {
 	    SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultraSensor, "Distance");
 	    System.out.println("Done!");
 	    
+	    /*
 	    System.out.println("gyro wrapper...");
 	    SingleValueSensorWrapper gyro = new SingleValueSensorWrapper(gyroSensor, "Angle");
 	    System.out.println("Done!");
+	    */
 	    
-	    sensors = new Sensors(sensorReadDelay, touch, col, dist, gyro);
+	    sensors = new Sensors(sensorReadDelay, touch, col, dist, null);
 
         initialize();
 
@@ -360,10 +364,12 @@ public class Hardware {
 
     public void motorForwardBlock(int angle){
         motorsWaitStopMoving();
+        mySleep(50);
+
         synchMotors();
 
         motRight.rotate(angle, true);
-        motLeft.rotate(angle); //in case this works automatic with the first motor
+        motLeft.rotate(angle);
 
         deSynchMotors();
 
@@ -570,7 +576,8 @@ public class Hardware {
      * @return current angle, read from the gyro sensor
      */
     public int getAngle(){
-        return Math.round(-sensors.getAngle());
+        //return Math.round(-sensors.getAngle());
+        return 0;
     }
 
     public void servoGoUp(){
