@@ -17,8 +17,10 @@ public class SearchColor extends Brains{
     private int speedProcentage = 60;
     private int turningSpeed = 10;
 
+    private int correctionAngle = 15;
+
     private int expectedDistance;
-    private int distanceTolerance = 3;
+    private int distanceTolerance = 2;
     
 	public SearchColor(Hardware hardware){
         super(hardware); 
@@ -51,7 +53,7 @@ public class SearchColor extends Brains{
 		expectedDistance = hardware.getDistance();
 		System.out.println("The distance is : " + expectedDistance);
 		
-		while( running || (!foundRed && !foundWhite ) )  {
+		while( running )  {
 			
 			while(!hardware.isOnRed() && !hardware.isOnWhite()) {
 				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
@@ -87,6 +89,10 @@ public class SearchColor extends Brains{
 				mySleep(1000);
                 hardware.motorForwardBlock(360);
 			}
+
+			if(foundRed && foundWhite){
+			    running = false;
+            }
 		}
 		
 	}
@@ -98,11 +104,11 @@ public class SearchColor extends Brains{
 			hardware.motorSetSpeedProcentage(turningSpeed);
 			if (hardware.getDistance() > expectedDistance ) {
 				//hardware.rotateRightMotorBlock(5);
-			    hardware.rotateLeftMotorBlock(-10);
+			    hardware.rotateLeftMotorBlock(-correctionAngle);
 			}
 			else {
 				//hardware.rotateLeftMotorBlock(5);
-                hardware.rotateRightMotorBlock(-10);
+                hardware.rotateRightMotorBlock(-correctionAngle);
 			}
 			
 		}
@@ -117,11 +123,13 @@ public class SearchColor extends Brains{
 	    mySleep(50);
 
 	    if(lastRotation < 0){
-            hardware.robotTurnBlock(lastRotation * -87);
+            hardware.robotTurnBlock(lastRotation * -86);
             mySleep(50);
-            hardware.motorForwardBlock(180);
+            hardware.motorForwardBlock(150);
             mySleep(50);
-            hardware.robotTurnBlock(lastRotation * -87);
+            hardware.robotTurnBlock(lastRotation * -86);
+
+
 
         }else{
             hardware.robotTurnBlock(lastRotation * -90);

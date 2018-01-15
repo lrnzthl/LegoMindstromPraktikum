@@ -30,7 +30,7 @@ public class Labyrinth extends Brains {
 
     @Override
     public void run () {
-        hardware.servoGoUp();
+        hardware.servoGoDown();
 
     	//Find the labyrinth. 
     	//Drive the distance between the blue beacon line and the white labyrinth

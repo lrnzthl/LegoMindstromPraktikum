@@ -34,7 +34,7 @@ public class Bridge extends Brains {
         hardware.led(9);
 
 
-        //trying to get parallel to the wall
+        System.out.println("trying to find the wall");
         hardware.servoGoUp();
         int oldTurnSpeed = turnSpeedProcentage;
         int newTurnSpeed = 5;
@@ -45,6 +45,8 @@ public class Bridge extends Brains {
             //hardware.robotTurn(10);
             mySleep(50);
         }
+
+        System.out.println("found wall");
 
         hardware.motorStop();
         hardware.setTurnSpeedProcentage(oldTurnSpeed);
@@ -73,7 +75,7 @@ public class Bridge extends Brains {
 				hardware.motorForwardBlock(-150);
 
 				//mySleep(50); after robotTurnBlock not needed
-				hardware.robotTurnBlock(-95);
+				hardware.robotTurnBlock(-90);
 
 				last = System.currentTimeMillis();
 				this.setSearchForBeacon(true);
@@ -82,6 +84,7 @@ public class Bridge extends Brains {
 
 			//hit a wall
 			if(hardware.isTouchPressed()){
+			    mySleep(50);
 				hardware.motorForwardBlock(-100);
 
 				int randomAngle = ThreadLocalRandom.current().nextInt(1, 10 )*5;
