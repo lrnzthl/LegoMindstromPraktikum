@@ -22,7 +22,8 @@ public class SearchColor extends Brains{
     private int distanceTolerance = 3;
     
 	public SearchColor(Hardware hardware){
-        super(hardware);  
+        super(hardware); 
+        this.setSearchForBeacon(false);
     }
 
 	@Override
@@ -38,9 +39,11 @@ public class SearchColor extends Brains{
             mySleep(20);
         }*/
 		
-		hardware.motorForward(180);
-		hardware.rotateRightMotor(5);
-		hardware.motorForward(180);
+		
+		hardware.motorForwardBlock(180);
+		hardware.robotTurnBlock(-5);
+		hardware.motorForwardBlock(180);
+		hardware.robotTurnBlock(5);
 		
 
 		
@@ -82,8 +85,8 @@ public class SearchColor extends Brains{
 	//Rotates if it´s getting further away or closer of the wall.
 	public void rotateToDistance() {
 		
-		while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
-			hardware.motorSetSpeedProcentage(5);
+		while(hardware.getDistance() > (expectedDistance + distanceTolerance) || hardware.getDistance() < (expectedDistance - distanceTolerance)){
+			hardware.motorSetSpeedProcentage(5); 
 			if (hardware.getDistance() > expectedDistance ) {
 				hardware.rotateRightMotor(5);
 			}
@@ -101,10 +104,11 @@ public class SearchColor extends Brains{
 		
 	    System.out.println("Turning...");
 		hardware.robotTurnBlock(lastRotation * -90);
-        hardware.motorForward(180 + step);
+        hardware.motorForwardBlock(180);
         hardware.robotTurnBlock(lastRotation * -90);
 
         lastRotation *= -1;
+        mySleep(50);
     }
 	
 	
