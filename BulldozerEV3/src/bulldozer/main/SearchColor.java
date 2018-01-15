@@ -53,6 +53,7 @@ public class SearchColor extends Brains{
 				while(hardware.isTouchPressed()){
 	                System.out.println("Touch is pressed, cannot go forward");
 	                rotateInTheWall();
+	                expectedDistance = hardware.getDistance();
 	            }
 				hardware.motorSetSpeedProcentage(20);
 	            hardware.motorForward(step);
@@ -96,7 +97,6 @@ public class SearchColor extends Brains{
 		hardware.robotTurnBlock(lastRotation * -90);
         hardware.motorForward(180);
         hardware.robotTurnBlock(lastRotation * -90);
-        expectedDistance = hardware.getDistance();
 
         lastRotation *= -1;
     }
