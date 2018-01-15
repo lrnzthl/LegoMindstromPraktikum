@@ -1,0 +1,15 @@
+#!/bin/bash
+
+current=$(nmcli con show --active | tail -n1 |  awk '{print $1}')
+echo connected to $current
+
+if [ $current == "eduroam" ];
+then 
+	nmcli con up id Lego
+else
+	nmcli con up id eduroam
+fi
+
+current=$(nmcli con show --active | tail -n1 |  awk '{print $1}')
+echo connected to $current
+
