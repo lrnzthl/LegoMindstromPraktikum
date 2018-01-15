@@ -13,8 +13,6 @@ public class Bridge extends Brains {
 
     int odd = -1;
 
-    int outCounter = 0;
-    
 
     public Bridge(Hardware hardware) {
         super(hardware);
@@ -34,6 +32,28 @@ public class Bridge extends Brains {
     @Override
     public void run() {
         hardware.led(9);
+
+
+        //trying to get parallel to the wall
+        hardware.servoGoUp();
+        int oldTurnSpeed = turnSpeedProcentage;
+        int newTurnSpeed = 5;
+        hardware.setTurnSpeedProcentage(newTurnSpeed);
+
+        while(hardware.getDistance() > 15){
+            hardware.robotTurn(10);
+            mySleep(50);
+        }
+
+        hardware.motorStop();
+        hardware.setTurnSpeedProcentage(oldTurnSpeed);
+        mySleep(50);
+
+        hardware.robotTurnBlock(-45);
+        hardware.motorForward(90);
+
+
+        //going up the ramp
         hardware.servoGoDown();
 
         initialAngle = hardware.getAngle();
@@ -44,7 +64,6 @@ public class Bridge extends Brains {
 
         	CColor actualColor = hardware.readRGBColor();
 			if( actualColor.getIntensity() < 0.001f  ){
-				outCounter++;
 
 				System.out.println("Nothing under color sensor");
 				System.out.println(" Falling! Trying to safe");
@@ -52,7 +71,7 @@ public class Bridge extends Brains {
 				hardware.motorSetSpeedProcentage(safeForwardSpeed);
 				hardware.motorForwardBlock(-150);
 
-				mySleep(50);
+				//mySleep(50); after robotTurnBlock not needed
 				hardware.robotTurnBlock(-95);
 
 				last = System.currentTimeMillis();
@@ -60,6 +79,7 @@ public class Bridge extends Brains {
 
 			}
 
+			//hit a wall
 			if(hardware.isTouchPressed()){
 				hardware.motorForwardBlock(-100);
 
