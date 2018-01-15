@@ -40,10 +40,10 @@ public class SearchColor extends Brains{
         }*/
 		
 		
-		hardware.motorForwardBlock(180);
-		hardware.robotTurnBlock(-5);
-		hardware.motorForwardBlock(180);
-		hardware.robotTurnBlock(5);
+		hardware.motorForwardBlock(360);
+		hardware.robotTurnBlock(-15);
+		hardware.motorForwardBlock(360);
+		hardware.robotTurnBlock(15);
 		
 
 		
@@ -103,8 +103,11 @@ public class SearchColor extends Brains{
 		hardware.motorForwardBlock(-180);
 		
 	    System.out.println("Turning...");
+	    mySleep(50);
 		hardware.robotTurnBlock(lastRotation * -90);
-        hardware.motorForwardBlock(180);
+		mySleep(50);
+        hardware.motorForwardBlock(270);
+        mySleep(50);
         hardware.robotTurnBlock(lastRotation * -90);
 
         lastRotation *= -1;
