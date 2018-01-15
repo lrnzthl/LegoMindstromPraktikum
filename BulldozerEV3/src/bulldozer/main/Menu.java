@@ -126,7 +126,7 @@ public class Menu {
         		selectedState = state;
         		System.out.println("Going to start task: " + state);
 
-                mySleep(2000);
+              //  mySleep(2000);
 
         		startBrain();
         	} else {
