@@ -86,7 +86,7 @@ public class SearchColor extends Brains{
 	public void rotateToDistance() {
 		
 		while(hardware.getDistance() > (expectedDistance + distanceTolerance) || hardware.getDistance() < (expectedDistance - distanceTolerance)){
-			hardware.motorSetSpeedProcentage(5);
+			hardware.motorSetSpeedProcentage(5); 
 			if (hardware.getDistance() > expectedDistance ) {
 				hardware.rotateRightMotor(5);
 			}
