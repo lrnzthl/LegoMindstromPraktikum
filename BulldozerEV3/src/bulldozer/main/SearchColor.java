@@ -38,7 +38,7 @@ public class SearchColor extends Brains{
             mySleep(20);
         }*/
 		
-		hardware.motorForward(270);
+		hardware.motorForward(180);
 		hardware.rotateRightMotor(5);
 		hardware.motorForward(180);
 		
