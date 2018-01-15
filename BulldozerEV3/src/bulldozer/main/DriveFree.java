@@ -23,8 +23,13 @@ public class DriveFree extends Brains {
 
 	@Override
 	public void run() {
+
+        System.out.println("Strarting drive free");
 		hardware.led(9);
         hardware.servoGoUp();
+
+        hardware.motorForwardBlock(360);
+
         int firstSample = hardware.getDistance();
         int secondSample = hardware.getDistance();
         

@@ -37,7 +37,7 @@ public class Line extends Brains {
     @Override
     public void run(){
         hardware.led(9);
-        hardware.servoGoUp();
+        hardware.servoGoDown();
 
 
         while (! hardware.isOnMidpointBW()){

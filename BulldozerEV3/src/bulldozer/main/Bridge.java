@@ -84,15 +84,33 @@ public class Bridge extends Brains {
 
 			//hit a wall
 			if(hardware.isTouchPressed()){
+			    int turnAngle = 10;
+
+			    hardware.servoGoUp();
+
 			    mySleep(50);
 				hardware.motorForwardBlock(-100);
 
+				hardware.robotTurnBlock(turnAngle);
+
+
+				hardware.motorForward(360);
+
+
+				/*
 				int randomAngle = ThreadLocalRandom.current().nextInt(1, 10 )*5;
 				odd *= -1;
 				randomAngle *= odd;
 				System.out.println("generating random int " + randomAngle);
 				mySleep(50);
 				hardware.robotTurnBlock(randomAngle);
+				-*/
+
+
+
+				mySleep(50);
+				hardware.servoGoDown();
+				mySleep(50);
 			}
 
 
