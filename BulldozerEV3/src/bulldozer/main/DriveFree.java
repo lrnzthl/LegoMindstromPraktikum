@@ -54,7 +54,7 @@ public class DriveFree extends Brains {
 
 
         System.out.println("Search the beacon...");
-        this.setSearchForBeacon(false);
+        this.setSearchForBeacon(true);
 
 
         while(true){
