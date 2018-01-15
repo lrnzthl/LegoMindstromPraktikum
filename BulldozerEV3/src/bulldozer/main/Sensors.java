@@ -23,7 +23,7 @@ public class Sensors extends Thread{
 
 
         if( Stouch == null || Scolor == null || Sdistance ==null || Sgyrosensor == null){
-            System.out.println("WARNING: ONE of the sensors are null!");
+            System.out.println("WARNING: ONE of the sensors is null!");
         }
 
 

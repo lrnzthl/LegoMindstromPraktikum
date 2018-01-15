@@ -6,18 +6,16 @@ public class SearchColor extends Brains{
 	
     
     private final int step = 45;
-    private int turningAngle = 10;
-    
 
-    private final float Kp = 1.5f;
-    
+
     private boolean foundRed = false;
     private boolean foundWhite = false;
     
     // 1 for the last rotation to right, -1 for last rotation to left
     private int lastRotation = 1;
     
-    
+    private int speedProcentage = 50;
+
     private int expectedDistance;
     private int distanceTolerance = 3;
     
@@ -43,19 +41,18 @@ public class SearchColor extends Brains{
 
 
 		hardware.robotTurnBlock(-17);
-		hardware.motorForwardBlock(450);
+		hardware.motorForwardBlock(500);
 		hardware.robotTurnBlock(17);
 		
 
-		
 		//The distance expected between the robot and the wall
 		hardware.servoGoUp();
 		expectedDistance = hardware.getDistance();
 		System.out.println("The distance is : " + expectedDistance);
 		
-		while(!foundRed && !foundWhite) {
+		while( running || (!foundRed && !foundWhite ) )  {
 			
-			while(!hardware.isOnRed() || !hardware.isOnWhite()) {
+			while(!hardware.isOnRed() && !hardware.isOnWhite()) {
 				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
 					System.out.println("Error in the distance, correcting");
 	                rotateToDistance();
@@ -67,20 +64,27 @@ public class SearchColor extends Brains{
 	            }
 
 	            mySleep(50);
-				hardware.motorSetSpeedProcentage(30);
+				hardware.motorSetSpeedProcentage(speedProcentage);
 				mySleep(50);
 	            hardware.motorForward(step);
 			}
+
+            System.out.println("I see a color!");
 			
 			if (hardware.isOnRed() && !foundRed) {
 				System.out.println("FOUND THE RED");
 				foundRed = true;
 				hardware.beep();
+				mySleep(1000);
+				hardware.motorForwardBlock(360);
 			}
-			else if (hardware.isOnWhite() && !foundWhite) {
+
+			if (hardware.isOnWhite() && !foundWhite) {
 				System.out.println("FOUND THE WHITE");
 				foundWhite = true;
 				hardware.beep();
+				mySleep(1000);
+                hardware.motorForwardBlock(360);
 			}
 		}
 		
@@ -110,11 +114,21 @@ public class SearchColor extends Brains{
 		
 	    System.out.println("Turning...");
 	    mySleep(50);
-		hardware.robotTurnBlock(lastRotation * -90);
-		mySleep(50);
-        hardware.motorForwardBlock(180);
-        mySleep(50);
-        hardware.robotTurnBlock(lastRotation * -90);
+
+	    if(lastRotation < 0){
+            hardware.robotTurnBlock(lastRotation * -87);
+            mySleep(50);
+            hardware.motorForwardBlock(180);
+            mySleep(50);
+            hardware.robotTurnBlock(lastRotation * -87);
+
+        }else{
+            hardware.robotTurnBlock(lastRotation * -90);
+            mySleep(50);
+            hardware.motorForwardBlock(180);
+            mySleep(50);
+            hardware.robotTurnBlock(lastRotation * -90);
+        }
 
         lastRotation *= -1;
         mySleep(50);
