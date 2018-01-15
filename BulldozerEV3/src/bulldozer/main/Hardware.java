@@ -581,14 +581,15 @@ public class Hardware {
     }
 
     public void servoGoUp(){
-        servo.rotate(-90);
+        servo.rotate(-85);
         //servo.flt();
     }
 
     public void servoGoDown(){
 
         servo.rotate(90);
-        //servo.flt();
+        mySleep(50);
+        servo.flt();
     }
 
     public boolean isEscapeUp(){

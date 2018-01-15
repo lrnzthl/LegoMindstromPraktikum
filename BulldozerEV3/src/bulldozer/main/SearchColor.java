@@ -14,7 +14,8 @@ public class SearchColor extends Brains{
     // 1 for the last rotation to right, -1 for last rotation to left
     private int lastRotation = 1;
     
-    private int speedProcentage = 50;
+    private int speedProcentage = 60;
+    private int turningSpeed = 10;
 
     private int expectedDistance;
     private int distanceTolerance = 3;
@@ -94,7 +95,7 @@ public class SearchColor extends Brains{
 	public void rotateToDistance() {
 		
 		while(hardware.getDistance() > (expectedDistance + distanceTolerance) || hardware.getDistance() < (expectedDistance - distanceTolerance)){
-			hardware.motorSetSpeedProcentage(5); 
+			hardware.motorSetSpeedProcentage(turningSpeed);
 			if (hardware.getDistance() > expectedDistance ) {
 				//hardware.rotateRightMotorBlock(5);
 			    hardware.rotateLeftMotorBlock(-10);
