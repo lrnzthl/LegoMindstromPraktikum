@@ -37,14 +37,20 @@ public class SearchColor extends Brains{
             number--;
             mySleep(20);
         }*/
+		
+		hardware.motorForward(270);
+		hardware.rotateRightMotor(5);
+		hardware.motorForward(180);
+		
 
 		
 		//The distance expected between the robot and the wall
+		hardware.servoGoUp();
 		expectedDistance = hardware.getDistance();
 		System.out.println("The distance is : " + expectedDistance);
 		
 		while(!(foundRed && foundWhite)) {
-			hardware.servoGoUp();
+			
 			while(!hardware.isOnRed() && !hardware.isOnWhite()) {
 				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
 					System.out.println("Error in the distance, correcting");
@@ -55,7 +61,7 @@ public class SearchColor extends Brains{
 	                rotateInTheWall();
 	                expectedDistance = hardware.getDistance();
 	            }
-				hardware.motorSetSpeedProcentage(20);
+				hardware.motorSetSpeedProcentage(30);
 	            hardware.motorForward(step);
 			}
 			
@@ -95,7 +101,7 @@ public class SearchColor extends Brains{
 		
 	    System.out.println("Turning...");
 		hardware.robotTurnBlock(lastRotation * -90);
-        hardware.motorForward(180);
+        hardware.motorForward(180 + step);
         hardware.robotTurnBlock(lastRotation * -90);
 
         lastRotation *= -1;
