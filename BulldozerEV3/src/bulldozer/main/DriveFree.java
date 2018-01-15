@@ -13,6 +13,8 @@ public class DriveFree extends Brains {
         super(hardware);
 
         beaconColor.add(hardware.blue);
+
+        this.setSearchForBeacon(false);
         
         hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
         hardware.setMotorAccelaration(motorAccelaration);
@@ -35,8 +37,11 @@ public class DriveFree extends Brains {
         	firstSample = hardware.getDistance();
         	System.out.println("Current distance: " + firstSample);
         }
+
+
         System.out.println("Found wall at distance of: " + firstSample);
-        
+
+
         System.out.println("Try to adjust...");
         do {
         	firstSample = hardware.getDistance();
@@ -47,7 +52,11 @@ public class DriveFree extends Brains {
         hardware.robotTurnBlock(-5);
         mySleep(50);
 
+
         System.out.println("Search the beacon...");
+        this.setSearchForBeacon(false);
+
+
         while(true){
             getBackToDistance();
 
@@ -61,8 +70,9 @@ public class DriveFree extends Brains {
         while( Math.abs(hardware.getDistance() - distanceFromWall) > offset ){
             System.out.println("Correcting distance");
             int current = hardware.getDistance();
-            System.out.println("... distance is " + current);
+            System.out.println("... distance is " + current + " should be " + distanceFromWall);
 
+            mySleep(50);
             if(current < distanceFromWall){
                 System.out.println("going right");
                 hardware.robotTurnBlock(10);
@@ -72,6 +82,7 @@ public class DriveFree extends Brains {
                 hardware.robotTurnBlock(-10);
             }
 
+            mySleep(50);
         }
     }
 

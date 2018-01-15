@@ -41,7 +41,8 @@ public class Bridge extends Brains {
         hardware.setTurnSpeedProcentage(newTurnSpeed);
 
         while(hardware.getDistance() > 15){
-            hardware.robotTurn(10);
+            hardware.rotateLeftMotor(10);
+            //hardware.robotTurn(10);
             mySleep(50);
         }
 
@@ -49,7 +50,7 @@ public class Bridge extends Brains {
         hardware.setTurnSpeedProcentage(oldTurnSpeed);
         mySleep(50);
 
-        hardware.robotTurnBlock(-45);
+
         hardware.motorForward(90);
 
 
