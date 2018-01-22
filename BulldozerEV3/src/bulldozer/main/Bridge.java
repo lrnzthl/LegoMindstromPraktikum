@@ -113,7 +113,7 @@ public class Bridge extends Brains {
 
 
 
-        	if(hardware.getDistance() > 15){
+        	if(hardware.getDistance() > 15 && hardware.getDistance() < 170){
 				System.out.println("No ground found, trying to fix (distance sensor)");
         		hardware.motorStop();
 				mySleep(50);

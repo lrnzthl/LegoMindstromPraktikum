@@ -196,6 +196,7 @@ public class Hardware {
      * @return the distance in CM
      */
     public int getDistance() {
+
         return Math.round(sensors.getDistance()*100);
     }
 
@@ -581,15 +582,15 @@ public class Hardware {
     }
 
     public void servoGoUp(){
-        servo.rotate(-85);
+        servo.rotate(-90);
         //servo.flt();
     }
 
     public void servoGoDown(){
 
-        servo.rotate(90);
-        mySleep(50);
-        servo.flt();
+        servo.rotate(85);
+        //mySleep(50);
+        //servo.flt();
     }
 
     public boolean isEscapeUp(){
