@@ -7,7 +7,7 @@ import lejos.hardware.port.MotorPort;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
-import lejos.hardware.sensor.EV3GyroSensor;
+
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 
@@ -123,7 +123,7 @@ public class Hardware {
 	    System.out.println("Done!");
 	    */
 	    
-	    sensors = new Sensors(sensorReadDelay, touch, col, dist, null);
+	    sensors = new Sensors(sensorReadDelay, touch, col, dist);
 
         initialize();
 
@@ -418,7 +418,7 @@ public class Hardware {
      * negative means go left, positive means go right
      */
     public void robotTurn(int angle){
-        //robotTurnGyro(angle);
+
         //return;
 
         //360 * (2 * pi) / ( (1/4) *2*pi*r1)
@@ -437,32 +437,14 @@ public class Hardware {
 
     }
     
-    public void robotTurnGyro(int angle){
-        motorSetSpeedProcentage(turnSpeedProcentage);
-
-        int currentAngle = getAngle();
-        int finalAngleToReach = getAngle() + angle;
-        System.out.println("VOR:current: " + currentAngle + " final:"+ finalAngleToReach  );
-
-        //motorsWaitStopMoving();
-
-
-        robotTurn((int) Math.round(angle * 1.3) );
-
-        while( Math.abs(currentAngle - finalAngleToReach) > 1 ){
-
-            currentAngle = getAngle();
-            mySleep(1);
-        }
-
-        //when final angle is reached, we should stop the motors
-        motorStop();
-
-        System.out.println("NACH:current: " + currentAngle + " final:"+ finalAngleToReach  );
-        System.out.println("ready with the turn");
-
+    /**
+     *
+     * @return current angle, read from the gyro sensor
+     */
+    public int getAngle(){
+        //return Math.round(-sensors.getAngle());
+        return 0;
     }
-
 
     public void robotTurnNonBlockOneWheel(int angle){
 
@@ -552,7 +534,7 @@ public class Hardware {
      */
     public boolean isOnMidpointBW(){
         if(sensors.colorIntensity() < midPointBWHigh && sensors.colorIntensity() > midPointBWLow){
-        	updateOrientation();
+        	//updateOrientation();
             System.out.println("I am on the middle BW");
             acColor = actualColor.BW;
             return true;
@@ -572,14 +554,7 @@ public class Hardware {
     }
 
 
-    /**
-     *
-     * @return current angle, read from the gyro sensor
-     */
-    public int getAngle(){
-        //return Math.round(-sensors.getAngle());
-        return 0;
-    }
+
 
     public void servoGoUp(){
         servo.rotate(-90);
@@ -615,16 +590,17 @@ public class Hardware {
             e.printStackTrace();
         }
     }
-    
+
+    /*
     private void updateOrientation(){
     	
     	int resetTolerance = 40;
     	if(orientationHistory.isEmpty()){
             System.out.println("it is empty, so we add, no conditions");
-            orientationHistory.add(getAngle());
+           // orientationHistory.add(getAngle());
     	} else {
     		int average = 0;
-    		int angle = getAngle();
+    		//int angle = getAngle();
     		for(float value : orientationHistory){
     			average += value;
     		}
@@ -641,8 +617,10 @@ public class Hardware {
     	}
 
        // System.out.println("after update orientation " + orientationHistory);
-    }
-    
+    }*/
+
+
+
     /**
      * 
      * @return -1 if too less measurepoints are available. Otherwise eastimate an angle.

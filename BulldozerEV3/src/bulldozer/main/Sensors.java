@@ -7,7 +7,6 @@ public class Sensors extends Thread{
     private SingleValueSensorWrapper Stouch;
     private SingleValueSensorWrapper Scolor;
     private SingleValueSensorWrapper Sdistance;
-    private SingleValueSensorWrapper Sgyro;
 
 
     private float touch;//, distance;
@@ -17,12 +16,12 @@ public class Sensors extends Thread{
 
 
     public Sensors(int sensorReadyDelay, SingleValueSensorWrapper Stouch, 
-    		SingleValueSensorWrapper Scolor, SingleValueSensorWrapper Sdistance, SingleValueSensorWrapper Sgyrosensor){
+    		SingleValueSensorWrapper Scolor, SingleValueSensorWrapper Sdistance){
         isInited = false;
         this.sensorDelay = sensorReadyDelay;
 
 
-        if( Stouch == null || Scolor == null || Sdistance ==null || Sgyrosensor == null){
+        if( Stouch == null || Scolor == null || Sdistance ==null){
             System.out.println("WARNING: ONE of the sensors is null!");
         }
 
@@ -30,7 +29,6 @@ public class Sensors extends Thread{
         this.Stouch = Stouch;
         this.Scolor = Scolor;
         this.Sdistance = Sdistance;
-        this.Sgyro = Sgyrosensor;
     }
     
     public boolean isInit() {
@@ -93,7 +91,7 @@ public class Sensors extends Thread{
 
     public float getDistance(){return Sdistance.getSample();}
 
-    public float getAngle(){return Sgyro.getSample();}
+
     
     //public float distance() {
     //    return distance;
