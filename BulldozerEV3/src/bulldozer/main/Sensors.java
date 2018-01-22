@@ -3,10 +3,11 @@ package bulldozer.main;
 public class Sensors extends Thread{
     private boolean isInited;
     private int sensorDelay;
-    
+
     private SingleValueSensorWrapper Stouch;
     private SingleValueSensorWrapper Scolor;
     private SingleValueSensorWrapper Sdistance;
+    private SingleValueSensorWrapper Sgyro;
 
 
     private float touch;//, distance;
@@ -15,13 +16,13 @@ public class Sensors extends Thread{
 
 
 
-    public Sensors(int sensorReadyDelay, SingleValueSensorWrapper Stouch, 
-    		SingleValueSensorWrapper Scolor, SingleValueSensorWrapper Sdistance){
+    public Sensors(int sensorReadyDelay, SingleValueSensorWrapper Stouch,
+                   SingleValueSensorWrapper Scolor, SingleValueSensorWrapper Sdistance, SingleValueSensorWrapper Sgyrosensor){
         isInited = false;
         this.sensorDelay = sensorReadyDelay;
 
 
-        if( Stouch == null || Scolor == null || Sdistance ==null){
+        if( Stouch == null || Scolor == null || Sdistance ==null || Sgyrosensor == null){
             System.out.println("WARNING: ONE of the sensors is null!");
         }
 
@@ -29,8 +30,9 @@ public class Sensors extends Thread{
         this.Stouch = Stouch;
         this.Scolor = Scolor;
         this.Sdistance = Sdistance;
+        this.Sgyro = Sgyrosensor;
     }
-    
+
     public boolean isInit() {
         return isInited;
     }
@@ -60,7 +62,7 @@ public class Sensors extends Thread{
                 this.touch = this.Stouch.getSample();
                 this.color = new CColor(this.Scolor.getSample(true));  //return rgb mode sample
 
-               // this.distance = this.Sdistance.getSample();
+                // this.distance = this.Sdistance.getSample();
 
                 Thread.sleep(sensorDelay);
             }
@@ -76,12 +78,12 @@ public class Sensors extends Thread{
     }
 
     public float colorIntensity() {
-    	
+
         //System.out.println("intenisty: "+intensity);
         return color.getIntensity();
     }
     /**
-     * 
+     *
      * @return Returns Array with Index 0 = Red; 1 = Green; 2 = Blue.
      * Values are in the range [0,1].
      */
@@ -91,8 +93,8 @@ public class Sensors extends Thread{
 
     public float getDistance(){return Sdistance.getSample();}
 
+    public float getAngle(){return Sgyro.getSample();}
 
-    
     //public float distance() {
     //    return distance;
     //}

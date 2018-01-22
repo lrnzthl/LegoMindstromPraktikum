@@ -8,6 +8,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.SensorPort;
 import lejos.hardware.sensor.EV3ColorSensor;
 
+import lejos.hardware.sensor.EV3GyroSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.EV3TouchSensor;
 
@@ -98,11 +99,11 @@ public class Hardware {
 	    EV3UltrasonicSensor ultraSensor = new EV3UltrasonicSensor(SensorPort.S2);
 	    System.out.println("Done!");
 
-	    /*
+
 	    System.out.println("Checking gyro sensor...");
 	    EV3GyroSensor gyroSensor = new EV3GyroSensor(SensorPort.S1);
 	    System.out.println("Done!");
-        */
+
 
 	    System.out.println("Initialising the wrappers...");
 	    System.out.println("touch wrapper...");
@@ -117,13 +118,13 @@ public class Hardware {
 	    SingleValueSensorWrapper dist = new SingleValueSensorWrapper(ultraSensor, "Distance");
 	    System.out.println("Done!");
 	    
-	    /*
+
 	    System.out.println("gyro wrapper...");
 	    SingleValueSensorWrapper gyro = new SingleValueSensorWrapper(gyroSensor, "Angle");
 	    System.out.println("Done!");
-	    */
+
 	    
-	    sensors = new Sensors(sensorReadDelay, touch, col, dist);
+	    sensors = new Sensors(sensorReadDelay, touch, col, dist, gyro);
 
         initialize();
 
@@ -442,8 +443,8 @@ public class Hardware {
      * @return current angle, read from the gyro sensor
      */
     public int getAngle(){
-        //return Math.round(-sensors.getAngle());
-        return 0;
+        return Math.round(-sensors.getAngle());
+        //return 0;
     }
 
     public void robotTurnNonBlockOneWheel(int angle){
