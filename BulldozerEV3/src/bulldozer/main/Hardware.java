@@ -668,6 +668,7 @@ public class Hardware {
 
     public void rotateRightMotorBlock(int angle) {
         motorsWaitStopMoving();
+        mySleep(50);
         motorSetSpeedProcentage(turnSpeedProcentage);
  	    motRight.rotate(angle);
     }
@@ -678,6 +679,7 @@ public class Hardware {
     
     public void rotateLeftMotorBlock(int angle) {
         motorsWaitStopMoving();
+        mySleep(50);
         motorSetSpeedProcentage(turnSpeedProcentage);
         motLeft.rotate(angle);
     }

@@ -88,7 +88,6 @@ public class Bridge extends Brains {
                 System.out.println("Touch is pressed");
 			    int turnAngle = 10;
 
-			    hardware.servoGoUp();
 
 			    mySleep(50);
 				hardware.motorForwardBlock(-150);
@@ -108,9 +107,7 @@ public class Bridge extends Brains {
 				-*/
 
 				mySleep(50);
-				hardware.servoGoDown();
-				mySleep(50);
-			}
+				}
 
 
 

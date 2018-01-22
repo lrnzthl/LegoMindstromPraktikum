@@ -43,9 +43,7 @@ public class DriveFree extends Brains {
         	System.out.println("Current distance: " + firstSample);
         }
 
-
         System.out.println("Found wall at distance of: " + firstSample);
-
 
         System.out.println("Try to adjust...");
         do {
@@ -53,6 +51,7 @@ public class DriveFree extends Brains {
         	hardware.robotTurnBlock(5);
         	secondSample = hardware.getDistance();
         } while (firstSample - secondSample > 0 );
+
         System.out.println("Adjusted!");
         hardware.robotTurnBlock(-5);
         mySleep(50);
