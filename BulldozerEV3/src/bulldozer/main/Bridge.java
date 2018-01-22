@@ -78,6 +78,7 @@ public class Bridge extends Brains {
 				hardware.robotTurnBlock(-90);
 
 				last = System.currentTimeMillis();
+                System.out.println("Activating beacon searching");
 				this.setSearchForBeacon(true);
 
 			}
@@ -90,7 +91,7 @@ public class Bridge extends Brains {
 			    hardware.servoGoUp();
 
 			    mySleep(50);
-				hardware.motorForwardBlock(-100);
+				hardware.motorForwardBlock(-150);
 
 				hardware.robotTurnBlock(turnAngle);
 
