@@ -9,6 +9,7 @@ public class Bridge extends Brains {
     //private int motorAccelaration = 6000;
     private int turnSpeedProcentage = 20;
     private int safeForwardSpeed = 30;
+    private int differenceSpeed = 5;
     private int initialAngle;
 
     int odd = -1;
@@ -112,30 +113,23 @@ public class Bridge extends Brains {
 
 
         	if(hardware.getDistance() > 15 && hardware.getDistance() < 170){
-				System.out.println("No ground found, trying to fix (distance sensor)");
-        		hardware.motorStop();
-				mySleep(50);
-
-				hardware.motorSetSpeedProcentage(safeForwardSpeed);
-				hardware.motorForwardBlock(-150);
-
-				hardware.motorStop();
-
-				hardware.robotTurnBlock(15);
-        		last = System.currentTimeMillis();
+                System.out.println("going left");
+			    hardware.motorSetAsyncSpeed(safeForwardSpeed, false, differenceSpeed);
+                hardware.motorForward(45);
         	} else {
-        		hardware.motorSetSpeedProcentage(safeForwardSpeed);
+                System.out.println("going right");
+                hardware.motorSetAsyncSpeed(safeForwardSpeed, true, differenceSpeed);
             	hardware.motorForward(45);
         	}
 
         	//after 2 sec
-        	if(System.currentTimeMillis() - last > 2000){
+        	/*if(System.currentTimeMillis() - last > 2000){
                 System.out.println("2 seconds... correcting");
         		hardware.motorStop();
 				mySleep(50);
         		hardware.rotateLeftMotorBlock(-60);
         		last = System.currentTimeMillis();
-        	}
+        	}*/
         	
 
             mySleep(20);

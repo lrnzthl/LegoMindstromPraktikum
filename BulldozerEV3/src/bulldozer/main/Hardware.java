@@ -399,6 +399,22 @@ public class Hardware {
         motLeft.setSpeed(motorAbsoluteSpeed);
     }
 
+    public void motorSetAsyncSpeed(int procentage, boolean left, int differenceProcentage){
+        int leftMotorSpeed = procentage;
+        int rightMotorSpeed = procentage;
+        if(left){
+            leftMotorSpeed = 0;
+            //rightMotorSpeed += differenceProcentage;
+        } else {
+            //leftMotorSpeed += differenceProcentage;
+            rightMotorSpeed = 0;
+        }
+        int leftMotorAbsoluteSpeed = Math.round (motLeft.getMaxSpeed() * leftMotorSpeed / 100 );
+        int rightMotorAbsoluteSpeed = Math.round (motLeft.getMaxSpeed() * rightMotorSpeed / 100 );
+        motLeft.setSpeed(leftMotorAbsoluteSpeed);
+        motRight.setSpeed(rightMotorAbsoluteSpeed);
+    }
+
     /**
      * syncing motors, so that they move the same amount of degrees
      */
