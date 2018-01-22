@@ -84,6 +84,7 @@ public class Bridge extends Brains {
 
 			//hit a wall
 			if(hardware.isTouchPressed()){
+                System.out.println("Touch is pressed");
 			    int turnAngle = 10;
 
 			    hardware.servoGoUp();
@@ -96,7 +97,6 @@ public class Bridge extends Brains {
 
 				hardware.motorForward(360);
 
-
 				/*
 				int randomAngle = ThreadLocalRandom.current().nextInt(1, 10 )*5;
 				odd *= -1;
@@ -106,8 +106,6 @@ public class Bridge extends Brains {
 				hardware.robotTurnBlock(randomAngle);
 				-*/
 
-
-
 				mySleep(50);
 				hardware.servoGoDown();
 				mySleep(50);
@@ -116,9 +114,10 @@ public class Bridge extends Brains {
 
 
         	if(hardware.getDistance() > 15){
-				System.out.println("No ground found, trying to fix");
+				System.out.println("No ground found, trying to fix (distance sensor)");
         		hardware.motorStop();
 				mySleep(50);
+
 				hardware.motorSetSpeedProcentage(safeForwardSpeed);
 				hardware.motorForwardBlock(-150);
 
@@ -133,6 +132,7 @@ public class Bridge extends Brains {
 
         	//after 2 sec
         	if(System.currentTimeMillis() - last > 2000){
+                System.out.println("2 seconds... correcting");
         		hardware.motorStop();
 				mySleep(50);
         		hardware.rotateLeftMotorBlock(-60);
