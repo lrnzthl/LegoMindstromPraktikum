@@ -66,6 +66,10 @@ public class DriveFree extends Brains {
 
         	hardware.motorSetSpeedProcentage(40);
             hardware.motorForward(45);
+
+            if(!running){
+                break;
+            }
         }
 	}
 
