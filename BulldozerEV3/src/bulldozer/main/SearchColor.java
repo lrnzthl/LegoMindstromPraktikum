@@ -69,8 +69,9 @@ public class SearchColor extends Brains{
 	                System.out.println("Touch is pressed, cannot go forward");
 	                rotateInTheWall();
 	                expectedDistance = hardware.getDistance();
+	                if(!running) break;
 	            }
-
+				if(!running) break;
 	            mySleep(50);
 				hardware.motorSetSpeedProcentage(speedProcentage);
 				mySleep(50);

@@ -114,6 +114,7 @@ public class Menu {
         switch (returnState){
         case -1:
         	state = ParcourState.MENU;
+        	brain.interrupt();
         	showOptions();
         	//%TODO: add back to menu
             //System.exit(0);

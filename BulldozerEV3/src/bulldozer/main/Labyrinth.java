@@ -30,11 +30,14 @@ public class Labyrinth extends Brains {
 
     @Override
     public void run () {
+    	mySleep(50);
         hardware.servoGoDown();
-
+        mySleep(50);
+        
     	//Find the labyrinth. 
     	//Drive the distance between the blue beacon line and the white labyrinth
         hardware.motorStop();
+        mySleep(50);
         System.out.println("Searching the line ...");
         
     	while(!hardware.isOnWhite() && !hardware.isOnRed()){
@@ -45,7 +48,7 @@ public class Labyrinth extends Brains {
     	this.setSearchForBeacon(true);
     	
     	//Turn to be in an initial position on the line
-        while( !hardware.isOnMidpointRed()  ){
+        while( !hardware.isOnMidpointRed()  && running){
             System.out.println("Lost the midpoint");
             hardware.led(8);
             rotateToMiddle();
