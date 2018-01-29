@@ -61,15 +61,12 @@ public class DriveFree extends Brains {
         this.setSearchForBeacon(true);
 
 
-        while(true){
+        while(running){
             getBackToDistance();
 
         	hardware.motorSetSpeedProcentage(40);
             hardware.motorForward(45);
 
-            if(!running){
-                break;
-            }
         }
 	}
 
