@@ -113,7 +113,7 @@ public class Line extends Brains {
      */
     private int getSpeed(long diff){
         //was 7!
-        double accel = 3;
+        double accel = 7;
         double minimumOffset = 3; //should be smaller than 8
 
         diff = Math.round(accel * diff);
