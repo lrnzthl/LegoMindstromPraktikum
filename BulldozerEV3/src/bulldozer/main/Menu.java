@@ -113,9 +113,10 @@ public class Menu {
 
         switch (returnState){
         case -1:
-        	//state = ParcourState.MENU;
+        	state = ParcourState.MENU;
+        	showOptions();
         	//%TODO: add back to menu
-            System.exit(0);
+            //System.exit(0);
         	break;
         case 0:
         	break;

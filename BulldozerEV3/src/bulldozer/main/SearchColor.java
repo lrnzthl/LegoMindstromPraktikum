@@ -40,13 +40,16 @@ public class SearchColor extends Brains{
             distance = hardware.getDistance();
         }*/
 
-		hardware.rotateRightMotorBlock(30);
+        hardware.motorForwardBlock(360);
+        mySleep(50);
+        
+		hardware.robotTurnBlock(-40);
 		mySleep(50);
 
-		hardware.motorForwardBlock(180);
+		hardware.motorForwardBlock(360);
 		mySleep(50);
 
-		hardware.robotTurnBlock(-20);
+		hardware.robotTurnBlock(40);
 
 		hardware.servoGoUp();
 
@@ -59,6 +62,8 @@ public class SearchColor extends Brains{
 				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
 					System.out.println("Error in the distance, correcting");
 	                rotateToDistance();
+	                
+	                if(!running) break;
 	            }
 				while(hardware.isTouchPressed()){
 	                System.out.println("Touch is pressed, cannot go forward");
@@ -102,6 +107,11 @@ public class SearchColor extends Brains{
 		
 		while(hardware.getDistance() > (expectedDistance + distanceTolerance) || hardware.getDistance() < (expectedDistance - distanceTolerance)){
 			hardware.motorSetSpeedProcentage(turningSpeed);
+			
+			if(!running ){
+				break;
+			}
+			
 			if (hardware.getDistance() > expectedDistance ) {
 				//hardware.rotateRightMotorBlock(5);
 			    hardware.rotateLeftMotorBlock(-correctionAngle);
