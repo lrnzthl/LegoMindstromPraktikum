@@ -136,7 +136,7 @@ public class Line extends Brains {
         hardware.robotTurnNonBlockOneWheel(initialAngle);
         while(hardware.motorsAreMoving()) {
 
-            mySleep(50);
+            mySleep(60);
             if(hardware.isOnMidpointBW()){
                 break;
             }
@@ -152,7 +152,7 @@ public class Line extends Brains {
             hardware.robotTurnNonBlockOneWheel(angle);
             while(hardware.motorsAreMoving()) {
 
-                mySleep(50);
+                mySleep(60);
                 if(hardware.isOnMidpointBW()){
                     break outer;
                 }
