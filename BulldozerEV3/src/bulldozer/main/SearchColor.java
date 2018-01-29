@@ -87,6 +87,7 @@ public class SearchColor extends Brains{
 				mySleep(1000);
 				hardware.motorForwardBlock(360);
 			}
+			
 
 			if (hardware.isOnWhite() && !foundWhite) {
 				System.out.println("FOUND THE WHITE");
@@ -94,6 +95,10 @@ public class SearchColor extends Brains{
 				hardware.beep();
 				mySleep(1000);
                 hardware.motorForwardBlock(360);
+			}
+			
+			if ((hardware.isOnWhite() && foundWhite) || (hardware.isOnRed() && foundRed)) {
+				hardware.motorForwardBlock(360);
 			}
 
 			if(foundRed && foundWhite){
