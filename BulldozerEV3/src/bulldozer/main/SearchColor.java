@@ -49,7 +49,7 @@ public class SearchColor extends Brains{
 		hardware.motorForwardBlock(360);
 		mySleep(50);
 
-		hardware.robotTurnBlock(40);
+		hardware.robotTurnBlock(35);
 
 		hardware.servoGoUp();
 

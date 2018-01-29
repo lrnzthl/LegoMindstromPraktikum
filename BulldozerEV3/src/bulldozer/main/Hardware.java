@@ -59,6 +59,7 @@ public class Hardware {
     public final CColor blackwhite = new CColor(0.136f, 0.211f, 0.067f);
     public final CColor bluewhite = new CColor ( 0.105f, 0.235f, 0.148f);
     public final CColor blueblack = new CColor(0.165f, 0.262f, 0.119f);
+    public final CColor newBlue = new CColor(0.018f, 0.070f, 0.063f);
     public final CColor nothing = new CColor(0.0f, 0.00098f, 0.00098f);
 
 

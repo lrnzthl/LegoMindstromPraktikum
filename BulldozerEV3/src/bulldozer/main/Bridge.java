@@ -20,6 +20,7 @@ public class Bridge extends Brains {
         this.setSearchForBeacon(false);
 
         beaconColor.add(hardware.blue);
+        beaconColor.add(hardware.newBlue);
 		//beaconColor.add(hardware.blueblack);
 
         //hardware.setMotorMaxSpeedProcentage(motorMaxSpeedProcentage);
