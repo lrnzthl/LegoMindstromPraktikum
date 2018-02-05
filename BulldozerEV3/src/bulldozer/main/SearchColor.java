@@ -3,8 +3,6 @@ package bulldozer.main;
 
 public class SearchColor extends Brains{
 
-	
-    
     private final int step = 45;
 
 
@@ -17,7 +15,7 @@ public class SearchColor extends Brains{
     private int speedProcentage = 60;
     private int turningSpeed = 10;
 
-    private int correctionAngle = 15;
+    private int correctionAngle = 20;
 
     private int expectedDistance;
     private int distanceTolerance = 2;
@@ -65,56 +63,38 @@ public class SearchColor extends Brains{
 	                
 	                if(!running) break;
 	            }
+
 				while(hardware.isTouchPressed()){
 	                System.out.println("Touch is pressed, cannot go forward");
+	                hardware.motorForwardBlock(80); //run into the wall
 	                rotateInTheWall();
 	                expectedDistance = hardware.getDistance();
 	                if(!running) break;
 	            }
 				if(!running) break;
-	            mySleep(50);
+
+				//going forward
+	            //mySleep(50);
 				hardware.motorSetSpeedProcentage(speedProcentage);
 				mySleep(50);
 	            hardware.motorForward(step);
 			}
 
-            System.out.println("I see a color!");
-			
-			if (hardware.isOnRed() && !foundRed) {
-				System.out.println("FOUND THE RED");
-				foundRed = true;
-				hardware.beep();
-				mySleep(1000);
-				hardware.motorForwardBlock(360);
-			}
-			
-
-			if (hardware.isOnWhite() && !foundWhite) {
-				System.out.println("FOUND THE WHITE");
-				foundWhite = true;
-				hardware.beep();
-				mySleep(1000);
-                hardware.motorForwardBlock(360);
-			}
-			
-			if ((hardware.isOnWhite() && foundWhite) || (hardware.isOnRed() && foundRed)) {
-				hardware.motorForwardBlock(360);
-			}
-
-			if(foundRed && foundWhite){
-			    running = false;
-            }
+            tryFindBeacon();
 		}
 		
 	}
 	
 	//Rotates if it´s getting further away or closer of the wall.
 	public void rotateToDistance() {
+
 		
 		while(hardware.getDistance() > (expectedDistance + distanceTolerance) || hardware.getDistance() < (expectedDistance - distanceTolerance)){
-			hardware.motorSetSpeedProcentage(turningSpeed);
-			
-			if(!running ){
+            System.out.println("current:" + hardware.getDistance() + ", expected:" + expectedDistance);
+
+            hardware.motorSetSpeedProcentage(turningSpeed);
+
+            if(!running ){
 				break;
 			}
 			
@@ -132,31 +112,85 @@ public class SearchColor extends Brains{
 	
 	
 	//Rotates at the end of the wall, to the right or left depending on the lastRotation
-	public void rotateInTheWall() {
+	private void rotateInTheWall() {
 		hardware.motorForwardBlock(-180);
-		
+
+        tryFindBeacon();
+
 	    System.out.println("Turning...");
 	    mySleep(50);
 
 	    if(lastRotation < 0){
             hardware.robotTurnBlock(lastRotation * -88);
+            tryFindBeacon();
+
             mySleep(50);
             hardware.motorForwardBlock(150);
+            tryFindBeacon();
+
+            //touch pressed, go other way around
+            if(hardware.isTouchPressed()){
+                lastRotation *= -1;
+            }
+
             mySleep(50);
+
             hardware.robotTurnBlock(lastRotation * -88);
-
-
+            tryFindBeacon();
 
         }else{
             hardware.robotTurnBlock(lastRotation * -90);
+            tryFindBeacon();
             mySleep(50);
             hardware.motorForwardBlock(180);
+            tryFindBeacon();
+
+
+            //touch pressed, go other way around
+            if(hardware.isTouchPressed()){
+                lastRotation *= -1;
+            }
+
             mySleep(50);
             hardware.robotTurnBlock(lastRotation * -90);
+            tryFindBeacon();
         }
 
         lastRotation *= -1;
         mySleep(50);
+    }
+
+
+    private void tryFindBeacon(){
+        if(hardware.isOnRed() && !hardware.isOnWhite()) {
+
+            System.out.println("I see a color!");
+
+            if (hardware.isOnRed() && !foundRed) {
+                System.out.println("FOUND THE RED");
+                foundRed = true;
+                hardware.beep();
+                mySleep(1000);
+                hardware.motorForwardBlock(360);
+            }
+
+
+            if (hardware.isOnWhite() && !foundWhite) {
+                System.out.println("FOUND THE WHITE");
+                foundWhite = true;
+                hardware.beep();
+                mySleep(1000);
+                hardware.motorForwardBlock(360);
+            }
+
+            if ((hardware.isOnWhite() && foundWhite) || (hardware.isOnRed() && foundRed)) {
+                hardware.motorForwardBlock(360);
+            }
+
+            if (foundRed && foundWhite) {
+                running = false;
+            }
+        }
     }
 	
 	

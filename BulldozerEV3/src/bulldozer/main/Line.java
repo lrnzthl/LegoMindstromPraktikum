@@ -15,7 +15,7 @@ public class Line extends Brains {
     private long lastReset = 0; //last time we have resetted the time counter
 
     private int motorMaxSpeedProcentage = 60;
-    //private double turnSpeedProcentage = 0.35;
+
     private int turnSpeedProcentage = 25;
     //50% swings too much back and fort, 25 is okay, just stop, 40 is also all right
 
@@ -72,6 +72,7 @@ public class Line extends Brains {
                 resetTimer();
             }
 
+
             System.out.println("Resetting init rot: " + initialRotationAngle);
         }
     }
@@ -113,7 +114,7 @@ public class Line extends Brains {
      */
     private int getSpeed(long diff){
         //was 7!
-        double accel = 7;
+        double accel = 6;
         double minimumOffset = 3; //should be smaller than 8
 
         diff = Math.round(accel * diff);

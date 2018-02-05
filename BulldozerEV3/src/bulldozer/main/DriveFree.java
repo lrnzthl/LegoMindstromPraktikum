@@ -1,7 +1,7 @@
 package bulldozer.main;
 
 public class DriveFree extends Brains {
-    private int motorMaxSpeedProcentage = 10;
+    private int motorMaxSpeedProcentage = 30;
     //default value is 6000
     private int motorAccelaration = 6000;
     private int turnSpeedProcentage = 10;
@@ -65,7 +65,8 @@ public class DriveFree extends Brains {
         while(running){
             getBackToDistance();
 
-        	hardware.motorSetSpeedProcentage(40);
+            System.out.println("Going forward!");
+        	hardware.motorSetSpeedProcentage(motorMaxSpeedProcentage);
             hardware.motorForward(45);
 
         }
