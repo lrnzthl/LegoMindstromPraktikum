@@ -11,7 +11,7 @@ public class Line extends Brains {
     private int initialRotationAngle = 0; //already turned angle
 
     private int zigZagAngle = 15;
-
+    
     private long lastReset = 0; //last time we have resetted the time counter
 
     private int motorMaxSpeedProcentage = 60;
@@ -127,6 +127,11 @@ public class Line extends Brains {
      */
     private void zigZagMovements(){
         System.out.println("starting zig zag");
+        
+        int oldTurnSpeed = turnSpeedProcentage;
+        
+        turnSpeedProcentage = 40;
+        
         //assert we are exactly in the middle!
         int initialAngle = zigZagAngle;
 
@@ -172,7 +177,8 @@ public class Line extends Brains {
         while( ! hardware.isOnBlack() ){
             mySleep(delay);
         }
-
+        
+        turnSpeedProcentage = oldTurnSpeed;
     }
 
 
