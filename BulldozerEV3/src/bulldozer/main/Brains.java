@@ -40,7 +40,7 @@ public abstract class Brains extends Thread{
                 break;
             }
 
-            if(hardware.foundBeacon(beaconColor) && searchBeaconState){
+            if(checkForBeacon() && searchBeaconState){
                 System.out.println("Beacon is found");
                 Sound.beepSequenceUp();
                 returnValue = 1;
@@ -53,6 +53,13 @@ public abstract class Brains extends Thread{
     }
 
     public abstract void run();
+
+    protected  boolean checkForBeacon() {
+        if(hardware.foundBeacon(beaconColor)){
+            return true;
+        }
+        return false;
+    }
 
     protected void setSearchForBeacon(boolean state){
     	searchBeaconState = state;

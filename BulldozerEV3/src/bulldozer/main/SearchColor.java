@@ -8,7 +8,10 @@ public class SearchColor extends Brains{
 
     private boolean foundRed = false;
     private boolean foundWhite = false;
-    
+
+    private boolean stop = false;
+    private long lastReset = 0;
+
     // 1 for the last rotation to right, -1 for last rotation to left
     private int lastRotation = 1;
     
@@ -23,6 +26,10 @@ public class SearchColor extends Brains{
 	public SearchColor(Hardware hardware){
         super(hardware); 
         this.setSearchForBeacon(false);
+
+        beaconColor.add(hardware.red);
+        beaconColor.add(hardware.white);
+
     }
 
 	@Override
@@ -53,16 +60,11 @@ public class SearchColor extends Brains{
 
 		expectedDistance = hardware.getDistance();
 		System.out.println("The distance is : " + expectedDistance);
-		
+
+		this.setSearchForBeacon(true);
 		while( running )  {
-			
-			while(!hardware.isOnRed() && !hardware.isOnWhite()) {
-				while(hardware.getDistance() > expectedDistance + distanceTolerance || hardware.getDistance() < expectedDistance - distanceTolerance){
-					System.out.println("Error in the distance, correcting");
-	                rotateToDistance();
+		        rotateToDistance();
 	                
-	                if(!running) break;
-	            }
 
 				while(hardware.isTouchPressed()){
 	                System.out.println("Touch is pressed, cannot go forward");
@@ -71,16 +73,20 @@ public class SearchColor extends Brains{
 	                expectedDistance = hardware.getDistance();
 	                if(!running) break;
 	            }
+
 				if(!running) break;
 
 				//going forward
 	            //mySleep(50);
 				hardware.motorSetSpeedProcentage(speedProcentage);
 				mySleep(50);
-	            hardware.motorForward(step);
-			}
 
-            tryFindBeacon();
+				if(!stop){
+                    hardware.motorForward(step);
+				}
+
+
+                //tryFindBeacon();
 		}
 		
 	}
@@ -90,6 +96,8 @@ public class SearchColor extends Brains{
 
 		
 		while(hardware.getDistance() > (expectedDistance + distanceTolerance) || hardware.getDistance() < (expectedDistance - distanceTolerance)){
+
+            System.out.println("Error in the distance, correcting");
             System.out.println("current:" + hardware.getDistance() + ", expected:" + expectedDistance);
 
             hardware.motorSetSpeedProcentage(turningSpeed);
@@ -115,53 +123,84 @@ public class SearchColor extends Brains{
 	private void rotateInTheWall() {
 		hardware.motorForwardBlock(-180);
 
-        tryFindBeacon();
-
-	    System.out.println("Turning...");
+        System.out.println("Turning...");
 	    mySleep(50);
 
 	    if(lastRotation < 0){
             hardware.robotTurnBlock(lastRotation * -88);
-            tryFindBeacon();
 
             mySleep(50);
             hardware.motorForwardBlock(150);
-            tryFindBeacon();
 
-            //touch pressed, go other way around
-            if(hardware.isTouchPressed()){
-                lastRotation *= -1;
-            }
+
 
             mySleep(50);
 
             hardware.robotTurnBlock(lastRotation * -88);
-            tryFindBeacon();
 
         }else{
             hardware.robotTurnBlock(lastRotation * -90);
-            tryFindBeacon();
             mySleep(50);
             hardware.motorForwardBlock(180);
-            tryFindBeacon();
 
 
-            //touch pressed, go other way around
-            if(hardware.isTouchPressed()){
-                lastRotation *= -1;
-            }
 
             mySleep(50);
             hardware.robotTurnBlock(lastRotation * -90);
-            tryFindBeacon();
-        }
+          }
 
         lastRotation *= -1;
         mySleep(50);
     }
 
+    @Override
+    protected boolean checkForBeacon(){
+        long current = System.currentTimeMillis();
+
+        if((current - lastReset) > 1000){
+            stop = false;
+        }
+
+        if(!running){
+            System.out.println("not running in check for beacon");
+            return true;
+        }
+
+        if(hardware.isOnWhite() && !foundWhite){
+            System.out.println("found white!");
+            foundWhite = true;
+
+            stop = true;
+            lastReset = System.currentTimeMillis();
+
+            hardware.beep();
+            hardware.beep();
+        }
+
+        if(hardware.isOnRed() && !foundRed){
+            System.out.println("found red!");
+            foundRed = true;
+
+            stop = true;
+            lastReset = System.currentTimeMillis();
+
+            hardware.beep();
+            hardware.beep();
+        }
+
+        if(foundWhite && foundRed){
+            System.out.println("Both found");
+            return true;
+        }
+
+
+        return false;
+    }
+
 
     private void tryFindBeacon(){
+
+
         if(hardware.isOnRed() && !hardware.isOnWhite()) {
 
             System.out.println("I see a color!");
